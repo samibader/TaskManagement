@@ -1,0 +1,68 @@
+﻿@model SBC.TimeCards.Service.Models.Users.DetailedUserViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">User : @Html.DisplayFor(model => model.Username)</h6>
+            </div>
+            <div class="card-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Username)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Username)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CreateDate)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CreateDate)
+                    </dd>
+
+                </dl>
+                <div class="row">
+                    <div class="col-lg-4">
+                        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+                        @Html.ActionLink("All Users", "Index", "Users", null, new { @class = "btn btn-info" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">User Assigned Projects</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        @foreach (var item in Model.Projects)
+                        {
+                        <p>@Html.ActionLink(item.Name, "Details", "Projects", new { id = item.Id }, new { @class = "btn btn-primary" }) </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+﻿@model SBC.TimeCards.Service.Models.Projects.DetailedProjectViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Project : @Html.DisplayFor(model => model.Name)</h6>
+            </div>
+            <div class="card-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+
+
+                </dl>
+                <div class="row">
+                    <div class="col-lg-4">
+                        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+                        @Html.ActionLink("All Projects", "Index", "Projects", null, new { @class = "btn btn-info" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Assigned Users</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        @foreach (var item in Model.Users)
+                        {
+                        <p>
+                            <a href="@Url.Action("Details","Users",new {id = item.Id })" class="btn btn-success btn-icon-split btn-sm"> 
+                                <span class="icon text-white-50"><i class="fas fa-user"></i></span>
+                            <span class="text">@item.Username</span>
+                            </a>
+                        </p>
+                        @*<p>@Html.ActionLink(item.Username, "Details", "Users", new { id = item.Id }, new { @class = "btn btn-primary" }) </p>*@
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

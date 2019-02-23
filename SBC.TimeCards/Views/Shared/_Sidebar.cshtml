@@ -1,0 +1,55 @@
+﻿@model IEnumerable<SBC.TimeCards.Models.SidebarItem>
+@{ 
+    var currentAction = ViewContext.ParentActionViewContext.RouteData.Values["Action"].ToString();
+    var currentController = ViewContext.ParentActionViewContext.RouteData.Values["Controller"].ToString();
+}
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Index","Home")">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Time Cards</div>
+    </a>
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+    @foreach (var item in Model)
+    {
+        if (!item.IsParent && item.ParentId == 0)
+        {
+            <li class="nav-item @(currentAction.Equals(item.Action, StringComparison.InvariantCultureIgnoreCase) && currentController.Equals(item.Controller, StringComparison.InvariantCultureIgnoreCase) ? "active" : "")">
+                <a class="nav-link" href="@Url.Action(item.Action,item.Controller)">
+                    <i class="@item.IconClass"></i>
+                    <span>@item.Name</span>
+                </a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        }
+        else
+        {
+            if (item.IsParent)
+            {
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item @(currentController.Equals(item.Controller, StringComparison.InvariantCultureIgnoreCase) ? "active" : "")">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse-@item.Id" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="@item.IconClass"></i>
+                        <span>@item.Name</span>
+                    </a>
+                    <div id="collapse-@item.Id" class="collapse @(currentController.Equals(item.Controller, StringComparison.InvariantCultureIgnoreCase) ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @foreach (var child in Model.Where(p => p.ParentId == item.Id))
+                            {
+                                <a class="collapse-item @(currentAction.Equals(child.Action, StringComparison.InvariantCultureIgnoreCase) && currentController.Equals(child.Controller, StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action(child.Action,child.Controller)">@child.Name</a>
+                            }
+                       </div>
+                    </div>
+                </li>
+            }
+        }
+    }
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+</ul>

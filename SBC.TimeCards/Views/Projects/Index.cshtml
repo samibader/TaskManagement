@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles
+{
+    <!-- Custom styles for this page -->
+    <link href="/theme/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+<!-- Page Heading -->
+@*<h1 class="h3 mb-2 text-gray-800">Projects</h1>*@
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+            </table>
+        </div>
+    </div>
+
+    
+
+
+</div>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+@section scripts
+{
+    <!-- Page level plugins -->
+    <script src="/theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level custom scripts -->
+    @*<script src="/theme/js/demo/datatables-demo.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            $('#myTable').dataTable({
+                serverSide: true,
+                processing: true,
+                orderMulti: false,
+                ajax: "/projects/pagedata",
+                columns: [
+                    {
+                        name: 'id',
+                        data: 'id',
+                        title: "Project Id",
+                        sortable: true,
+                        searchable: false
+                    },
+                    {
+                        name: 'name',
+                        data: "name",
+                        title: "Project Name",
+                        sortable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'users',
+                        title: "Project Users",
+                        render: function (data, type, full) {
+                            return $.map(data, function (d, i) {
+                                return '<a href="/Users/Details/' + d.id + '" class="btn btn-success btn-icon-split btn-sm">               <span class="icon text-white-50"><i class="fas fa-user"></i></span>                      <span class="text">' + d.username + '</span></a>';
+                            }).join(' | ');
+                        },
+                        sortable: false,
+                        searchable: false
+                    }
+                    ,
+                    {
+                        data: 'id',
+                        title: "Operations",
+                        render: function (data, type, full) {
+                            return '<a href="/Projects/Edit/' + data + '" class="btn btn-warning">Edit</a> | <a href="/Projects/Details/' + data + '" class="btn btn-info">Details</a> | <a href="/Projects/Delete/' + data + '" class="btn btn-danger">Delete</a>';
+                        },
+                        sortable: false,
+                        searchable: false
+                    }
+                ]
+            });
+        });
+    </script>
+}
+
