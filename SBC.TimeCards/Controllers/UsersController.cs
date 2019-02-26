@@ -17,6 +17,9 @@ using Microsoft.AspNet.Identity;
 using SBC.TimeCards.Service.Interfaces;
 using SBC.TimeCards.Service.Services;
 using AutoMapper;
+using DataTables.AspNet.Core;
+using System.ComponentModel;
+using DataTables.AspNet.Mvc5;
 
 namespace SBC.TimeCards.Controllers
 {
@@ -43,7 +46,7 @@ namespace SBC.TimeCards.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = await _userService.GetDetailedByIdAsync(id.Value);
+            var user = await _userService.GetByIdAsync(id.Value);
             if (user == null)
             {
                 return HttpNotFound();
@@ -52,8 +55,9 @@ namespace SBC.TimeCards.Controllers
         }
 
         // GET: Users/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            ViewBag.RoleId = await _userService.GetAllAvailableRolesAsSelectList();
             return View();
         }
 
@@ -73,6 +77,8 @@ namespace SBC.TimeCards.Controllers
                 }
                 AddErrors(result);
             }
+            ViewBag.RoleId = await _userService.GetAllAvailableRolesAsSelectList();
+
             return View(model);
         }
 
@@ -88,6 +94,7 @@ namespace SBC.TimeCards.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.RoleId = await _userService.GetAllAvailableRolesAsSelectList(user.RoleId);
             return View(user);
         }
 
@@ -103,6 +110,8 @@ namespace SBC.TimeCards.Controllers
                 await _userService.Edit(user);
                 return RedirectToAction("Index");
             }
+
+            ViewBag.RoleId = await _userService.GetAllAvailableRolesAsSelectList(user.RoleId);
             return View(user);
         }
 
@@ -129,6 +138,31 @@ namespace SBC.TimeCards.Controllers
             await _userService.Delete(id);
             return RedirectToAction("Index");
         }
+
+        public ActionResult PageData(IDataTablesRequest request)
+        {
+            var data = _userService.GetAll();
+            var filteredData = data.Where(_item => _item.Name.ToLower().Contains(request.Search.Value.ToLower())).AsEnumerable();
+            var sortColumn = request.Columns.FirstOrDefault(s => s.Sort != null);
+            if (sortColumn != null)
+            {
+                PropertyDescriptor prop = TypeDescriptor.GetProperties(typeof(UserViewModel)).Find(sortColumn.Field, true);
+                if (sortColumn.Sort.Direction == SortDirection.Descending)
+                {
+                    filteredData = filteredData.OrderByDescending(c => prop.GetValue(c));
+                }
+                else
+                {
+                    filteredData = filteredData.OrderBy(c => prop.GetValue(c));
+                }
+            }
+
+            var dataPage = filteredData.Skip(request.Start).Take(request.Length).ToList();
+
+            var response = DataTablesResponse.Create(request, data.Count(), filteredData.Count(), dataPage);
+            return new DataTablesJsonResult(response, JsonRequestBehavior.AllowGet);
+        }
+
 
         #region Private Methods
         private void AddErrors(IdentityResult result)

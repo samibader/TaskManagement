@@ -26,8 +26,7 @@ namespace SBC.TimeCards.Controllers
         {
             if (User.IsInRole(AppRoles.Administrator))
                 return AppRoles.Administrator;
-            else
-                return AppRoles.User;
+            return "";
         }
         protected async Task<int> GetCurrentUserId()
         {

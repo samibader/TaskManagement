@@ -1,51 +1,22 @@
-﻿@model IEnumerable<SBC.TimeCards.Service.Models.Users.UserViewModel>
-
-@{
+﻿@{
     ViewBag.Title = "Users";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section styles
+{
+    <!-- Custom styles for this page -->
+    <link href="/theme/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+<!-- Page Heading -->
+@*<h1 class="h3 mb-2 text-gray-800">Projects</h1>*@
+<!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Users</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" width="100%" cellspacing="0">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Email)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Username)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CreateDate)
-                    </th>
-                    <th></th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Username)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CreateDate)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id },new {@class="btn btn-warning" }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id },new { @class = "btn btn-danger" })
-                        </td>
-                    </tr>
-                }
-
-            </table>
+            <table class="table table-bordered" id="myTable" width="100%" cellspacing="0"></table>
         </div>
     </div>
 
@@ -53,7 +24,74 @@
 
 
 </div>
+
 <p>
-    @Html.ActionLink("Create New", "Create",null,new {@class="btn btn-primary" })
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
+
+@section scripts
+{
+    <!-- Page level plugins -->
+    <script src="/theme/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/theme/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level custom scripts -->
+    @*<script src="/theme/js/demo/datatables-demo.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            $('#myTable').dataTable({
+                serverSide: true,
+                processing: true,
+                orderMulti: false,
+                ajax: "/users/pagedata",
+                columns: [
+                    {
+                        name: 'id',
+                        data: 'id',
+                        title: "User Id",
+                        sortable: true,
+                        searchable: false
+                    },
+                    {
+                        name: 'name',
+                        data: "name",
+                        title: "Name",
+                        sortable: true,
+                        searchable: true
+                    },
+                    {
+                        name: 'userName',
+                        data: "username",
+                        title: "User Name",
+                        sortable: true,
+                        searchable: true
+                    },
+                    {
+                        name: 'email',
+                        data: "email",
+                        title: "Email",
+                        sortable: true,
+                        searchable: true
+                    },
+                    {
+                        name: 'role',
+                        data: "roleName",
+                        title: "Role",
+                        sortable: true,
+                        searchable: true
+                    },
+                    
+                    {
+                        data: 'id',
+                        title: "Operations",
+                        render: function (data, type, full) {
+                            return '<a href="/Users/Edit/' + data + '" class="btn btn-warning">Edit</a> | <a href="/Users/Details/' + data + '" class="btn btn-info">Details</a> | <a href="/Users/Delete/' + data + '" class="btn btn-danger">Delete</a>';
+                        },
+                        sortable: false,
+                        searchable: false
+                    }
+                ]
+            });
+        });
+    </script>
+}
 

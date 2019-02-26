@@ -22,6 +22,10 @@ namespace SBC.TimeCards.Service.Models.Users
         public string Username { get; set; }
 
         [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -31,5 +35,9 @@ namespace SBC.TimeCards.Service.Models.Users
         [Display(Name = "Confirm password")]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display (Name = "User Role")]
+        public int RoleId { get; set; }
     }
 }

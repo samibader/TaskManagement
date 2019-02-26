@@ -21,5 +21,11 @@ namespace SBC.TimeCards.Service.Interfaces
         Task<bool> IsUsernameUnique(string username, int? Id);
         List<UserViewModel> GetAll();
         List<SelectListItem> GetAllAsSelectList();
+        /// <summary>
+        /// forms a select list for all available roles.
+        /// </summary>
+        /// <param name="roleId"> the selected role id the default value is 0 which mean no selected roles</param>
+        /// <returns></returns>
+        Task<List<SelectListItem>> GetAllAvailableRolesAsSelectList(int roleId = 0 );
     }
 }

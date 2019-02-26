@@ -30,6 +30,12 @@
                     @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
+                <div class="col-lg-4">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label manadatory" })
+                    @*@Html.TextBoxFor(model => model.Email, new { @class = "form-control", @onblur = "CheckEmailExists();" })*@
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
             </div>
             <div class="row">
                 <div class="clearfix"></div>
@@ -42,6 +48,14 @@
                     @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label manadatory" })
                     @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.RoleId, htmlAttributes: new { @class = "control-label manadatory" })
+                    @Html.DropDownListFor(model => model.RoleId,null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
                 </div>
             </div>
 

@@ -22,5 +22,11 @@ namespace SBC.TimeCards.Service.Models.Users
         [Remote("CheckUniqueUsername", "Users", ErrorMessage = "Username Already Taken !", HttpMethod = "Post", AdditionalFields = "Id")]
         [Display(Name = "Username")]
         public string Username { get; set; }
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Display (Name="Role")]
+        public int RoleId { get; set; }
     }
 }

@@ -16,6 +16,9 @@ namespace SBC.TimeCards.Data.Configuration
                 .HasMaxLength(256)
                 .IsRequired()
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UserNameIndex") { IsUnique = true }));
+            Property(c => c.Name)
+                .HasMaxLength(256)
+                .IsRequired();
         }
     }
 }

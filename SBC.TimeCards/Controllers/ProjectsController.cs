@@ -180,7 +180,7 @@ namespace SBC.TimeCards.Controllers
             //Getting items
             int total;
             var userId = await GetCurrentUserId();
-            var results = _projectService.GetDropDownValues(searchTerm, pageNum, pageSize, userId, GetCurrentUserRole(), out total);
+            var results =  _projectService.GetDropDownValues(searchTerm, pageNum, pageSize, userId, GetCurrentUserRole(), out total);
             var projects = new List<ProjectViewModel>();
             foreach (var item in results)
             {

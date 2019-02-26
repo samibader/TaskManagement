@@ -20,11 +20,7 @@ namespace SBC.TimeCards.Data.Access.Migrations
             if (!context.Roles.Any())
             {
                 //Step 1 Create the roles.
-                var adminRole = new Role { Name = AppRoles.Administrator };
-                var userRole = new Role { Name = AppRoles.User };
-                context.Roles.Add(adminRole);
-                context.Roles.Add(userRole);
-                context.SaveChanges();
+                var adminRoleId = SeedRoles(context);
                 
                 //Step 2 Create the admin user.
                 var passwordHasher = new PasswordHasher();
@@ -39,11 +35,28 @@ namespace SBC.TimeCards.Data.Access.Migrations
 
                 //Step 3 Create a role for a user
                 var userrole = new UserRole();
-                userrole.RoleId = adminRole.Id;
+                userrole.RoleId = adminRoleId;
                 userrole.UserId = user.Id;
                 context.UserRoles.Add(userrole);
                 context.SaveChanges();
             }
+        }
+
+        /// <summary>
+        /// Seeds the available roles by the app.
+        /// </summary>
+        /// <param name="context"> ApplicationDbContest responsible for adding the roles </param>
+        /// <returns>the administrator role id</returns>
+        private int SeedRoles(SBC.TimeCards.Data.EF.ApplicationContext context)
+        {
+            var adminRole = new Role { Name = AppRoles.Administrator };
+            context.Roles.Add(adminRole);
+            context.Roles.Add(new Role { Name = AppRoles.Manager });
+            context.Roles.Add(new Role { Name = AppRoles.Network });
+            context.Roles.Add(new Role { Name = AppRoles.System });
+            context.Roles.Add(new Role { Name = AppRoles.DataCenter });
+            context.SaveChanges();
+            return adminRole.Id;
         }
     }
 }

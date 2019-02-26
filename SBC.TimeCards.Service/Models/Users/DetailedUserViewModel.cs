@@ -18,6 +18,6 @@ namespace SBC.TimeCards.Service.Models.Users
         [Display(Name = "Creation Date")]
         public DateTime CreateDate { get; set; }
 
-        public List<ProjectViewModel> Projects { get; set; }
+       // public List<ProjectViewModel> Projects { get; set; }
     }
 }

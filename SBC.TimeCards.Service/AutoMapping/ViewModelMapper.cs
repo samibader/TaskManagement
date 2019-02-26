@@ -18,10 +18,12 @@ namespace SBC.TimeCards.Service.AutoMapping
             {
                 // ENTITY TO DTO
                 #region ENTITY TO DTO
-                cfg.CreateMap<User, UserViewModel>();
-                cfg.CreateMap<User, DetailedUserViewModel>()
-                    .ForMember(d => d.Projects,
-                 opt => opt.MapFrom(s => Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectViewModel>>(s.Projects))); ;
+                cfg.CreateMap<User, UserViewModel>()
+                .ForMember(x=>x.RoleName,opt=>opt.MapFrom(x=>x.UserRoles.FirstOrDefault().Role.Name))
+                .ForMember(x=>x.RoleId,opt=>opt.MapFrom(x=>x.UserRoles.FirstOrDefault().Role.Id));
+                cfg.CreateMap<User, DetailedUserViewModel>();
+                  //  .ForMember(d => d.Projects,
+               //  opt => opt.MapFrom(s => Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectViewModel>>(s.Projects))); ;
 
                 cfg.CreateMap<Project, ProjectViewModel>();
                 cfg.CreateMap<Project, DetailedProjectViewModel>()

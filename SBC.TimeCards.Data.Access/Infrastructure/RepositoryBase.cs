@@ -20,6 +20,7 @@ namespace SBC.TimeCards.Data.Infrastructure
         Task<T> GetSingleByAsync(Expression<Func<T, bool>> predicate);
         IQueryable<T> GetBy(Expression<Func<T, bool>> predicate);
         IQueryable<T> GetAll();
+        Task<IQueryable<T>> GetAllAsync();
     }
 
     internal abstract class RepositoryBase<T> : IRepository<T> where T : class
@@ -100,6 +101,11 @@ namespace SBC.TimeCards.Data.Infrastructure
         public Task<T> GetByIdAsync(int id)
         {
             return dbSet.FindAsync(id);
+        }
+
+        public Task<IQueryable<T>> GetAllAsync()
+        {
+            return Task.FromResult(GetAll());
         }
     }
 }
