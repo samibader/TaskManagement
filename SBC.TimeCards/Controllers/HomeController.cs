@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using SBC.TimeCards.Service.Identity;
 
 namespace SBC.TimeCards.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        public HomeController(IUnitOfWork uow)
+        public HomeController(IUnitOfWork uow, ApplicationUserManager userManager):base(userManager)
         {
 
         }

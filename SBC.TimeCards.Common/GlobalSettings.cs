@@ -16,6 +16,7 @@ namespace SBC.TimeCards.Common
             }
         }
         public static string DATE_FORMAT = "dd/MM/yyyy";
+        public static string LONG_TIME_PATTERN = "hh:mm:ss";
         public static string DATETIME_FORMAT = "dd/MM/yyyy hh:mm:ss";
         public static string CURRENT_DATETIME_AS_STRING
         {
