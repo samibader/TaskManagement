@@ -1,58 +1,53 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-@model PagedList.IPagedList<SBC.TimeCards.Data.Models.Project>
-@using PagedList.Mvc;
+@model SBC.TimeCards.Models.DashBoardProjectsViewModel
 @*<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />*@
 <!-- Content Row -->
 <div class="row">
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-4 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xl-left font-weight-bold text-primary text-uppercase mb-1">Users</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-users fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Active Projcts</h6>
         </div>
-    </div>
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-4 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xl-left font-weight-bold text-success text-uppercase mb-1">Projects</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">50</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-cog fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-4 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xl-left font-weight-bold text-warning text-uppercase mb-1">Time Records</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">144</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar-day fa-2x text-gray-300"></i>
-                    </div>
-                </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var project in Model.ActiveProjects)
+                {
+                    Html.RenderPartial("ProjectItem", project);
+                }
             </div>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Archived Projects</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var project in Model.ArchivedProjects)
+                {
+                    Html.RenderPartial("ProjectItem", project);
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function changeColor(projectId, color) {
+            $.ajax({
+                type:'post',
+                url: '@Url.Action("ChangeColor", "Projects")',
+                data: { id: projectId, color: color },
+                success: function (data) {
+                    if (data.success) {
+                        $('#p-' + projectId).parent().css('background-color', color);
+                    }
+                }
+            })
+        }
+    </script>
+}

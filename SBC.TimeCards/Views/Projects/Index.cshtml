@@ -17,12 +17,11 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
-            </table>
+            <table class="table table-bordered" id="myTable" width="100%" cellspacing="0"></table>
         </div>
     </div>
 
-    
+
 
 
 </div>
@@ -61,17 +60,12 @@
                         searchable: true
                     },
                     {
-                        data: 'users',
-                        title: "Project Users",
-                        render: function (data, type, full) {
-                            return $.map(data, function (d, i) {
-                                return '<a href="/Users/Details/' + d.id + '" class="btn btn-success btn-icon-split btn-sm">               <span class="icon text-white-50"><i class="fas fa-user"></i></span>                      <span class="text">' + d.username + '</span></a>';
-                            }).join(' | ');
-                        },
-                        sortable: false,
-                        searchable: false
-                    }
-                    ,
+                        name: 'timestamp',
+                        data: "timeStamp",
+                        title: "Creation Date",
+                        sortable: true,
+                        searchable: true
+                    },
                     {
                         data: 'id',
                         title: "Operations",

@@ -1,0 +1,45 @@
+﻿@model List<SBC.TimeCards.Service.Models.Attachments.AttachmentViewModel>
+@{
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">@item.Title</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    @item.Description
+                    <br />
+                    @item.Size
+                    <br />
+                    @item.Type
+                    <br />
+                    @item.UploadDate
+                    @Html.ActionLink("Edit Attachment", "Edit", "Attachments", new { id = item.Id }, new { @class = "btn btn-info" })
+                    <input type="button" class="btn btn-danger" value="Delete" onclick="del(@item.Id)" />
+                </div>
+                <div class="col-md-4">
+                    <img src="@item.Url" width="50%" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function del(id) {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("Delete","Attachments")',
+            data: { id: id },
+            success: function (data) {
+                if (data.success) {
+                    alert('Remove Successfully');
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>

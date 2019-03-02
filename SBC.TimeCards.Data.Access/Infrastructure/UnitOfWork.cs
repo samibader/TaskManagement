@@ -10,6 +10,7 @@ namespace SBC.TimeCards.Data.Infrastructure
         IUserRepository Users { get; }
         IUserRoleRepository UserRoles { get; }
         IRoleRepository Roles { get; }
+        IAttachmentRepository Attachments { get; }
         void SaveChanges();
         Task SaveChangesAsync();
 
@@ -27,6 +28,8 @@ namespace SBC.TimeCards.Data.Infrastructure
         public IUserRepository Users { get; private set; }
         public IRoleRepository Roles { get; private set; } 
         public IUserRoleRepository UserRoles { get; private set; }
+        public IAttachmentRepository Attachments { get; private set; }
+
         public UnitOfWork(IDbFactory dbFactory)
         {
             _dbFactory = dbFactory;
@@ -34,6 +37,7 @@ namespace SBC.TimeCards.Data.Infrastructure
             Users = new UserRepository(_dbFactory);
             UserRoles = new UserRoleRepository(_dbFactory);
             Roles = new RoleRepository(_dbFactory);
+            Attachments = new AttachmentRepository(_dbFactory);
         }
         
         public void SaveChanges()

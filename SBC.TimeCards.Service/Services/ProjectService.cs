@@ -28,39 +28,51 @@ namespace SBC.TimeCards.Service.Services
 
         public async Task Create(CreateProjectViewModel viewModel)
         {
-            var project = new Project { Name = viewModel.Name, Timestamp = GlobalSettings.CURRENT_DATETIME };
+            var project = new Project { Name = viewModel.Name, Timestamp = GlobalSettings.CURRENT_DATETIME,UserId = viewModel.UserId, Description=viewModel.Description,IsArchived=false,Color="red" };
             _unitOfWork.Projects.Add(project);
-            foreach (var userItem in viewModel.SelectedUsers)
-            {
-                var user = await _unitOfWork.Users.FindByNameAsync(userItem);
-                project.Users.Add(user);
-            }
             await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task Edit(EditProjectViewModel viewModel)
         {
             var project = await _unitOfWork.Projects.GetByIdAsync(viewModel.Id);
-            project.Name = viewModel.Name;
-            project.Users.Clear();
-
-            foreach (var userItem in viewModel.SelectedUsers)
+            if (project.IsArchived)
             {
-                var user = await _unitOfWork.Users.FindByNameAsync(userItem);
-                project.Users.Add(user);
+                throw new InvalidOperationException("Can't Change Archived project");
             }
+            project.Name = viewModel.Name;
+            project.Description = viewModel.Description;
+
             _unitOfWork.Projects.Update(project);
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public List<DetailedProjectViewModel> GetAll()
+        public List<ProjectViewModel> GetAll()
         {
-            return Mapper.Map<List<Project>, List<DetailedProjectViewModel>>(_unitOfWork.Projects.GetAll().ToList());
+            return Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetAll().ToList());
+        }
+        public List<ProjectViewModel> GetAllActiveProjects(int userId)
+        {
+            return Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetBy(x => !x.IsArchived && x.UserId == userId).ToList());
+        }
+        public List<ProjectViewModel> GetArchivedProjects(int userId,bool getAll = false)
+        {
+            var projects = _unitOfWork.Projects.GetBy(x => x.IsArchived &&x.UserId ==userId);
+            if (!getAll)
+            {
+                projects = projects.OrderByDescending(x=>x.ArchiveDate).Take(GlobalSettings.ArchivedProjectSize);
+            }
+            return Mapper.Map<List<Project>, List<ProjectViewModel>>(projects.ToList());
         }
 
-        public async Task<DetailedProjectViewModel> GetByIdAsync(int id)
+        public async Task<ProjectViewModel> GetByIdAsync(int id)
         {
-            return Mapper.Map<Project, DetailedProjectViewModel>(await _unitOfWork.Projects.GetByIdAsync(id));
+            return Mapper.Map<Project, ProjectViewModel>(await _unitOfWork.Projects.GetByIdAsync(id));
+        }
+
+        public async Task<EditProjectViewModel> GetProjectForEditAsync(int id)
+        {
+            return Mapper.Map<Project, EditProjectViewModel>(await _unitOfWork.Projects.GetByIdAsync(id));
         }
 
         public async Task<List<ProjectViewModel>> GetByUserId(int id)
@@ -71,14 +83,30 @@ namespace SBC.TimeCards.Service.Services
 
         public List<SelectListItem> GetProjectUsersAsSelectList(int id)
         {
-            var projectusers = _unitOfWork.Projects.GetById(id).Users.Select(x=>x.Id);
+            var projectusers = _unitOfWork.Projects.GetById(id); //;.Users.Select(x=>x.Id);
             var users = _unitOfWork.Users.GetAll();
             return users.Select(x => new SelectListItem()
             {
-                Selected = projectusers.Contains(x.Id),
+               // Selected = projectusers.Contains(x.Id),
                 Text = x.UserName,
                 Value = x.UserName
             }).ToList();
+        }
+
+        public async Task Archive(int id)
+        {
+            var project = await _unitOfWork.Projects.GetByIdAsync(id);
+            project.IsArchived = true;
+            project.ArchiveDate = GlobalSettings.CURRENT_DATETIME;
+            _unitOfWork.Projects.Update(project);
+            await _unitOfWork.SaveChangesAsync();
+        }
+        public async Task ChangeColor(int id,string color)
+        {
+            var project = await _unitOfWork.Projects.GetByIdAsync(id);
+            project.Color = color;
+            _unitOfWork.Projects.Update(project);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public IEnumerable<ProjectViewModel> GetDropDownValues(string searchTerm, int pageNum, int pageSize, int userId, string role, out int total)

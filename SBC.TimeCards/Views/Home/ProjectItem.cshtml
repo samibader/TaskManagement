@@ -1,0 +1,6 @@
+﻿@model SBC.TimeCards.Service.Models.Projects.ProjectViewModel
+<div class="col-lg-4" style="background-color:@Model.Color">
+    @Model.Name @Model.TimeStamp
+    <input type="button" id="p-@Model.Id" value="Color" onclick="changeColor(@Model.Id,'blue')" />
+    @Html.ActionLink("Manage","Manage","Projects",new { id=Model.Id},null)
+</div>

@@ -16,6 +16,17 @@ namespace SBC.TimeCards.Data.Configuration
                 .HasMaxLength(256)
                 .IsRequired()
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ProjectNameIndex") { IsUnique = true }));
+
+            HasRequired(p => p.User)
+                .WithMany(u => u.Projects)
+                .HasForeignKey(p => p.UserId);
+
+            HasMany(p => p.Attachments)
+                .WithRequired(a => a.Project)
+                .HasForeignKey(a => a.ProjectId);
+
+            Property(p => p.ArchiveDate)
+                .IsOptional();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DataTables.AspNet.Core;
 using DataTables.AspNet.Mvc5;
+using Microsoft.AspNet.Identity;
 using SBC.TimeCards.Common;
 using SBC.TimeCards.Data.Infrastructure;
 using SBC.TimeCards.Data.Models;
@@ -40,12 +41,12 @@ namespace SBC.TimeCards.Controllers
 
         public ActionResult PageData(IDataTablesRequest request)
         {
-            var data = _projectService.GetAll();
+            var data = _projectService.GetArchivedProjects(GetCurrentUserId(),true);
             var filteredData = data.Where(_item => _item.Name.ToLower().Contains(request.Search.Value.ToLower())).AsEnumerable();
             var sortColumn = request.Columns.FirstOrDefault(s => s.Sort != null);
             if (sortColumn != null)
             {
-                PropertyDescriptor prop = TypeDescriptor.GetProperties(typeof(DetailedProjectViewModel)).Find(sortColumn.Field, true);
+                PropertyDescriptor prop = TypeDescriptor.GetProperties(typeof(ProjectViewModel)).Find(sortColumn.Field, true);
                 if (sortColumn.Sort.Direction == SortDirection.Descending)
                 {
                     filteredData = filteredData.OrderByDescending(c => prop.GetValue(c));
@@ -82,11 +83,7 @@ namespace SBC.TimeCards.Controllers
         // GET: Projects/Create
         public ActionResult Create()
         {
-            CreateProjectViewModel model = new CreateProjectViewModel
-            {
-                Users = _userService.GetAllAsSelectList()
-            };
-            return View(model);
+            return View();
         }
 
         [Authorize(Roles = AppRoles.Administrator)]
@@ -97,11 +94,10 @@ namespace SBC.TimeCards.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.UserId = Int32.Parse(User.Identity.GetUserId());
                 await _projectService.Create(model);
                 return RedirectToAction("Index");
             }
-            model.Users = _userService.GetAllAsSelectList();
-
             return View(model);
         }
 
@@ -113,19 +109,12 @@ namespace SBC.TimeCards.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //EditUserViewModel user = Mapper.Map<UserViewModel, EditUserViewModel>(await _userService.GetByIdAsync(id.Value));
-            var project = await _projectService.GetByIdAsync(id.Value);
+            var project = await _projectService.GetProjectForEditAsync(id.Value);
             if (project == null)
             {
                 return HttpNotFound();
             }
-            EditProjectViewModel model = new EditProjectViewModel()
-            {
-                Id=project.Id,
-                Name=project.Name,
-                Users= _projectService.GetProjectUsersAsSelectList(project.Id)
-            };
-            return View(model);
+            return View(project);
         }
 
         [Authorize(Roles = AppRoles.Administrator)]
@@ -142,7 +131,7 @@ namespace SBC.TimeCards.Controllers
                 return RedirectToAction("Index");
             }
 
-            project.Users = _projectService.GetProjectUsersAsSelectList(project.Id);
+           // project.Users = _projectService.GetProjectUsersAsSelectList(project.Id);
 
             return View(project);
         }
@@ -155,7 +144,7 @@ namespace SBC.TimeCards.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DetailedProjectViewModel project = await _projectService.GetByIdAsync(id.Value);
+            ProjectViewModel project = await _projectService.GetByIdAsync(id.Value);
             if (project == null)
             {
                 return HttpNotFound();
@@ -163,6 +152,19 @@ namespace SBC.TimeCards.Controllers
             return View(project);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Archive(int id)
+        {
+            await _projectService.Archive(id);
+            return Json(new { success = true ,url=Url.Action("Index","Home")});
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ChangeColor(int id,string color)
+        {
+            await _projectService.ChangeColor(id, color);
+            return Json(new { success = true });
+        }
         [Authorize(Roles = AppRoles.Administrator)]
         // POST: TimeRecords/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -179,7 +181,7 @@ namespace SBC.TimeCards.Controllers
         {
             //Getting items
             int total;
-            var userId = await GetCurrentUserId();
+            var userId =  GetCurrentUserId();
             var results =  _projectService.GetDropDownValues(searchTerm, pageNum, pageSize, userId, GetCurrentUserRole(), out total);
             var projects = new List<ProjectViewModel>();
             foreach (var item in results)
@@ -203,6 +205,12 @@ namespace SBC.TimeCards.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+        public async Task<ActionResult> Manage(int id)
+        {
+             var model = await _projectService.GetByIdAsync(id);
+            return View(model);
+        }
+
 
         [Authorize(Roles = AppRoles.Administrator)]
         #region Validation API

@@ -19,6 +19,9 @@ namespace SBC.TimeCards.Data.Configuration
             Property(c => c.Name)
                 .HasMaxLength(256)
                 .IsRequired();
+            HasMany(x => x.Projects)
+                .WithRequired(p => p.User)
+                .HasForeignKey(p => p.UserId);
         }
     }
 }

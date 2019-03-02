@@ -9,6 +9,11 @@ namespace SBC.TimeCards.Service.Autofac
 {
     public class ServiceLayer : Module
     {
+        private readonly string _absoluteUploadPath;
+        public ServiceLayer(string absoluteUploadPath)
+        {
+            _absoluteUploadPath = absoluteUploadPath;
+        }
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(c => ApplicationUserManager.Create(c.Resolve<IUserStore>(), c.Resolve<IDataProtectionProvider>())).AsSelf().InstancePerRequest();
@@ -16,6 +21,7 @@ namespace SBC.TimeCards.Service.Autofac
             builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<UserService>().AsSelf().InstancePerRequest();
             builder.RegisterType<ProjectService>().AsSelf().InstancePerRequest();
+            builder.RegisterType<AttachmentsService>().AsSelf().InstancePerRequest().WithParameter("uploadPath",_absoluteUploadPath);
         }
     }
 }

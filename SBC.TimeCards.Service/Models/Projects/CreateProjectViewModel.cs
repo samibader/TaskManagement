@@ -15,17 +15,7 @@ namespace SBC.TimeCards.Service.Models.Projects
         [Display(Name = "Project Name")]
         [Remote("CheckUniqueProjectName", "Projects", ErrorMessage = "Duplicate Project Name !", HttpMethod = "Post")]
         public string Name { get; set; }
-
-        [Display(Name = "Project Users")]
-        public List<SelectListItem> Users { get; set; }
-        public List<string> SelectedUsers { get; set; }
-
-
-        public CreateProjectViewModel()
-        {
-            Users = new List<SelectListItem>();
-            SelectedUsers = new List<string>();
-        }
-        
+        public string Description { get; set; }
+        public int UserId { get; set; }
     }
 }

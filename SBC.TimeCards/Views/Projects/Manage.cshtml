@@ -1,0 +1,73 @@
+﻿@model SBC.TimeCards.Service.Models.Projects.ProjectViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active">
+        <a href="#basic-tab" aria-controls="basic-tab" role="tab" data-toggle="tab">Board&nbsp;</a>
+
+    </li>
+    <li>
+        <a href="#attachments" aria-controls="attachments" role="tab" data-toggle="tab">Attachments</a>
+    </li>
+</ul>  <!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="basic-tab">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">@Model.Name</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        @Model.Description
+                        @Model.TimeStamp
+                        @Model.
+                        @if (!Model.IsArchived)
+                        {
+                            <input type="button" value="Mark as one" class="btn btn-success" onclick="archive(@Model.Id)" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="attachments">
+        <div class="row">
+            <div class="col-md-12">
+                @Html.ActionLink("Add Attachment", "Create", "Attachments", new { id = Model.Id }, null)
+            </div>
+        </div>
+        @{Html.RenderAction("List", "Attachments", new { projectId = Model.Id });}
+    </div>
+</div>
+@section Scripts{
+    @* Please Add This Script To layout..*@
+    <script>
+        $(document).ready(function () {
+            if (document.location.hash.length) {
+                $('ul.nav-tabs a[href^="' + document.location.hash + '"]').click();
+            }
+        })
+        $("ul.nav-tabs a").click(function () {
+            document.location.hash = $(this).attr('href');
+        });
+    </script>
+    <script>
+        function archive(id) {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("Archive","Projects")',
+                data: { id: id },
+                success: function (data) {
+                    if (data.success) {
+                        alert('project Archived');
+                        location.href = data.url;
+                    }
+                }
+            })
+        }
+    </script>
+}
+

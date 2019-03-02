@@ -10,5 +10,10 @@ namespace SBC.TimeCards.Service.Models.Projects
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public string Color { get; set; }
+        public bool IsArchived { get; set; }
+        public DateTime? ArchiveDate { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.DataProtection;
 using SBC.TimeCards.Data.Access.Autofac;
 using SBC.TimeCards.Service.Autofac;
 using Owin;
+using SBC.TimeCards.Common;
 
 namespace SBC.TimeCards
 {
@@ -17,7 +18,7 @@ namespace SBC.TimeCards
             var builder = new ContainerBuilder();
 
             builder.RegisterModule(new DataLayer());
-            builder.RegisterModule(new ServiceLayer());
+            builder.RegisterModule(new ServiceLayer(System.Web.HttpContext.Current.Server.MapPath(GlobalSettings.UPLOADS_PATH)));
 
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register(c => app.GetDataProtectionProvider()).InstancePerRequest();

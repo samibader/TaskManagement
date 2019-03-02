@@ -22,6 +22,7 @@ namespace SBC.TimeCards.Data.EF
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Attachment> Attachments { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -31,6 +32,7 @@ namespace SBC.TimeCards.Data.EF
             modelBuilder.Configurations.Add(new UserClaimConfiguration());
             modelBuilder.Configurations.Add(new UserLoginConfiguration());
             modelBuilder.Configurations.Add(new ProjectConfiguration());
+            modelBuilder.Configurations.Add(new AttachmentConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

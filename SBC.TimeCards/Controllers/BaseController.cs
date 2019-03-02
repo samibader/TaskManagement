@@ -12,6 +12,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
 using SBC.TimeCards.Models;
+using System.IO;
+using Microsoft.AspNet.Identity;
 
 namespace SBC.TimeCards.Controllers
 {
@@ -58,10 +60,20 @@ namespace SBC.TimeCards.Controllers
                 return AppRoles.Administrator;
             return "";
         }
-        protected async Task<int> GetCurrentUserId()
+        //protected async Task<int> GetCurrentUserId()
+        //{
+        //    return (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+        //}
+        protected string UploadFile(HttpPostedFileBase file)
         {
-            return (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var path = Path.Combine(Server.MapPath(GlobalSettings.UPLOADS_PATH), fileName);
+            file.SaveAs(path);
+            return fileName;
         }
-
+        protected int GetCurrentUserId()
+        {
+            return Int32.Parse(User.Identity.GetUserId());
+        }
     }
 }
