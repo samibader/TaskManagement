@@ -25,7 +25,8 @@ namespace SBC.TimeCards.Data.Models
         public int UserId { get; set; }
         public virtual User User { get; set; }
 
-        public IList<Attachment> Attachments { get; set; }
+        public virtual IList<Attachment> Attachments { get; set; }
+        public virtual IList<User> UserFavorites { get; set; }
 
     }
 }

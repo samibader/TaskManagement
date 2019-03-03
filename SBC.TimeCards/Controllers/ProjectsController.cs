@@ -211,7 +211,25 @@ namespace SBC.TimeCards.Controllers
             return View(model);
         }
 
-
+        #region Favorites
+        [HttpPost]
+        public ActionResult AddToFavorite(int id)
+        {
+            _projectService.AddProjectToFavorite(GetCurrentUserId(), id);
+            return Json(new { success = true });
+        }
+        public ActionResult RemoveFromFavorite(int id)
+        {
+            _projectService.RemoveProjectFromFavorite(GetCurrentUserId(), id);
+            return Json(new { success = true });
+        }
+        [HttpGet]
+        public ActionResult GetFavoriteProjects()
+        {
+            var projects = _projectService.GetUserFavoriteProjects(GetCurrentUserId());
+            return Json(new { data = projects },JsonRequestBehavior.AllowGet);
+        }
+        #endregion
         [Authorize(Roles = AppRoles.Administrator)]
         #region Validation API
         [HttpPost]

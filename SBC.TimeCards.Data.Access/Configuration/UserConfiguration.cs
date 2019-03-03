@@ -21,7 +21,17 @@ namespace SBC.TimeCards.Data.Configuration
                 .IsRequired();
             HasMany(x => x.Projects)
                 .WithRequired(p => p.User)
-                .HasForeignKey(p => p.UserId);
+                .HasForeignKey(p => p.UserId)
+                .WillCascadeOnDelete(false);
+            HasMany(u => u.FavoriteProjects)
+                .WithMany(p => p.UserFavorites)
+                .Map(x => {
+                    x.ToTable("Favorites");
+                    x.MapLeftKey("UserId");
+                    x.MapRightKey("ProjectId");
+                    }
+
+                );
         }
     }
 }

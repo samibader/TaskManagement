@@ -27,6 +27,13 @@ namespace SBC.TimeCards.Data.Configuration
 
             Property(p => p.ArchiveDate)
                 .IsOptional();
+            HasMany(p => p.UserFavorites)
+                .WithMany(u => u.FavoriteProjects)
+                .Map(x => {
+                    x.ToTable("Favorites");
+                    x.MapRightKey("UserId");
+                    x.MapLeftKey("ProjectId");
+                });
         }
     }
 }

@@ -28,5 +28,10 @@ namespace SBC.TimeCards.Service.Interfaces
         List<SelectListItem> GetProjectUsersAsSelectList(int id);
         Task<List<ProjectViewModel>> GetByUserId(int id);
         IEnumerable<ProjectViewModel> GetDropDownValues(string searchTerm, int pageNum, int pageSize, int userId, string role, out int total);
+        #region Favorite Management
+        void AddProjectToFavorite(int userId, int projectId);
+        void RemoveProjectFromFavorite(int userId, int projectId);
+        List<ProjectViewModel> GetUserFavoriteProjects(int userId);
+        #endregion
     }
 }

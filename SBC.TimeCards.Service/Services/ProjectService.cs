@@ -143,5 +143,28 @@ namespace SBC.TimeCards.Service.Services
             _unitOfWork.Projects.Remove(project);
             await _unitOfWork.SaveChangesAsync();
         }
+        
+        #region Favorite Management
+        public void AddProjectToFavorite(int userId, int projectId)
+        {
+            var user = _unitOfWork.Users.GetById(userId);
+            var project = _unitOfWork.Projects.GetById(projectId);
+            user.FavoriteProjects.Add(project);
+            project.UserFavorites.Add(user);
+            _unitOfWork.SaveChanges();
+        }
+        public void RemoveProjectFromFavorite(int userId, int projectId)
+        {
+            var user = _unitOfWork.Users.GetById(userId);
+            var project = _unitOfWork.Projects.GetById(projectId);
+            user.FavoriteProjects.Remove(project);
+            project.UserFavorites.Remove(user);
+            _unitOfWork.SaveChanges();
+        }
+        public List<ProjectViewModel> GetUserFavoriteProjects(int userId)
+        {
+            return Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Users.GetById(userId).FavoriteProjects.ToList());
+        }
+        #endregion
     }
 }
