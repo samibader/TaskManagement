@@ -29,6 +29,8 @@ namespace SBC.TimeCards.Data.Infrastructure
         public IRoleRepository Roles { get; private set; } 
         public IUserRoleRepository UserRoles { get; private set; }
         public IAttachmentRepository Attachments { get; private set; }
+        public ITicketRepository Tickets { get; set; }
+        public ITicketSateRepository TicketStates { get; set; }
 
         public UnitOfWork(IDbFactory dbFactory)
         {
@@ -38,6 +40,8 @@ namespace SBC.TimeCards.Data.Infrastructure
             UserRoles = new UserRoleRepository(_dbFactory);
             Roles = new RoleRepository(_dbFactory);
             Attachments = new AttachmentRepository(_dbFactory);
+            Tickets = new TicketRepository(_dbFactory);
+            TicketStates = new TicketSateRepository(_dbFactory);
         }
         
         public void SaveChanges()

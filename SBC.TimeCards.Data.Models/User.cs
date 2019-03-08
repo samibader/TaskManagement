@@ -10,6 +10,8 @@ namespace SBC.TimeCards.Data.Models
         {
             Projects = new List<Project>();
             UserRoles = new List<UserRole>();
+            TicketsAssigned = new List<Ticket>();
+            TicketsCreated = new List<Ticket>();
         }
 
         public int Id { get; set; }
@@ -42,6 +44,8 @@ namespace SBC.TimeCards.Data.Models
         public virtual IList<Project> Projects { get; set; }
         public virtual IList<UserRole> UserRoles { get; set; }
         public virtual IList<Project> FavoriteProjects { get; set; }
+        public virtual IList<Ticket> TicketsAssigned { get; set; }
+        public virtual IList<Ticket> TicketsCreated { get; set; }
 
     }
 }

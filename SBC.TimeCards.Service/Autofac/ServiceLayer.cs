@@ -22,6 +22,7 @@ namespace SBC.TimeCards.Service.Autofac
             builder.RegisterType<UserService>().AsSelf().InstancePerRequest();
             builder.RegisterType<ProjectService>().AsSelf().InstancePerRequest();
             builder.RegisterType<AttachmentsService>().AsSelf().InstancePerRequest().WithParameter("uploadPath",_absoluteUploadPath);
+            builder.RegisterType<TicketsService>().AsSelf().InstancePerRequest();
         }
     }
 }

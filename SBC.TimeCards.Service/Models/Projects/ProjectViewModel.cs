@@ -15,5 +15,6 @@ namespace SBC.TimeCards.Service.Models.Projects
         public bool IsArchived { get; set; }
         public DateTime? ArchiveDate { get; set; }
         public string Description { get; set; }
+        public bool IsFavorite { get; set; }
     }
 }

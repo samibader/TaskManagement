@@ -98,6 +98,7 @@
     <Compile Include="Identity\SmsService.cs" />
     <Compile Include="Interfaces\IAttachmentsService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
+    <Compile Include="Interfaces\ITicketsService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="AutoMapping\ViewModelMapper.cs" />
     <Compile Include="Models\Attachments\AttachmentViewModel.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Models\Users\CreateUserViewModel.cs" />
     <Compile Include="Services\AttachmentsService.cs" />
     <Compile Include="Services\ProjectService.cs" />
+    <Compile Include="Services\TicketsService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -32,6 +32,15 @@ namespace SBC.TimeCards.Data.Configuration
                     }
 
                 );
+            HasMany(x => x.TicketsAssigned)
+                .WithOptional(t => t.Assignee)
+                .HasForeignKey(x => x.AssigneeId)
+                .WillCascadeOnDelete(false);
+            
+            HasMany(x => x.TicketsCreated)
+                .WithRequired(t => t.Owner)
+                .HasForeignKey(t => t.OwnerId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

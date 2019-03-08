@@ -55,6 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autofac\DataLayer.cs" />
+    <Compile Include="Configuration\TicketStateConfiguration.cs" />
+    <Compile Include="Configuration\TicketConfiguration.cs" />
+    <Compile Include="Configuration\AttachmentConfiguration.cs" />
     <Compile Include="Configuration\RoleConfiguration.cs" />
     <Compile Include="Configuration\UserClaimConfiguration.cs" />
     <Compile Include="Configuration\ProjectConfiguration.cs" />
@@ -71,8 +74,27 @@
     <Compile Include="Migrations\201902230030498_MIG-22-02-2019-001.Designer.cs">
       <DependentUpon>201902230030498_MIG-22-02-2019-001.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902260837276_add-user-name.cs" />
+    <Compile Include="Migrations\201902260837276_add-user-name.Designer.cs">
+      <DependentUpon>201902260837276_add-user-name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903022222453_projects-and-attachments.cs" />
+    <Compile Include="Migrations\201903022222453_projects-and-attachments.Designer.cs">
+      <DependentUpon>201903022222453_projects-and-attachments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903032211508_add-favorite-remove-casecade-on-delete-user.cs" />
+    <Compile Include="Migrations\201903032211508_add-favorite-remove-casecade-on-delete-user.Designer.cs">
+      <DependentUpon>201903032211508_add-favorite-remove-casecade-on-delete-user.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903080555510_add-tickets.cs" />
+    <Compile Include="Migrations\201903080555510_add-tickets.Designer.cs">
+      <DependentUpon>201903080555510_add-tickets.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\TicketStateRepository.cs" />
+    <Compile Include="Repositories\TicketRepository.cs" />
+    <Compile Include="Repositories\AttachmentRepository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\UserClaimRepository.cs" />
     <Compile Include="Repositories\UserLoginRepository.cs" />
@@ -100,6 +122,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201902230030498_MIG-22-02-2019-001.resx">
       <DependentUpon>201902230030498_MIG-22-02-2019-001.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902260837276_add-user-name.resx">
+      <DependentUpon>201902260837276_add-user-name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903022222453_projects-and-attachments.resx">
+      <DependentUpon>201903022222453_projects-and-attachments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903032211508_add-favorite-remove-casecade-on-delete-user.resx">
+      <DependentUpon>201903032211508_add-favorite-remove-casecade-on-delete-user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903080555510_add-tickets.resx">
+      <DependentUpon>201903080555510_add-tickets.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

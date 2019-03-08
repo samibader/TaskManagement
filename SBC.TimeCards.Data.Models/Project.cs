@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SBC.TimeCards.Data.Models
 {
@@ -11,6 +11,7 @@ namespace SBC.TimeCards.Data.Models
         public Project()
         {
             Attachments = new List<Attachment>();
+            Tickets = new List<Ticket>();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -27,6 +28,8 @@ namespace SBC.TimeCards.Data.Models
 
         public virtual IList<Attachment> Attachments { get; set; }
         public virtual IList<User> UserFavorites { get; set; }
+        public virtual IList<Ticket> Tickets { get; set; }
+
 
     }
 }
