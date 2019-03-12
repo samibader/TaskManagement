@@ -9,6 +9,8 @@ using SBC.TimeCards.Service.Models.Projects;
 using SBC.TimeCards.Service.Models.Users;
 using SBC.TimeCards.Service.Models.Attachments;
 using SBC.TimeCards.Common;
+using SBC.TimeCards.Service.Models.Tickets;
+using SBC.TimeCards.Service.Models.Comments;
 
 namespace SBC.TimeCards.Service.AutoMapping
 {
@@ -38,6 +40,15 @@ namespace SBC.TimeCards.Service.AutoMapping
                 cfg.CreateMap<Attachment, EditAttachmentViewModel>()
                 .ForMember(x=>x.FileName,opt=>opt.MapFrom(x=>GlobalSettings.UPLOADS_PATH+ x.FileName));
 
+                cfg.CreateMap<Ticket, EditTicketViewModel>();
+                cfg.CreateMap<Ticket, TicketViewModel>()
+                .ForMember(x=>x.Title,opt=>opt.MapFrom(x=>String.IsNullOrEmpty(x.Title)?"New Ticket-"+x.Id.ToString():x.Title));
+
+                //cfg.CreateMap<Ticket, TicketKanabanViewModel>()
+                //.ForMember(x=>x.ActiveTickets,opt=>opt.MapFrom(x=>x.SubTickets.Where(t=>t.StateId == (int)TicketStates.Active).ToList()))
+                //.ForMember(x => x.DoneTickets, opt => opt.MapFrom(x => x.SubTickets.Where(t => t.StateId == (int)TicketStates.Done).ToList()))
+                //.ForMember(x => x.DelayedTickets, opt => opt.MapFrom(x => x.SubTickets.Where(t => t.StateId == (int)TicketStates.Delayed).ToList()));
+                cfg.CreateMap<Comment, CommentViewModel>();
                 #endregion
 
                 // DTO TO ENTITY

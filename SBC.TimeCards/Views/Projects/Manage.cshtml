@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "Manage";
 }
+<style>
+    .modal-dialog {
+        max-width: 1000px;
+    }
+</style>
 <ul class="nav nav-tabs" role="tablist">
     <li class="active">
         <a href="#basic-tab" aria-controls="basic-tab" role="tab" data-toggle="tab">Board&nbsp;</a>
@@ -22,12 +27,17 @@
                     <div class="col-lg-4">
                         @Model.Description
                         @Model.TimeStamp
-                        @Model.
                         @if (!Model.IsArchived)
                         {
                             <input type="button" value="Mark as one" class="btn btn-success" onclick="archive(@Model.Id)" />
                         }
                     </div>
+                </div>
+                <div class="row">
+                    <a href="#" onclick="addTicket(@Model.Id)"><i class="fa fa-plus"></i> add Ticket</a>
+                </div>
+                <div class="row" id="kanban">
+                    @{ Html.RenderAction("KanabanByProject", "Tickets", new { id = Model.Id }); }
                 </div>
             </div>
         </div>
@@ -40,6 +50,8 @@
         </div>
         @{Html.RenderAction("List", "Attachments", new { projectId = Model.Id });}
     </div>
+</div>
+<div id="modals">
 </div>
 @section Scripts{
     @* Please Add This Script To layout..*@
@@ -69,5 +81,117 @@
             })
         }
     </script>
+    <script>
+        function addTicket(id) {
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("Create","Tickets")',
+                data: { ProjectId: id },
+                success: function (data) {
+                    handleTicketEdit(data);
+                }
+            })
+        }
+        function editTicket(id) {
+            $.ajax({
+                type: 'get',
+                url: '@Url.Action("Edit","Tickets")',
+                data: { id: id },
+                success: function (data) {
+                    handleTicketEdit(data);
+                }
+
+            });
+        }
+        function handleTicketEdit(data) {
+            if (!data.error) {
+                $("#edit-ticket-modal").modal('hide');
+                $("#modals").empty();
+                $("#modals").append(data);
+                $("#edit-ticket-modal").modal('show');
+            }
+            else {
+                alert(data.message);
+            }
+        }
+        $(document).on('change', '#edit-ticket-modal .fields :input,#edit-ticket-modal .fields select', function () {
+
+            var url = "@Url.Action("UpdateField","Tickets")";
+            var inputId = $(this).attr('id');
+            url = url.replace('Field', inputId);
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: { id: $('#edit-ticket-modal').data('tid'), data: $(this).val() },
+                success: function (res) {
+                    alert(res);
+                }
+            })
+        });
+        function addSubTicket(id) {
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("Create","Tickets")',
+                data: { ParentTicketId: id },
+                success: function (data) {
+                    handleTicketEdit(data);
+                }
+            })
+        }
+        $(document).on('hidden.bs.modal', "#edit-ticket-modal", function () {
+
+            debugger;
+            var _this = $(this);
+            var parentTaskId = _this.data('pid');
+            //if the ticket is sub ticket then we need to get back to its parent
+            if (parentTaskId > 0) {
+                setTimeout(function () { editTicket(parentTaskId); }, 500);
+            }
+                //if it has no parent then refresh kanban
+            else {
+                setTimeout(function () { getKanban(); }, 500);
+            }
+        });
+        function getKanban() {
+            $.ajax({
+                type: 'get',
+                url:"@Url.Action("KanabanByProject", "Tickets")",
+                data:{id:@Model.Id},
+                success:function(data){
+                    $("#kanban").empty();
+                    $("#kanban").append(data);
+                }
+            });
+        }
+        function markDone(id){
+            $.ajax({
+                type: 'post',
+                url:"@Url.Action("MarkDone", "Tickets")",
+                data:{id:id},
+                success:function(data){
+                    alert(data);
+                }
+            });
+        }
+        $(document).on('change',"#comment",function(){
+            var comment = $(this).val();
+            addComment(comment);
+        });
+        function addComment(comment){
+            
+            $.ajax({
+                type: 'post',
+                url:"@Url.Action("AddComment", "Tickets")",
+                data:{TicketId: $('#edit-ticket-modal').data('tid'),Text:comment},
+                success:function(data){
+                    if(data.success){
+                        $("#comments").prepend("<div class='col-md-12'>"+comment+"</div>");
+                    }
+                }
+            });
+        }
+    </script>
+
+
 }
 

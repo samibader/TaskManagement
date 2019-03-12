@@ -86,14 +86,14 @@ namespace SBC.TimeCards.Service.Services
             return Mapper.Map<List<User>, List<UserViewModel>>(_unitOfWork.Users.GetAll().ToList());
         }
 
-        public List<SelectListItem> GetAllAsSelectList()
+        public List<SelectListItem> GetAllAsSelectList(int selectedId = 0)
         {
             var users = _unitOfWork.Users.GetAll();
             return users.Select(x => new SelectListItem()
             {
-                Selected = false,
+                Selected = x.Id == selectedId,
                 Text = x.UserName,
-                Value = x.UserName
+                Value = x.Id.ToString()
             }).ToList();
         }
 

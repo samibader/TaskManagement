@@ -11,6 +11,8 @@ namespace SBC.TimeCards.Data.Infrastructure
         IUserRoleRepository UserRoles { get; }
         IRoleRepository Roles { get; }
         IAttachmentRepository Attachments { get; }
+        ITicketRepository Tickets { get; }
+        ICommentRepository Comments { get; }
         void SaveChanges();
         Task SaveChangesAsync();
 
@@ -29,8 +31,9 @@ namespace SBC.TimeCards.Data.Infrastructure
         public IRoleRepository Roles { get; private set; } 
         public IUserRoleRepository UserRoles { get; private set; }
         public IAttachmentRepository Attachments { get; private set; }
-        public ITicketRepository Tickets { get; set; }
-        public ITicketSateRepository TicketStates { get; set; }
+        public ITicketRepository Tickets { get; private set; }
+        public ICommentRepository Comments { get; private set; }
+        public ITicketSateRepository TicketStates { get; private set; }
 
         public UnitOfWork(IDbFactory dbFactory)
         {
@@ -42,6 +45,7 @@ namespace SBC.TimeCards.Data.Infrastructure
             Attachments = new AttachmentRepository(_dbFactory);
             Tickets = new TicketRepository(_dbFactory);
             TicketStates = new TicketSateRepository(_dbFactory);
+            Comments = new CommentRepository(_dbFactory);
         }
         
         public void SaveChanges()

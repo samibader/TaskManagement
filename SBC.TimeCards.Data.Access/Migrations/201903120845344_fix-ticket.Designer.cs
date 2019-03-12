@@ -7,13 +7,13 @@ namespace SBC.TimeCards.Data.Access.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class addtickets : IMigrationMetadata
+    public sealed partial class fixticket : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addtickets));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(fixticket));
         
         string IMigrationMetadata.Id
         {
-            get { return "201903080555510_add-tickets"; }
+            get { return "201903120845344_fix-ticket"; }
         }
         
         string IMigrationMetadata.Source

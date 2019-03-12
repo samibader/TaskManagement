@@ -38,4 +38,9 @@ namespace SBC.TimeCards.Common
             return value.ToString(DATE_FORMAT, System.Globalization.CultureInfo.InvariantCulture);
         }
     }
+
+    public enum TicketStates
+    {
+        Active = 1, Done = 2, Delayed = 3
+    }
 }

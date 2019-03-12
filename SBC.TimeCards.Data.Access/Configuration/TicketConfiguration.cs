@@ -13,11 +13,9 @@ namespace SBC.TimeCards.Data.Configuration
             Property(c => c.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(c => c.Title)
-                .HasMaxLength(256)
-                .IsRequired()
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TicketTitleIndex")));
+                .HasMaxLength(256);
 
-            HasRequired(p => p.Project)
+            HasOptional(p => p.Project)
                 .WithMany(a => a.Tickets)
                 .HasForeignKey(p => p.ProjectId);
 

@@ -33,6 +33,9 @@ namespace SBC.TimeCards.Data.EF
             modelBuilder.Configurations.Add(new UserLoginConfiguration());
             modelBuilder.Configurations.Add(new ProjectConfiguration());
             modelBuilder.Configurations.Add(new AttachmentConfiguration());
+            modelBuilder.Configurations.Add(new TicketConfiguration());
+            modelBuilder.Configurations.Add(new TicketStateConfiguration());
+            modelBuilder.Configurations.Add(new CommentConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

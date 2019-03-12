@@ -1,0 +1,10 @@
+﻿@model List<SBC.TimeCards.Service.Models.Comments.CommentViewModel>
+@{
+    Layout = null;
+}
+<div class="row" id="comments">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-12">@item.Text</div>
+    }
+</div>

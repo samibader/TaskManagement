@@ -104,9 +104,15 @@
     <Compile Include="Models\Attachments\AttachmentViewModel.cs" />
     <Compile Include="Models\Attachments\CreateAttachmentViewModel.cs" />
     <Compile Include="Models\Attachments\EditAttachmentViewModel.cs" />
+    <Compile Include="Models\Comments\CommentViewModel.cs" />
+    <Compile Include="Models\Comments\CreateCommentViewModel.cs" />
     <Compile Include="Models\Projects\EditProjectViewModel.cs" />
     <Compile Include="Models\Projects\CreateProjectViewModel.cs" />
     <Compile Include="Models\Projects\DetailedProjectViewModel.cs" />
+    <Compile Include="Models\Tickets\CreateTicketViewModel.cs" />
+    <Compile Include="Models\Tickets\EditTicketViewModel.cs" />
+    <Compile Include="Models\Tickets\TicketKanabanViewModel.cs" />
+    <Compile Include="Models\Tickets\TicketViewModel.cs" />
     <Compile Include="Models\Users\DetailedUserViewModel.cs" />
     <Compile Include="Models\Users\EditUserViewModel.cs" />
     <Compile Include="Models\Users\RoleViewModel.cs" />

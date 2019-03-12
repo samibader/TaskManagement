@@ -1,0 +1,40 @@
+﻿@model SBC.TimeCards.Service.Models.Tickets.TicketKanabanViewModel
+@{
+    Layout = null;
+}
+<div class="col-md-4">
+    <h3>Active Tickets</h3>
+    @if (Model.ActiveTickets.Any())
+    {
+        foreach (var item in Model.ActiveTickets)
+        {
+            <div>
+                <a href="#" onclick="editTicket(@item.Id)">@item.Title</a>
+            </div>
+        }
+    }
+</div>
+<div class="col-md-4">
+    <h3>Done Tickets</h3>
+    @if (Model.ActiveTickets.Any())
+    {
+        foreach (var item in Model.DoneTickets)
+        {
+            <div>
+                <a href="#" onclick="editTicket(@item.Id)">@item.Title</a>
+            </div>
+        }
+    }
+</div>
+<div class="col-md-4">
+    <h3>Delayed Tickets</h3>
+    @if (Model.ActiveTickets.Any())
+    {
+        foreach (var item in Model.DelayedTickets)
+        {
+            <div>
+                <a href="#" onclick="editTicket(@item.Id)">@item.Title</a>
+            </div>
+        }
+    }
+</div>

@@ -46,6 +46,7 @@ namespace SBC.TimeCards.Data.Models
         public virtual IList<Project> FavoriteProjects { get; set; }
         public virtual IList<Ticket> TicketsAssigned { get; set; }
         public virtual IList<Ticket> TicketsCreated { get; set; }
+        public virtual IList<Comment> Comments { get; set; }
 
     }
 }

@@ -20,7 +20,7 @@ namespace SBC.TimeCards.Service.Interfaces
         Task<bool> IsEmailUnique(string email, int? Id);
         Task<bool> IsUsernameUnique(string username, int? Id);
         List<UserViewModel> GetAll();
-        List<SelectListItem> GetAllAsSelectList();
+        List<SelectListItem> GetAllAsSelectList(int selectedId = 0);
         /// <summary>
         /// forms a select list for all available roles.
         /// </summary>
