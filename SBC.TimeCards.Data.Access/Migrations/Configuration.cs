@@ -21,11 +21,12 @@ namespace SBC.TimeCards.Data.Access.Migrations
             {
                 //Step 1 Create the roles.
                 var adminRoleId = SeedRoles(context);
-                
+
                 //Step 2 Create the admin user.
                 var passwordHasher = new PasswordHasher();
                 var user = new User();
                 user.UserName = "admin";
+                user.Name = "Administrator";
                 user.Email = "admin@sbc.com";
                 user.PasswordHash = passwordHasher.HashPassword("Admin12345");
                 user.SecurityStamp = Guid.NewGuid().ToString();
@@ -40,6 +41,11 @@ namespace SBC.TimeCards.Data.Access.Migrations
                 context.UserRoles.Add(userrole);
                 context.SaveChanges();
             }
+
+            if (!context.TicketStates.Any())
+            {
+                SeedTicketStates(context);
+            }
         }
 
         /// <summary>
@@ -49,14 +55,21 @@ namespace SBC.TimeCards.Data.Access.Migrations
         /// <returns>the administrator role id</returns>
         private int SeedRoles(SBC.TimeCards.Data.EF.ApplicationContext context)
         {
-            var adminRole = new Role { Name = AppRoles.Administrator };
+            var adminRole = new Role {Name = AppRoles.Administrator};
             context.Roles.Add(adminRole);
-            context.Roles.Add(new Role { Name = AppRoles.Manager });
-            context.Roles.Add(new Role { Name = AppRoles.Network });
-            context.Roles.Add(new Role { Name = AppRoles.System });
-            context.Roles.Add(new Role { Name = AppRoles.DataCenter });
+            context.Roles.Add(new Role {Name = AppRoles.Manager});
+            context.Roles.Add(new Role {Name = AppRoles.Network});
+            context.Roles.Add(new Role {Name = AppRoles.System});
+            context.Roles.Add(new Role {Name = AppRoles.DataCenter});
             context.SaveChanges();
             return adminRole.Id;
+        }
+
+        private void SeedTicketStates(SBC.TimeCards.Data.EF.ApplicationContext context)
+        {
+            context.TicketStates.Add(new TicketState() {Id = 1, Name = "Active"});
+            context.TicketStates.Add(new TicketState() {Id = 2, Name = "Done"});
+            context.TicketStates.Add(new TicketState() {Id = 3, Name = "Delayed"});
         }
     }
 }

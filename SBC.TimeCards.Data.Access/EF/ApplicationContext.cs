@@ -23,6 +23,8 @@ namespace SBC.TimeCards.Data.EF
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Attachment> Attachments { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<TicketState> TicketStates { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
