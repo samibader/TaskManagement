@@ -1,56 +1,100 @@
 ﻿@model SBC.TimeCards.Service.Models.Projects.ProjectViewModel
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = Model.Name;
 }
-<style>
-    .modal-dialog {
-        max-width: 1000px;
-    }
-</style>
-<ul class="nav nav-tabs" role="tablist">
-    <li class="active">
-        <a href="#basic-tab" aria-controls="basic-tab" role="tab" data-toggle="tab">Board&nbsp;</a>
-
-    </li>
-    <li>
-        <a href="#attachments" aria-controls="attachments" role="tab" data-toggle="tab">Attachments</a>
-    </li>
-</ul>  <!-- Tab panes -->
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="basic-tab">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">@Model.Name</h6>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-4">
-                        @Model.Description
-                        @Model.TimeStamp
-                        @if (!Model.IsArchived)
-                        {
-                            <input type="button" value="Mark as one" class="btn btn-success" onclick="archive(@Model.Id)" />
-                        }
-                    </div>
-                </div>
-                <div class="row">
-                    <a href="#" onclick="addTicket(@Model.Id)"><i class="fa fa-plus"></i> add Ticket</a>
-                </div>
-                <div class="row" id="kanban">
-                    @{ Html.RenderAction("KanabanByProject", "Tickets", new { id = Model.Id }); }
-                </div>
-            </div>
+@section styles
+{
+    <style>
+        .modal-dialog {
+            max-width: 1000px;
+        }
+    </style>
+}
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-8">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Project #@Model.Id</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item active">@Model.Name</li>
+                @*<li class="breadcrumb-item active">Page Blank</li>*@
+            </ul>
         </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="attachments">
-        <div class="row">
-            <div class="col-md-12">
-                @Html.ActionLink("Add Attachment", "Create", "Attachments", new { id = Model.Id }, null)
-            </div>
+        <div class="col-lg-6 col-md-4 col-sm-4 text-right">
+            <a href="#" class="btn btn-primary" onclick="addTicket(@Model.Id)"><i class="icon-plus"></i> New Ticket</a>
+            @if (!Model.IsArchived)
+            {
+                <button type="button" class="btn btn-outline-info" onclick="archive(@Model.Id)"><i class="icon-check"></i> <span>Archive Project</span></button>
+            }
+            
         </div>
-        @{Html.RenderAction("List", "Attachments", new { projectId = Model.Id });}
     </div>
 </div>
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="header">
+                <h2 class="text-primary ">@Model.Name <span class="badge badge-primary">@Model.Owner.Name</span><small>@Model.Description</small></h2>
+                <small>Creation Date : <span class="text-info">@Model.TimeStamp</span></small>
+            </div>
+            <div class="body" style="padding-top: 0;">
+                <ul class="nav nav-tabs-new2" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active show" href="#basic-tab" data-toggle="tab"><i class="icon-tag"></i> Board</a>
+
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#attachments" data-toggle="tab"><i class="icon-paper-clip"></i> Files</a>
+                    </li>
+                </ul>  <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="basic-tab">
+                        <div class="row clearfix" id="kanban">
+                           @{ Html.RenderAction("KanabanByProject", "Tickets", new { id = Model.Id }); }
+                        </div>
+
+                        
+                        @*<div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">@Model.Name</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        @Model.Description
+                                        @Model.TimeStamp
+                                        @if (!Model.IsArchived)
+                                        {
+                                            <input type="button" value="Mark as one" class="btn btn-success" onclick="archive(@Model.Id)" />
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <a href="#" onclick="addTicket(@Model.Id)"><i class="fa fa-plus"></i> add Ticket</a>
+                                </div>
+                                <div class="row" id="kanban">
+                                    @{ Html.RenderAction("KanabanByProject", "Tickets", new { id = Model.Id }); }
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="attachments">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="@Url.Action("Create","Attachments", new { id = Model.Id })" class="btn btn-info" ><i class="fa fa-upload"></i> Upload File</a>
+                                @*@Html.ActionLink("Add Attachment", "Create", "Attachments", new { id = Model.Id }, null)*@
+                            </div>
+                        </div>
+                        <div class="file_manager row clearfix">
+                            @{Html.RenderAction("List", "Attachments", new { projectId = Model.Id });}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modals">
 </div>
 @section Scripts{
@@ -58,10 +102,10 @@
     <script>
         $(document).ready(function () {
             if (document.location.hash.length) {
-                $('ul.nav-tabs a[href^="' + document.location.hash + '"]').click();
+                $('ul.nav-tabs-new2 a[href^="' + document.location.hash + '"]').click();
             }
         })
-        $("ul.nav-tabs a").click(function () {
+        $("ul.nav-tabs-new2 a").click(function () {
             document.location.hash = $(this).attr('href');
         });
     </script>
@@ -173,12 +217,22 @@
                 }
             });
         }
+        function markUnDone(id){
+            $.ajax({
+                type: 'post',
+                url:"@Url.Action("MarkUnDone", "Tickets")",
+                data:{id:id},
+            success:function(data){
+                alert(data);
+            }
+        });
+        }
         $(document).on('change',"#comment",function(){
             var comment = $(this).val();
             addComment(comment);
         });
         function addComment(comment){
-            
+
             $.ajax({
                 type: 'post',
                 url:"@Url.Action("AddComment", "Tickets")",

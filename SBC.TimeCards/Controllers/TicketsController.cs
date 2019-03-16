@@ -78,6 +78,11 @@ namespace SBC.TimeCards.Controllers
             _ticketService.MarkDone(id);
             return Json(new { success = true });
         }
+        public ActionResult MarkUnDone(int id)
+        {
+            _ticketService.MarkUnDone(id);
+            return Json(new { success = true });
+        }
         public ActionResult KanabanByTicket(int id)
         {
             var kanaban = _ticketService.GetKanabanByTicketId(id);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SBC.TimeCards.Service.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,6 @@ namespace SBC.TimeCards.Service.Models.Projects
         public DateTime? ArchiveDate { get; set; }
         public string Description { get; set; }
         public bool IsFavorite { get; set; }
+        public UserViewModel Owner { get; set; }
     }
 }

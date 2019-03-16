@@ -23,6 +23,7 @@ namespace SBC.TimeCards.Service.Interfaces
         void UpdateAssignee(int id, int assigneeId);
         void UpdateDueDate(int id, DateTime dueDate);
         void MarkDone(int id);
+        void MarkUnDone(int id);
         TicketKanabanViewModel GetKanabanByProjectId(int projectId);
         TicketKanabanViewModel GetKanabanByTicketId(int ticketId);
         void AddComment(CreateCommentViewModel model);

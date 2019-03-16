@@ -162,8 +162,10 @@ namespace SBC.TimeCards.Controllers
         [HttpPost]
         public async Task<ActionResult> ChangeColor(int id,string color)
         {
+            if (color == "#2b78dc")
+                throw new Exception("errorrrrrrrrrrrr!");
             await _projectService.ChangeColor(id, color);
-            return Json(new { success = true });
+            return Json(new { success = true, message="Project color changed" });
         }
         [Authorize(Roles = AppRoles.Administrator)]
         // POST: TimeRecords/Delete/5

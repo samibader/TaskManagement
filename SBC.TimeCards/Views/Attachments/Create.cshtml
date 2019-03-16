@@ -1,58 +1,58 @@
 ﻿@model SBC.TimeCards.Service.Models.Attachments.CreateAttachmentViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Upload file";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Add Attachment</h6>
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Upload File</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item">@Html.ActionLink("Project #" + ((int)ViewBag.Id).ToString(), "Manage", "Projects", null, null, null, new { id = ViewBag.Id }, null)</li>
+                <li class="breadcrumb-item">@Html.ActionLink("Files", "Manage", "Projects", null, null, "attachments", new { id = ViewBag.Id }, null)</li>
+                <li class="breadcrumb-item active">Upload File</li>
+            </ul>
         </div>
-        <div class="card-body">
-
-            @Html.AntiForgeryToken()
-
-            <div class="form-horizontal">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2 manadatory" })
-                    <div class="col-md-10">
+    </div>
+</div>
+<div class="row clearfix">
+    <div class="col-md-12">
+        <div class="card">
+            @*<div class="header">
+                <h2>Basic Validation</h2>
+            </div>*@
+            <div class="body">
+                @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2 manadatory" })
                         @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 manadatory" })
-                    <div class="col-md-10">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 manadatory" })
                         @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.FileName, htmlAttributes: new { @class = "control-label col-md-2 manadatory" })
-                    <div class="col-md-10">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FileName, htmlAttributes: new { @class = "control-label col-md-2 manadatory" })
                         <input type="file" name="attachment" />
                         @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-4">
+                    <br>
                     <input type="submit" value="Add Attachment" class="btn btn-primary" />
                     @Html.ActionLink("Back To Project", "Manage", "Projects", null, null, "attachments", new { id = ViewBag.Id }, new { @class = "btn btn-info" })
-                </div>
+                }
             </div>
         </div>
     </div>
-}
+</div>
+
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

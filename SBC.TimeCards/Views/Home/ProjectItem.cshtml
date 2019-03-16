@@ -1,6 +1,50 @@
 ﻿@model SBC.TimeCards.Service.Models.Projects.ProjectViewModel
-<div class="col-lg-4" style="background-color:@Model.Color">
-    @Model.Name @Model.TimeStamp
-    <input type="button" id="p-@Model.Id" value="Color" onclick="changeColor(@Model.Id,'blue')" />
-    @Html.ActionLink("Manage","Manage","Projects",new { id=Model.Id},null)
-</div>
+@*<div class="col-lg-3" style="background-color:@Model.Color">
+        @Model.Name @Model.TimeStamp
+        <input type="button" id="p-@Model.Id" value="Color" onclick="changeColor(@Model.Id,'blue')" />
+        @Html.ActionLink("Manage","Manage","Projects",new { id=Model.Id},null)
+    </div>*@
+
+<div class="col-lg-2 col-sm-4 col-md-4">
+    <div class="card project-card" style="border:none; box-shadow:none">
+        <div class="header project-header">
+            <ul class="header-dropdown">
+                <li class="dropdown">
+                    <a style="color:beige" href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
+                    <ul class="dropdown-menu dropdown-menu-right" style="min-width: 130px;">
+                        <li>Change Color
+                        <div class="color-container">
+                            <button class="color-cell color-default" role="button" aria-label="None" aria-pressed="false" style="background-color:#90969b" onclick="changeColor(@Model.Id,'#90969b')"></button>
+                            <button class="color-cell color-default" role="button" aria-label="None" aria-pressed="false" style="background-color:#e8384f" onclick="changeColor(@Model.Id,'#e8384f')"></button>
+                            <button class="color-cell color-default" role="button" aria-label="None" aria-pressed="false" style="background-color:#4ecc5d" onclick="changeColor(@Model.Id,'#4ecc5d')"></button>
+                            <button class="color-cell color-default" role="button" aria-label="None" aria-pressed="false" style="background-color:#ff7f50" onclick="changeColor(@Model.Id,'#ff7f50')"></button>
+                            
+                            <button class="color-cell color-default" role="button" aria-label="None" aria-pressed="false" style="background-color:#2b78dc" onclick="changeColor(@Model.Id,'#2b78dc')"></button>
+                            <button class="color-cell color-default" role="button" aria-label="None" aria-pressed="false" style="background-color:#df4cdf" onclick="changeColor(@Model.Id,'#df4cdf')"></button>
+                            <button class="color-cell color-default" role="button" aria-label="None" aria-pressed="false" style="background-color:#31b19a" onclick="changeColor(@Model.Id,'#31b19a')"></button>
+                            <button class="color-cell color-default" role="button" aria-label="None" aria-pressed="false" style="background-color:#d4ae00" onclick="changeColor(@Model.Id,'#d4ae00')"></button>
+                        </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <a class="project-item" href="@Url.Action("Manage","Projects",new { id=Model.Id})">
+            <div class="project-container" id="pr-@Model.Id" style="background-color:@Model.Color">
+                @if (Model.IsArchived)
+                {
+                    <i class="icon-notebook project-icon"></i>
+                }
+                else
+                {
+                    <i class="icon-book-open project-icon"></i>
+                }
+
+            </div>
+            <div class="project-title">
+                @Model.Name
+            </div>
+        </a>
+    </div>
+        
+    </div>

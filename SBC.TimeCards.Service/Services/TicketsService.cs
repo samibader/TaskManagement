@@ -38,7 +38,7 @@ namespace SBC.TimeCards.Service.Services
                 ParentTicketId = model.ParentTicketId,
                 ProjectId = model.ProjectId,
                 OwnerId = model.OwnerId.Value,
-                CreatoionDate = GlobalSettings.CURRENT_DATETIME,
+                CreatoionDate = GlobalSettings.CURRENT_DATETIME.Date,
                 StateId = (int)TicketStates.Active
             };
             _unitOfWork.Tickets.Add(ticket);
@@ -71,6 +71,10 @@ namespace SBC.TimeCards.Service.Services
         {
             var ticket = _unitOfWork.Tickets.GetById(id);
             ticket.DueDate = dueDate;
+            if(ticket.DueDate.Value.Date<=GlobalSettings.CURRENT_DATETIME.Date)
+                ticket.StateId = (int)TicketStates.Delayed;
+            else
+                ticket.StateId = (int)TicketStates.Active;
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
         }
@@ -78,6 +82,13 @@ namespace SBC.TimeCards.Service.Services
         {
             var ticket = _unitOfWork.Tickets.GetById(id);
             ticket.StateId = (int)TicketStates.Done;
+            _unitOfWork.Tickets.Update(ticket);
+            _unitOfWork.SaveChanges();
+        }
+        public void MarkUnDone(int id)
+        {
+            var ticket = _unitOfWork.Tickets.GetById(id);
+            ticket.StateId = (int)TicketStates.Active;
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
         }

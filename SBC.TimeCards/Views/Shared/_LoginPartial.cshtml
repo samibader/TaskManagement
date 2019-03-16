@@ -1,53 +1,40 @@
 ﻿@using Microsoft.AspNet.Identity
+
 @if (Request.IsAuthenticated)
 {
-    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserName()</span>
-        <img class="img-profile rounded-circle" src="" alt="">
-    </a>
-    <!-- Dropdown - User Information -->
-    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="@Url.Action("Index","Manage")">
-            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-            Profile
-            @*@Html.ActionLink("Profile", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })*@
-        </a>
-        <a class="dropdown-item" href="#">
-            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-            Settings
-        </a>
-        <a class="dropdown-item" href="#">
-            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-            Activity Log
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            Logout
-        </a>
-    </div>
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Select "Logout" below if you are ready to end your current session.
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <a class="btn btn-primary" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-                    }
-                </div>
-            </div>
+    <div class="user-account">
+        <img src="~/Lucid/assets/images/user.png" class="rounded-circle user-photo" alt="User Profile Picture">
+        <div class="dropdown">
+            <span>Welcome,</span>
+            <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong>@User.Identity.GetUserName()</strong></a>
+            <ul class="dropdown-menu dropdown-menu-right account animated flipInY">
+                <li><a href="@Url.Action("Index","Manage")"><i class="icon-user"></i>My Profile</a></li>
+                @*<li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Messages</a></li>
+                <li><a href="javascript:void(0);"><i class="icon-settings"></i>Settings</a></li>*@
+                <li class="divider"></li>
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#logoutModal">
+                        <i class="icon-power"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
         </div>
+        <hr>
+        @*<div class="row">
+            <div class="col-4">
+                <h6>5+</h6>
+                <small>Experience</small>
+            </div>
+            <div class="col-4">
+                <h6>400+</h6>
+                <small>Employees</small>
+            </div>
+            <div class="col-4">
+                <h6>80+</h6>
+                <small>Clients</small>
+            </div>
+        </div>*@
     </div>
+    
 }

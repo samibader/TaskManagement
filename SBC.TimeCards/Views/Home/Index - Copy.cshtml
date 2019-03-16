@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@model SBC.TimeCards.Models.DashBoardProjectsViewModel
+@*<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />*@
+<!-- Content Row -->
+<div class="row">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Active Projcts</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var project in Model.ActiveProjects)
+                {
+                    Html.RenderPartial("ProjectItem", project);
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Archived Projects</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var project in Model.ArchivedProjects)
+                {
+                    Html.RenderPartial("ProjectItem", project);
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function changeColor(projectId, color) {
+            $.ajax({
+                type:'post',
+                url: '@Url.Action("ChangeColor", "Projects")',
+                data: { id: projectId, color: color },
+                success: function (data) {
+                    if (data.success) {
+                        $('#p-' + projectId).parent().css('background-color', color);
+                    }
+                }
+            })
+        }
+    </script>
+}

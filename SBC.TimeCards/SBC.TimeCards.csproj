@@ -2298,6 +2298,8 @@
     <Content Include="Views\Tickets\_TicketsKanban.cshtml" />
     <Content Include="Views\Tickets\_Comments.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\Home\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

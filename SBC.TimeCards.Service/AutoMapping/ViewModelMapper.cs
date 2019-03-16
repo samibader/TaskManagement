@@ -29,20 +29,26 @@ namespace SBC.TimeCards.Service.AutoMapping
                 //  .ForMember(d => d.Projects,
                 //  opt => opt.MapFrom(s => Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectViewModel>>(s.Projects))); ;
 
-                cfg.CreateMap<Project, ProjectViewModel>();
+                cfg.CreateMap<Project, ProjectViewModel>()
+                 .ForMember(d => d.Owner, opt => opt.MapFrom(s => Mapper.Map<User, UserViewModel>(s.User)));
                 cfg.CreateMap<Project, DetailedProjectViewModel>();
                 cfg.CreateMap<Project, EditProjectViewModel>();
                 // .ForMember(d => d.Users,
                 //opt => opt.MapFrom(s => Mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(s.Users))); ;
                 cfg.CreateMap<Attachment, AttachmentViewModel>()
                 .ForMember(x => x.Url, opt => opt.MapFrom(x => GlobalSettings.UPLOADS_PATH + x.FileName))
-               .ForMember(x => x.Type, opt => opt.MapFrom(x => x.FileName.Substring(x.FileName.LastIndexOf('.'))));
+                .ForMember(x => x.Type, opt => opt.MapFrom(x => x.FileName.Substring(x.FileName.LastIndexOf('.')).ToLower()))
+                .ForMember(x => x.SizeAsString, opt => opt.MapFrom(x => GlobalSettings.BytesToString(x.Size)))
+                ;
                 cfg.CreateMap<Attachment, EditAttachmentViewModel>()
                 .ForMember(x=>x.FileName,opt=>opt.MapFrom(x=>GlobalSettings.UPLOADS_PATH+ x.FileName));
 
                 cfg.CreateMap<Ticket, EditTicketViewModel>();
                 cfg.CreateMap<Ticket, TicketViewModel>()
-                .ForMember(x=>x.Title,opt=>opt.MapFrom(x=>String.IsNullOrEmpty(x.Title)?"New Ticket-"+x.Id.ToString():x.Title));
+                .ForMember(x=>x.Title,opt=>opt.MapFrom(x=>String.IsNullOrEmpty(x.Title)?"New Ticket-"+x.Id.ToString():x.Title))
+                .ForMember(x => x.CommentsCount, opt => opt.MapFrom(x => x.Comments.Any() ? x.Comments.Count : 0))
+                .ForMember(x => x.Assignee, opt => opt.MapFrom(x => x.AssigneeId.HasValue ? Mapper.Map<User, UserViewModel>(x.Assignee) : null))
+                ;
 
                 //cfg.CreateMap<Ticket, TicketKanabanViewModel>()
                 //.ForMember(x=>x.ActiveTickets,opt=>opt.MapFrom(x=>x.SubTickets.Where(t=>t.StateId == (int)TicketStates.Active).ToList()))

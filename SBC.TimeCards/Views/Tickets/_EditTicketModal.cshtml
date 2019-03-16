@@ -9,58 +9,61 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Edit Ticket</h4>
+                <h4 class="modal-title">Ticket #@Model.Id</h4>
+                &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-outline-info" onclick="markDone(@Model.Id)">Mark As Done</button>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            Edit Ticket
-                            <a href="#" onclick="markDone(@Model.Id)">Mark As Done</a>
-                            @if (!Model.ParentTicketId.HasValue)
-                            {
-                                <a href="#" onclick="addSubTicket(@Model.Id)" style="float:right"><i class="fa fa-plus"></i></a>
-                            }
-                        </h6>
-                    </div>
-                    <div class="card-body fields">
-
+                
+                @if (!Model.ParentTicketId.HasValue)
+                {
+                    <a href="#" onclick="addSubTicket(@Model.Id)" style="float:right"><i class="fa fa-plus"></i></a>
+                }
+                <div class="row clearfix fields">
+                    <div class="col-12">
                         @Html.AntiForgeryToken()
-
-                        <div class="form-horizontal">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2 " })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                                </div>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2 " })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @style = "font-size:20px" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 " })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.AssigneeId, htmlAttributes: new { @class = "control-label col-md-2 " })
-                                <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.AssigneeId,null,  new { @class = "form-control" } )
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                               @Html.LabelFor(model => model.AssigneeId, htmlAttributes: new { @class = "control-label col-md-4 " })
+                                <div class="col-md-8">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-user"></i></span>
+                                        </div>
+                                       @Html.DropDownListFor(model => model.AssigneeId, null, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.AssigneeId, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-2 " })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-4 " })
+                                <div class="col-md-8">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-clock"></i></span>
+                                        </div>
+                                        @*<input type="text" class="form-control time24" placeholder="Ex: 23:59">*@
+                                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 " })
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows="5" } )
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>

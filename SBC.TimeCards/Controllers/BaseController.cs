@@ -75,5 +75,10 @@ namespace SBC.TimeCards.Controllers
         {
             return Int32.Parse(User.Identity.GetUserId());
         }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            base.OnException(filterContext);
+        }
     }
 }

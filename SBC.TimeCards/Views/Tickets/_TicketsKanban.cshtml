@@ -2,7 +2,191 @@
 @{
     Layout = null;
 }
-<div class="col-md-4">
+
+<div class="col-lg-4 col-md-12">
+    <div class="card planned_task"  style="background-color: #fcfcfc;">
+        <div class="header">
+            <h2>Active</h2>
+            @*<ul class="header-dropdown">
+                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#addcontact"><i class="icon-plus"></i></a></li>
+            </ul>*@
+        </div>
+        <div class="body">
+            <div class="dd" data-plugin="nestable">
+                @if (Model.ActiveTickets.Any())
+                {
+                    <ol class="dd-list">
+                        @foreach (var item in Model.ActiveTickets)
+                        {
+                            <li class="dd-item" data-id="@item.Id">
+                                <a href="#" style="color:black" onclick="editTicket(@item.Id)">
+                                    <div class="dd-handle">
+                                        <h6>@item.Title</h6>
+                                        <p style="margin-bottom: 5px;">@item.Description</p>
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <p style="margin: 9px 2px;font-size: 14px;">
+                                                    @if (item.Assignee != null)
+                                                    {
+                                                        <span class="badge badge-success">@item.Assignee.Name</span>
+                                                    }
+                                                    <small class="text-muted"><i class="icon-clock"></i> @item.DueDateAsString</small>
+                                                </p>
+
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                @if (item.CommentsCount > 0)
+                                                {
+                                                    <p style="margin: 9px 2px;font-size: 14px;">@item.CommentsCount <i class="icon-bubble"></i></p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                    </ol>
+                }
+                else
+                {
+                    <ol class="dd-list">
+                        <li class="dd-item">
+                            <div class="dd-handle">
+                                <h6>No Active Tickets</h6>
+                            </div>
+                        </li>
+                    </ol>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-md-12">
+    <div class="card progress_task" style="background-color: #69db96;">
+        <div class="header">
+            <h2>Done</h2>
+            @*<ul class="header-dropdown">
+                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#addcontact"><i class="icon-plus"></i></a></li>
+            </ul>*@
+        </div>
+        <div class="body">
+            <div class="dd" data-plugin="nestable">
+                @if (Model.DoneTickets.Any())
+                {
+                    <ol class="dd-list">
+                        @foreach (var item in Model.DoneTickets)
+                        {
+                            <li class="dd-item" data-id="@item.Id">
+                                <a href="#" style="color:black" onclick="editTicket(@item.Id)">
+                                    <div class="dd-handle">
+                                        <h6><i class="icon-check" style="color:green"></i> @item.Title</h6>
+                                        <p style="margin-bottom: 5px;">@item.Description</p>
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                @*<ul class="list-unstyled team-info">
+                                                    <li><img src="~/Lucid/assets/images/xs/avatar1.jpg" title="Avatar" alt="Avatar"></li>
+                                                    @if (item.Assignee != null)
+                                                    {
+                                                        <li><span class="badge badge-success">@item.Assignee.Name</span></li>
+                                                    }
+                                                </ul>*@
+                                                <p style="margin: 9px 2px;font-size: 14px;">
+                                                    @if (item.Assignee != null)
+                                                    {
+                                                        <span class="badge badge-success">@item.Assignee.Name</span>
+                                                    }
+                                                    <small class="text-muted"><i class="icon-clock"></i> @item.DueDateAsString</small>
+                                                </p>
+                                                 
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                @if (item.CommentsCount > 0)
+                                                {
+                                                    <p style="margin: 9px 2px;font-size: 14px;">@item.CommentsCount <i class="icon-bubble"></i></p>
+                                                }      
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                    </ol>
+                }
+                else
+                {
+                    <ol class="dd-list">
+                        <li class="dd-item">
+                            <div class="dd-handle">
+                                <h6>No Done Tickets</h6>
+                            </div>
+                        </li>
+                    </ol>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-md-12">
+    <div class="card completed_task" style="background-color: #ff6479;">
+        <div class="header">
+            <h2>Delayed</h2>
+            @*<ul class="header-dropdown">
+                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#addcontact"><i class="icon-plus"></i></a></li>
+            </ul>*@
+        </div>
+        <div class="body">
+            <div class="dd" data-plugin="nestable">
+                @if (Model.DelayedTickets.Any())
+                {
+                    <ol class="dd-list">
+                        @foreach (var item in Model.DelayedTickets)
+                        {
+                            <li class="dd-item" data-id="@item.Id">
+                                <a href="#" style="color:black" onclick="editTicket(@item.Id)">
+                                    <div class="dd-handle">
+                                        <h6><i class="icon-question" style="color:red"></i> @item.Title</h6>
+                                        <p style="margin-bottom: 5px;">@item.Description</p>
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <p style="margin: 9px 2px;font-size: 14px;">
+                                                    @if (item.Assignee != null)
+                                                    {
+                                                        <span class="badge badge-success">@item.Assignee.Name</span>
+                                                    }
+                                                    <small class="text-muted"><i class="icon-clock"></i> @item.DueDateAsString</small>
+                                                </p>
+
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                @if (item.CommentsCount > 0)
+                                                {
+                                                    <p style="margin: 9px 2px;font-size: 14px;">@item.CommentsCount <i class="icon-bubble"></i></p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                    </ol>
+                }
+                else
+                {
+                    <ol class="dd-list">
+                        <li class="dd-item">
+                                <div class="dd-handle">
+                                    <h6>No Delayed Tickets</h6>
+                                </div>
+                        </li>
+                    </ol>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="col-md-4">
     <h3>Active Tickets</h3>
     @if (Model.ActiveTickets.Any())
     {
@@ -37,4 +221,4 @@
             </div>
         }
     }
-</div>
+</div>*@

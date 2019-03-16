@@ -4,13 +4,77 @@
 }
 @foreach (var item in Model)
 {
-    <div class="card shadow mb-4">
+    <div class="col-lg-3 col-md-4 col-sm-12">
+        <div class="card">
+            <div class="file">
+                <a href="@item.Url">
+                    <div class="hover">
+                        <button type="button" class="btn btn-icon btn-danger" onclick="del(@item.Id)" >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                    @if (item.Type == ".jpg" || item.Type == ".gif" || item.Type == ".jpeg" || item.Type == ".png" || item.Type == ".bmp")
+                    {
+                        <div class="image" style="height:180px;">
+                            <img src="@item.Url" alt="@item.Title" class="img-fluid">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="icon" style="height:180px;">
+                            @{
+                                switch (item.Type)
+                                {
+                                    case ".docx":
+                                    case ".doc":
+                                       <text><i class="fa fa-file-word-o text-info"></i></text>
+                                        break;
+                                    case ".pdf":
+                                        <text><i class="fa fa-file-pdf-o text-info"></i></text>
+                                        break;
+                                    case ".xls":
+                                    case ".xlsx":
+                                        <text><i class="fa fa-file-excel-o text-info"></i></text>
+                                        break;
+                                    case ".ppt":
+                                    case ".pptx":
+                                        <text><i class="fa fa-file-powerpoint-o text-info"></i></text>
+                                        break;
+                                    case ".zip":
+                                    case ".7z":
+                                    case ".rar":
+                                        <text><i class="fa fa-file-zip-o text-info"></i></text>
+                                        break;
+                                    case ".txt":
+                                        <text><i class="fa fa-file-text-o text-info"></i></text>
+                                        break;
+                                    default:
+                                        <text><i class="fa fa-file text-info"></i></text>
+                                            break;
+                                    }
+                                }
+                        </div>
+                    }
+                    <div class="file-name">
+                        <p class="m-b-5 text-muted">@item.Title <span class="badge badge-success">@item.Type</span>
+                        <br />
+                            <small style="color:black">@item.Description</small></p>
+                        
+                        <small>Size: @item.SizeAsString <span class="date text-muted">@item.UploadDate.ToShortDateString()</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">@item.Title</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-4">
+                    <i class="fas fa-file-word"></i>
                     @item.Description
                     <br />
                     @item.Size
@@ -26,7 +90,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 }
 <script>
     function del(id) {

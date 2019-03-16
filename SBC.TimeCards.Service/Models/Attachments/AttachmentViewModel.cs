@@ -15,6 +15,7 @@ namespace SBC.TimeCards.Service.Models.Attachments
         public string Title { get; set; }
         public string Description { get; set; }
         public int Size { get; set; }
+        public string SizeAsString { get; set; }
 
     }
 }
