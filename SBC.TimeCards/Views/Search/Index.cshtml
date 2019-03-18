@@ -1,0 +1,48 @@
+﻿@model SBC.TimeCards.Service.Models.Search.SearchResultsViewModel
+
+@{
+    Layout = null;
+}
+@if (Model.Users.Any())
+{
+    <div>
+        <h6>
+            People
+        </h6>
+        @foreach (var item in Model.Users)
+        {
+            <a>@item.Name</a>
+        }
+    </div>
+}
+@if (Model.Ticktes.Any())
+{
+    <div>
+        <h6>
+            Tickets
+        </h6>
+        @foreach (var item in Model.Ticktes)
+        {
+            <a href="@Url.Action("Manage","Projects",new { id=item.ProjectInfo.Id,tid=item.Id})">@item.Title</a>
+        }
+    </div>
+}
+@if (Model.Projects.Any())
+{
+    <div>
+        <h6>Projects</h6>
+        @foreach (var item in Model.Projects)
+        {
+            <a href="@Url.Action("Manage","Projects",new { id=item.Id})">@item.Name</a>
+        }
+    </div>
+}
+@if (!(Model.Users.Any() || Model.Ticktes.Any() || Model.Projects.Any()))
+{
+    <div>
+        <h6>
+            No Results found
+        </h6>
+    </div>
+}
+

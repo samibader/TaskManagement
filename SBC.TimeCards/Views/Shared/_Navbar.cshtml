@@ -12,8 +12,14 @@
 
         <div class="navbar-right">
             <form id="navbar-search" class="navbar-form search-form">
-                <input value="" class="form-control" placeholder="Search here..." type="text">
-                <button type="button" class="btn btn-default"><i class="icon-magnifier"></i></button>
+                <div id="search-wrapper">
+                    <input value="" class="form-control yy" placeholder="Search here..." type="text">
+                    <button type="button" class="btn btn-default"><i class="icon-magnifier"></i></button>
+                    <div class="xx" style="" id="res">
+                        <div id="s-res"></div>
+                        <img src="/Lucid/assets/images/page-loader.gif" width="30" id="loading" />
+                    </div>
+                </div>
             </form>
             <div id="navbar-menu">
                 <ul class="nav navbar-nav">

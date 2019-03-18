@@ -88,6 +88,11 @@ namespace SBC.TimeCards.Controllers
             var kanaban = _ticketService.GetKanabanByTicketId(id);
             return PartialView("_TicketsKanban", kanaban);
         }
+        public ActionResult TicketsListByTicket(int id)
+        {
+            var kanaban = _ticketService.GetKanabanByTicketId(id);
+            return PartialView("_TicketsList", kanaban);
+        }
         public ActionResult KanabanByProject(int id)
         {
             var kanaban = _ticketService.GetKanabanByProjectId(id);
@@ -105,6 +110,12 @@ namespace SBC.TimeCards.Controllers
         {
             var comments = _ticketService.GetComments(id);
             return PartialView("_Comments", comments);
+        }
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            _ticketService.Delete(id);
+            return Json(new { success = true });
         }
     }
 }

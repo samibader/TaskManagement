@@ -18,7 +18,19 @@
     <link rel="stylesheet" href="/Lucid/light/assets/css/color_skins.css">
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", required: false)
+    <style>
+        .xx {
+            display: none;
+            position: absolute;
+            width: 100%;
+            background-color: white;
+            text-align: center;
+            margin-top: 2px;
+            border-radius: 3px;
+        }
+    </style>
 </head>
+
 <body class="theme-blue">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
@@ -32,7 +44,6 @@
         <!-- Topbar -->
         @Html.Partial("_Navbar")
         <!-- End of Topbar -->
-        
         <!-- Sidebar -->
         @Html.Action("Index", "Sidebar")
         <!-- End of Sidebar -->
@@ -67,16 +78,55 @@
         </div>
     </div>
     <!-- Javascript -->
-   
+
     <script src="~/Lucid/light/assets/bundles/libscripts.bundle.js"></script>
     <script src="~/Lucid/light/assets/bundles/vendorscripts.bundle.js"></script>
     @*<script src="~/Lucid/light/assets/bundles/jvectormap.bundle.js"></script>
-    <script src="~/Lucid/light/assets/bundles/morrisscripts.bundle.js"></script>
-    <script src="~/Lucid/light/assets/bundles/knob.bundle.js"></script> *@
+        <script src="~/Lucid/light/assets/bundles/morrisscripts.bundle.js"></script>
+        <script src="~/Lucid/light/assets/bundles/knob.bundle.js"></script> *@
     <script src="~/Lucid/assets/vendor/nestable/jquery.nestable.js"></script>
     <script src="~/Lucid/light/assets/bundles/mainscripts.bundle.js"></script>
     @*<script src="~/Lucid/light/assets/js/pages/ui/sortable-nestable.js"></script>
-    <script src="~/Lucid/light/assets/js/index2.js"></script>*@
+        <script src="~/Lucid/light/assets/js/index2.js"></script>*@
     @RenderSection("scripts", required: false)
+    <script>
+        $(".yy").keyup(function () {
+            search($(this).val());
+        });
+        function search(q) {
+            if (q.length) {
+
+                $('.xx').show();
+                $("#loading").show();
+                $('#s-res').hide();
+                $.ajax({
+                    type: 'get',
+                    url: "@Url.Action("Index","Search")",
+                    data: { query: q },
+                    success: function (data) {
+                        $("#loading").hide();
+                        $('#s-res').html(data);
+                        $('#s-res').show();
+                    }
+                });
+
+            }
+            else {
+                $("#s-res").empty();
+                $('.xx').hide();
+            }
+        }
+        $(document).click(function (e) {
+            var wrapper = $("#search-wrapper");
+            if (!wrapper.is(e.target) && wrapper.has(e.target).length === 0) {
+                $('.xx').hide();
+            }
+        })
+        $('.yy').focus(function () {
+            search($(this).val());
+        })
+    </script>
+
+
 </body>
 </html>

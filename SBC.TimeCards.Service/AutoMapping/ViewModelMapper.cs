@@ -23,8 +23,8 @@ namespace SBC.TimeCards.Service.AutoMapping
                 // ENTITY TO DTO
                 #region ENTITY TO DTO
                 cfg.CreateMap<User, UserViewModel>()
-                .ForMember(x=>x.RoleName,opt=>opt.MapFrom(x=>x.UserRoles.FirstOrDefault().Role.Name))
-                .ForMember(x=>x.RoleId,opt=>opt.MapFrom(x=>x.UserRoles.FirstOrDefault().Role.Id));
+                .ForMember(x => x.RoleName, opt => opt.MapFrom(x => x.UserRoles.FirstOrDefault().Role.Name))
+                .ForMember(x => x.RoleId, opt => opt.MapFrom(x => x.UserRoles.FirstOrDefault().Role.Id));
                 cfg.CreateMap<User, DetailedUserViewModel>();
                 //  .ForMember(d => d.Projects,
                 //  opt => opt.MapFrom(s => Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectViewModel>>(s.Projects))); ;
@@ -41,13 +41,18 @@ namespace SBC.TimeCards.Service.AutoMapping
                 .ForMember(x => x.SizeAsString, opt => opt.MapFrom(x => GlobalSettings.BytesToString(x.Size)))
                 ;
                 cfg.CreateMap<Attachment, EditAttachmentViewModel>()
-                .ForMember(x=>x.FileName,opt=>opt.MapFrom(x=>GlobalSettings.UPLOADS_PATH+ x.FileName));
+                .ForMember(x => x.FileName, opt => opt.MapFrom(x => GlobalSettings.UPLOADS_PATH + x.FileName));
 
-                cfg.CreateMap<Ticket, EditTicketViewModel>();
+                cfg.CreateMap<Ticket, EditTicketViewModel>()
+                    .ForMember(x => x.ProjectInfo, opt => opt.MapFrom(x => Mapper.Map<Project, ProjectViewModel>(x.ParentTicketId.HasValue ? x.Parent.Project : x.Project)))
+                    .ForMember(x => x.IsSubTask, opt => opt.MapFrom(x => x.ParentTicketId.HasValue))
+                    .ForMember(x => x.ParentTicketInfo, opt => opt.MapFrom(x => (x.ParentTicketId.HasValue ? Mapper.Map<Ticket, TicketViewModel>(x.Parent) : new TicketViewModel())));
+
                 cfg.CreateMap<Ticket, TicketViewModel>()
-                .ForMember(x=>x.Title,opt=>opt.MapFrom(x=>String.IsNullOrEmpty(x.Title)?"New Ticket-"+x.Id.ToString():x.Title))
+                .ForMember(x => x.Title, opt => opt.MapFrom(x => String.IsNullOrEmpty(x.Title) ? "New Ticket-" + x.Id.ToString() : x.Title))
                 .ForMember(x => x.CommentsCount, opt => opt.MapFrom(x => x.Comments.Any() ? x.Comments.Count : 0))
                 .ForMember(x => x.Assignee, opt => opt.MapFrom(x => x.AssigneeId.HasValue ? Mapper.Map<User, UserViewModel>(x.Assignee) : null))
+                .ForMember(x => x.ProjectInfo, opt => opt.MapFrom(x => Mapper.Map<Project, ProjectViewModel>(x.ParentTicketId.HasValue ? x.Parent.Project : x.Project)))
                 ;
 
                 //cfg.CreateMap<Ticket, TicketKanabanViewModel>()

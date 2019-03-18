@@ -71,7 +71,7 @@ namespace SBC.TimeCards.Service.Services
         {
             var ticket = _unitOfWork.Tickets.GetById(id);
             ticket.DueDate = dueDate;
-            if(ticket.DueDate.Value.Date<=GlobalSettings.CURRENT_DATETIME.Date)
+            if (ticket.DueDate.Value.Date <= GlobalSettings.CURRENT_DATETIME.Date)
                 ticket.StateId = (int)TicketStates.Delayed;
             else
                 ticket.StateId = (int)TicketStates.Active;
@@ -106,6 +106,11 @@ namespace SBC.TimeCards.Service.Services
                 DoneTickets = Mapper.Map<List<Ticket>, List<TicketViewModel>>(tickets.Where(x => x.StateId == (int)TicketStates.Done).ToList()),
                 DelayedTickets = Mapper.Map<List<Ticket>, List<TicketViewModel>>(tickets.Where(x => x.StateId == (int)TicketStates.Delayed).ToList())
             };
+            res.AllTickets = new List<TicketViewModel>();
+            res.AllTickets.AddRange(res.ActiveTickets);
+            res.AllTickets.AddRange(res.DelayedTickets);
+            res.AllTickets.AddRange(res.DoneTickets);
+            res.AllTickets.OrderBy(x => x.DueDate);
             return res;
         }
         public TicketKanabanViewModel GetKanabanByTicketId(int ticketId)
@@ -129,6 +134,16 @@ namespace SBC.TimeCards.Service.Services
         {
             return Mapper.Map<List<Comment>, List<CommentViewModel>>(_unitOfWork.Tickets.GetById(id).Comments.ToList());
         }
-        
+        public void Delete(int id)
+        {
+            var ticket = _unitOfWork.Tickets.GetById(id);
+            var subtickets = ticket.SubTickets.ToList();
+            foreach (var item in subtickets)
+            {
+                _unitOfWork.Tickets.Remove(item);
+            }
+            _unitOfWork.Tickets.Remove(ticket);
+            _unitOfWork.SaveChanges();
+        }
     }
 }

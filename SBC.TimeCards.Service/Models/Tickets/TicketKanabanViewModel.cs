@@ -11,5 +11,6 @@ namespace SBC.TimeCards.Service.Models.Tickets
         public List<TicketViewModel> ActiveTickets { get; set; }
         public List<TicketViewModel> DoneTickets { get; set; }
         public List<TicketViewModel> DelayedTickets { get; set; }
+        public List<TicketViewModel> AllTickets { get; set; }
     }
 }

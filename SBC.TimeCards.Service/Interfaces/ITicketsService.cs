@@ -28,5 +28,6 @@ namespace SBC.TimeCards.Service.Interfaces
         TicketKanabanViewModel GetKanabanByTicketId(int ticketId);
         void AddComment(CreateCommentViewModel model);
         List<CommentViewModel> GetComments(int id);
+        void Delete(int id);
     }
 }

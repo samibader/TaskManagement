@@ -3,107 +3,117 @@
     Layout = null;
 }
 <!-- The Modal -->
-<div class="modal" id="edit-ticket-modal" data-tid="@Model.Id" data-pid="@(Model.ParentTicketId.HasValue ? Model.ParentTicketId.Value : 0)">
-    <div class="modal-dialog">
-        <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Ticket #@Model.Id</h4>
-                &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-outline-info" onclick="markDone(@Model.Id)">Mark As Done</button>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
 
-            <!-- Modal body -->
-            <div class="modal-body">
-                
-                @if (!Model.ParentTicketId.HasValue)
+
+<div id="edit-ticket" data-tid="@Model.Id" data-pid="@(Model.IsSubTask ? Model.ParentTicketInfo.Id : 0)">
+    <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Ticket #@Model.Id</h4>
+            &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-outline-info" onclick="markDone(@Model.Id)">Mark As Done</button>
+            <button type="button" class="btn btn-outline-danger" onclick="delTicket(@Model.Id)">Delete </button>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+
+            @if (!Model.IsSubTask)
                 {
-                    <a href="#" onclick="addSubTicket(@Model.Id)" style="float:right"><i class="fa fa-plus"></i></a>
+                <a href="#" onclick="addSubTicket(@Model.Id)" style="float:right"><i class="fa fa-plus"></i></a>
                 }
-                <div class="row clearfix fields">
-                    <div class="col-12">
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2 " })
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @style = "font-size:20px" } })
-                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                            </div>
+            <div class="row clearfix fields">
+                <div class="col-md-12">@Model.ProjectInfo.Name</div>
+                @if (Model.IsSubTask)
+                    {
+                    <div class="col-md-12">
+                        <a href="javascript:void(0)" onclick="editTicket(@Model.ParentTicketInfo.Id)">@Model.ParentTicketInfo.Title ></a>
+                    </div>
+                    }
+                <div class="col-12">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2 " })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @style = "font-size:20px" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                               @Html.LabelFor(model => model.AssigneeId, htmlAttributes: new { @class = "control-label col-md-4 " })
-                                <div class="col-md-8">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="icon-user"></i></span>
-                                        </div>
-                                       @Html.DropDownListFor(model => model.AssigneeId, null, new { @class = "form-control" })
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.AssigneeId, htmlAttributes: new { @class = "control-label col-md-4 " })
+                            <div class="col-md-8">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icon-user"></i></span>
+                                    </div>
+                                    @Html.DropDownListFor(model => model.AssigneeId, null, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.AssigneeId, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-4 " })
-                                <div class="col-md-8">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="icon-clock"></i></span>
-                                        </div>
-                                        @*<input type="text" class="form-control time24" placeholder="Ex: 23:59">*@
-                                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 " })
-                            <div class="col-md-12">
-                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows="5" } )
-                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-4 " })
+                            <div class="col-md-8">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icon-clock"></i></span>
+                                    </div>
+                                    @*<input type="text" class="form-control time24" placeholder="Ex: 23:59">*@
+                                    @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 " })
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "5" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
-                @if (!Model.ParentTicketId.HasValue)
+            </div>
+            @if (!Model.IsSubTask)
                 {
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">
-                                Sub Tickets
-                            </h6>
-                        </div>
-                        <div class="card-body">
-                            @{ Html.RenderAction("KanabanByTicket", "Tickets", new { id = Model.Id });}
-                        </div>
-                    </div>
-                                }
-
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">
-                            Comments
+                            Sub Tickets
                         </h6>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input type="text" name="comment" id="comment" value="" />
-                            </div>
-                        </div>
-                        @{ Html.RenderAction("GetComments", "Tickets", new { id = Model.Id });}
+                        @{ Html.RenderAction("TicketsListByTicket", "Tickets", new { id = Model.Id });}
                     </div>
                 </div>
-            </div>
+                                }
 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Comments
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="text" name="comment" id="comment" value="" />
+                        </div>
+                    </div>
+                    @{ Html.RenderAction("GetComments", "Tickets", new { id = Model.Id });}
+                </div>
             </div>
-
         </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
     </div>
 </div>
+

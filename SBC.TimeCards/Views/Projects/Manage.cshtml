@@ -26,7 +26,7 @@
             {
                 <button type="button" class="btn btn-outline-info" onclick="archive(@Model.Id)"><i class="icon-check"></i> <span>Archive Project</span></button>
             }
-            
+
         </div>
     </div>
 </div>
@@ -50,38 +50,38 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="basic-tab">
                         <div class="row clearfix" id="kanban">
-                           @{ Html.RenderAction("KanabanByProject", "Tickets", new { id = Model.Id }); }
+                            @{ Html.RenderAction("KanabanByProject", "Tickets", new { id = Model.Id }); }
                         </div>
 
-                        
+
                         @*<div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">@Model.Name</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        @Model.Description
-                                        @Model.TimeStamp
-                                        @if (!Model.IsArchived)
-                                        {
-                                            <input type="button" value="Mark as one" class="btn btn-success" onclick="archive(@Model.Id)" />
-                                        }
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">@Model.Name</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            @Model.Description
+                                            @Model.TimeStamp
+                                            @if (!Model.IsArchived)
+                                            {
+                                                <input type="button" value="Mark as one" class="btn btn-success" onclick="archive(@Model.Id)" />
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <a href="#" onclick="addTicket(@Model.Id)"><i class="fa fa-plus"></i> add Ticket</a>
+                                    </div>
+                                    <div class="row" id="kanban">
+                                        @{ Html.RenderAction("KanabanByProject", "Tickets", new { id = Model.Id }); }
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <a href="#" onclick="addTicket(@Model.Id)"><i class="fa fa-plus"></i> add Ticket</a>
-                                </div>
-                                <div class="row" id="kanban">
-                                    @{ Html.RenderAction("KanabanByProject", "Tickets", new { id = Model.Id }); }
-                                </div>
-                            </div>
-                        </div>*@
+                            </div>*@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="attachments">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="@Url.Action("Create","Attachments", new { id = Model.Id })" class="btn btn-info" ><i class="fa fa-upload"></i> Upload File</a>
+                                <a href="@Url.Action("Create","Attachments", new { id = Model.Id })" class="btn btn-info"><i class="fa fa-upload"></i> Upload File</a>
                                 @*@Html.ActionLink("Add Attachment", "Create", "Attachments", new { id = Model.Id }, null)*@
                             </div>
                         </div>
@@ -96,6 +96,9 @@
 </div>
 
 <div id="modals">
+    <div class="modal fade" id="edit-ticket-modal">
+        <div class="modal-dialog"></div>
+    </div>
 </div>
 @section Scripts{
     @* Please Add This Script To layout..*@
@@ -149,16 +152,16 @@
         }
         function handleTicketEdit(data) {
             if (!data.error) {
-                $("#edit-ticket-modal").modal('hide');
-                $("#modals").empty();
-                $("#modals").append(data);
+                //$("#edit-ticket-modal").modal('hide');
+                $("#edit-ticket-modal .modal-dialog").empty();
+                $("#edit-ticket-modal .modal-dialog").append(data);
                 $("#edit-ticket-modal").modal('show');
             }
             else {
-                alert(data.message);
+               // alert(data.message);
             }
         }
-        $(document).on('change', '#edit-ticket-modal .fields :input,#edit-ticket-modal .fields select', function () {
+        $(document).on('change', '#edit-ticket .fields :input,#edit-ticket .fields select', function () {
 
             var url = "@Url.Action("UpdateField","Tickets")";
             var inputId = $(this).attr('id');
@@ -166,9 +169,9 @@
             $.ajax({
                 type: 'post',
                 url: url,
-                data: { id: $('#edit-ticket-modal').data('tid'), data: $(this).val() },
+                data: { id: $('#edit-ticket').data('tid'), data: $(this).val() },
                 success: function (res) {
-                    alert(res);
+                   // alert(res);
                 }
             })
         });
@@ -222,10 +225,10 @@
                 type: 'post',
                 url:"@Url.Action("MarkUnDone", "Tickets")",
                 data:{id:id},
-            success:function(data){
-                alert(data);
-            }
-        });
+                success:function(data){
+                    alert(data);
+                }
+            });
         }
         $(document).on('change',"#comment",function(){
             var comment = $(this).val();
@@ -236,7 +239,7 @@
             $.ajax({
                 type: 'post',
                 url:"@Url.Action("AddComment", "Tickets")",
-                data:{TicketId: $('#edit-ticket-modal').data('tid'),Text:comment},
+                data:{TicketId: $('#edit-ticket').data('tid'),Text:comment},
                 success:function(data){
                     if(data.success){
                         $("#comments").prepend("<div class='col-md-12'>"+comment+"</div>");
@@ -244,6 +247,28 @@
                 }
             });
         }
+        function delTicket(id){
+
+            $.ajax({
+                type: 'post',
+                url:"@Url.Action("Delete", "Tickets")",
+                data:{id:id},
+                success:function(data){
+                    if(data.success){
+                        $('#edit-ticket-modal').modal('hide');
+                    }
+                }
+            });
+        }
+    </script>
+   <script>
+     //  $(document).ready(function(){
+           params = new URLSearchParams(window.location.search);
+           var tid = params.get('tid');
+           if(tid){
+               editTicket(tid);
+           }
+       //})
     </script>
 
 

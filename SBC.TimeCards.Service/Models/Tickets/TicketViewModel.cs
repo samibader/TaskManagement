@@ -1,4 +1,5 @@
 ﻿using SBC.TimeCards.Common;
+using SBC.TimeCards.Service.Models.Projects;
 using SBC.TimeCards.Service.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace SBC.TimeCards.Service.Models.Tickets
         public int CommentsCount { get; set; }
         public UserViewModel Assignee { get; set; }
         public DateTime? DueDate { get; set; }
-
+        public int StateId { get; set; }
+        public ProjectViewModel ProjectInfo { get; set; }
         public string DueDateAsString
         {
             get
