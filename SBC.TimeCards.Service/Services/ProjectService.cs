@@ -28,7 +28,7 @@ namespace SBC.TimeCards.Service.Services
 
         public async Task Create(CreateProjectViewModel viewModel)
         {
-            var project = new Project { Name = viewModel.Name, Timestamp = GlobalSettings.CURRENT_DATETIME,UserId = viewModel.UserId, Description=viewModel.Description,IsArchived=false,Color="red" };
+            var project = new Project { Name = viewModel.Name, Timestamp = GlobalSettings.CURRENT_DATETIME,UserId = viewModel.UserId, Description=viewModel.Description,IsArchived=false,Color= "#90969b" };
             _unitOfWork.Projects.Add(project);
             await _unitOfWork.SaveChangesAsync();
         }

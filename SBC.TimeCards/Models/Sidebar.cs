@@ -23,7 +23,7 @@ namespace SBC.TimeCards.Models
             new SidebarItem() { Id = 1, Name = "Dashboard", Controller = "Home", Action = "Index", IsParent=false, ParentId=0 , IconClass="icon-home"},
             // Projects
             new SidebarItem() { Id = 2, Name = "Projects", Controller = "Projects", IsParent=true, ParentId=0, IconClass="icon-list" },
-            new SidebarItem() { Id = 3, Name = "View Projects", Controller = "Projects", Action = "Index",IsParent=false, ParentId=2 },
+            new SidebarItem() { Id = 3, Name = "Archived Projects", Controller = "Projects", Action = "Index",IsParent=false, ParentId=2 },
             new SidebarItem() { Id = 4, Name = "Create Project", Controller = "Projects", Action = "Create",IsParent=false, ParentId=2 },
             // Users
             new SidebarItem() { Id = 5, Name = "Users", Controller = "Users", IsParent=true, ParentId=0 , IconClass="icon-user"},

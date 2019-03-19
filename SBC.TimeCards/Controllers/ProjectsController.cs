@@ -96,7 +96,7 @@ namespace SBC.TimeCards.Controllers
             {
                 model.UserId = Int32.Parse(User.Identity.GetUserId());
                 await _projectService.Create(model);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Home");
             }
             return View(model);
         }
@@ -128,7 +128,7 @@ namespace SBC.TimeCards.Controllers
             if (ModelState.IsValid)
             {
                 await _projectService.Edit(project);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Home");
             }
 
            // project.Users = _projectService.GetProjectUsersAsSelectList(project.Id);
@@ -162,8 +162,8 @@ namespace SBC.TimeCards.Controllers
         [HttpPost]
         public async Task<ActionResult> ChangeColor(int id,string color)
         {
-            if (color == "#2b78dc")
-                throw new Exception("errorrrrrrrrrrrr!");
+            //if (color == "#2b78dc")
+            //    throw new Exception("errorrrrrrrrrrrr!");
             await _projectService.ChangeColor(id, color);
             return Json(new { success = true, message="Project color changed" });
         }
@@ -174,7 +174,7 @@ namespace SBC.TimeCards.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             await _projectService.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
 
         [Authorize]
