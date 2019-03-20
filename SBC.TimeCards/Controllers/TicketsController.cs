@@ -55,6 +55,7 @@ namespace SBC.TimeCards.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult UpdateDescription(int id, string data)
         {
             _ticketService.UpdateDescription(id, data);

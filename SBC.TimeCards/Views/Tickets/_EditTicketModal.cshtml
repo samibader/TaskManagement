@@ -19,22 +19,21 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-
-            @if (!Model.IsSubTask)
-                {
-                <a href="#" onclick="addSubTicket(@Model.Id)" style="float:right"><i class="fa fa-plus"></i></a>
-                }
             <div class="row clearfix fields">
-                <div class="col-md-12">@Model.ProjectInfo.Name</div>
                 @if (Model.IsSubTask)
-                    {
+                {
                     <div class="col-md-12">
                         <a href="javascript:void(0)" onclick="editTicket(@Model.ParentTicketInfo.Id)">@Model.ParentTicketInfo.Title ></a>
                     </div>
-                    }
+                }
                 <div class="col-12">
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            Project : <span class="badge" style="background-color:@Model.ProjectInfo.Color ; color:white">@Model.ProjectInfo.Name</span>
+                        </div>
+                    </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2 " })
                         <div class="col-md-12">
@@ -72,42 +71,43 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 " })
                         <div class="col-md-12">
-                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "5" })
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control summernote", @rows = "5" })
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
             </div>
             @if (!Model.IsSubTask)
-                {
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            Sub Tickets
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        @{ Html.RenderAction("TicketsListByTicket", "Tickets", new { id = Model.Id });}
-                    </div>
-                </div>
-                                }
-
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        Comments
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <input type="text" name="comment" id="comment" value="" />
+            {
+                <hr />
+                <div class="row clearfix fields">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <a href="#" class="btn btn-primary" onclick="addSubTicket(@Model.Id)"><i class="fa fa-plus"></i> New Sub-Task</a>
+                            </div>
                         </div>
                     </div>
-                    @{ Html.RenderAction("GetComments", "Tickets", new { id = Model.Id });}
+                    @{ Html.RenderAction("TicketsListByTicket", "Tickets", new { id = Model.Id });}
+                </div>
+            }
+                        <hr />
+                <div class="card">
+                    @*<div class="header">
+                        <h2>Comments</h2>
+                    </div>*@
+                    <div class="body">
+                        <form>
+                            <div class="form-group">
+                                <textarea rows="4" name="comment" id="comment" class="form-control no-resize" placeholder="Enter here for new comment..."></textarea>
+                            </div>
+                        </form>
+
+                        @{ Html.RenderAction("GetComments", "Tickets", new { id = Model.Id });}
+                        
+                    </div>
                 </div>
             </div>
-        </div>
 
         <!-- Modal footer -->
         <div class="modal-footer">

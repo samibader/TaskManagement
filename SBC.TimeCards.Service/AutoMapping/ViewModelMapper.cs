@@ -60,7 +60,8 @@ namespace SBC.TimeCards.Service.AutoMapping
                 //.ForMember(x=>x.ActiveTickets,opt=>opt.MapFrom(x=>x.SubTickets.Where(t=>t.StateId == (int)TicketStates.Active).ToList()))
                 //.ForMember(x => x.DoneTickets, opt => opt.MapFrom(x => x.SubTickets.Where(t => t.StateId == (int)TicketStates.Done).ToList()))
                 //.ForMember(x => x.DelayedTickets, opt => opt.MapFrom(x => x.SubTickets.Where(t => t.StateId == (int)TicketStates.Delayed).ToList()));
-                cfg.CreateMap<Comment, CommentViewModel>();
+                cfg.CreateMap<Comment, CommentViewModel>()
+                .ForMember(d => d.User, opt => opt.MapFrom(s => Mapper.Map<User, UserViewModel>(s.User)));
                 #endregion
 
                 // DTO TO ENTITY

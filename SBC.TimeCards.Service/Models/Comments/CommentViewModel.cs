@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SBC.TimeCards.Service.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,7 @@ namespace SBC.TimeCards.Service.Models.Comments
     {
         public int Id { get; set; }
         public string Text { get; set; }
+        public DateTime CreationDate { get; set; }
+        public UserViewModel User { get; set; }
     }
 }

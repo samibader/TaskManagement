@@ -4,12 +4,14 @@
 }
 @section styles
 {
+    <link rel="stylesheet" href="~/Lucid/assets/vendor/summernote/dist/summernote.css" />
     <style>
         .modal-dialog {
             max-width: 1000px;
         }
     </style>
 }
+
 <div class="block-header">
     <div class="row">
         <div class="col-lg-6 col-md-8 col-sm-8">
@@ -101,6 +103,7 @@
     </div>
 </div>
 @section Scripts{
+    <script src="~/Lucid/assets/vendor/summernote/dist/summernote.js"></script>
     @* Please Add This Script To layout..*@
     <script>
         $(document).ready(function () {
@@ -155,6 +158,17 @@
                 //$("#edit-ticket-modal").modal('hide');
                 $("#edit-ticket-modal .modal-dialog").empty();
                 $("#edit-ticket-modal .modal-dialog").append(data);
+                $('.summernote').summernote({
+                    callbacks: {
+                        onBlur: function () {
+                            console.log('Editable area loses focus');
+                            var textareaValue = $('#Description').summernote('code');
+                            $("#Description").val(textareaValue);
+                            $("#Description").trigger("change");
+                            console.log(textareaValue);
+                        }
+                    }
+                });
                 $("#edit-ticket-modal").modal('show');
             }
             else {
@@ -261,14 +275,14 @@
             });
         }
     </script>
-   <script>
-     //  $(document).ready(function(){
-           params = new URLSearchParams(window.location.search);
-           var tid = params.get('tid');
-           if(tid){
-               editTicket(tid);
-           }
-       //})
+    <script>
+        //  $(document).ready(function(){
+        params = new URLSearchParams(window.location.search);
+        var tid = params.get('tid');
+        if (tid) {
+            editTicket(tid);
+        }
+                   //})
     </script>
 
 
