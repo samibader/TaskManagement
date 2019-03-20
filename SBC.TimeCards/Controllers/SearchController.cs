@@ -22,5 +22,10 @@ namespace SBC.TimeCards.Controllers
             var res = _searchService.Search(query);
             return View(res);
         }
+        public ActionResult FullResults(string query)
+        {
+            var res = _searchService.Search(query,full:true);
+            return View(res);
+        }
     }
 }

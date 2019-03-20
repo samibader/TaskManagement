@@ -23,14 +23,14 @@ namespace SBC.TimeCards.Service.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public SearchResultsViewModel Search(string searchString)
+        public SearchResultsViewModel Search(string searchString, bool full = false)
         {
             var res = new SearchResultsViewModel
             {
-                Attachments = Mapper.Map<List<Attachment>, List<AttachmentViewModel>>(_unitOfWork.Attachments.GetBy(x => x.Title.Contains(searchString)).ToList()),
+                Attachments = Mapper.Map<List<Attachment>, List<AttachmentViewModel>>(_unitOfWork.Attachments.GetBy(x => x.Title.Contains(searchString)).Take(full?Int32.MaxValue:3).ToList()),
                 Users = Mapper.Map<List<User>, List<UserViewModel>>(_unitOfWork.Users.GetBy(x => x.Name.Contains(searchString)).ToList()),
-                Projects = Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetBy(x => x.Name.Contains(searchString) || x.Description.Contains(searchString)).ToList()),
-                Ticktes = Mapper.Map<List<Ticket>, List<TicketViewModel>>(_unitOfWork.Tickets.GetBy(x => x.Title.Contains(searchString)||x.Description.Contains(searchString)).ToList()),
+                Projects = Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetBy(x => x.Name.Contains(searchString) || x.Description.Contains(searchString)).Take(full ? Int32.MaxValue : 3).ToList()),
+                Ticktes = Mapper.Map<List<Ticket>, List<TicketViewModel>>(_unitOfWork.Tickets.GetBy(x => x.Title.Contains(searchString)||x.Description.Contains(searchString)).Take(full ? Int32.MaxValue : 3).ToList()),
 
             };
             return res;

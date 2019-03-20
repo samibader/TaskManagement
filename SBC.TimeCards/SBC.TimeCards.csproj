@@ -2466,6 +2466,9 @@
     <Content Include="Views\Home\Index - Copy.cshtml" />
     <Content Include="Views\Tickets\_TicketsList.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Projects\_SidebarFavorites.cshtml" />
+    <Content Include="Views\Tickets\MyTickets.cshtml" />
+    <Content Include="Views\Search\FullResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

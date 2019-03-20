@@ -28,6 +28,16 @@
                         </li>
                         <li><a style="color: #2b78dc; padding: 5px 1px 0px 1px" href="@Url.Action("Edit","Projects",new{@Id=Model.Id})"><i style="color: inherit" class="fa fa-edit"></i> Edit Info</a></li>
                         <li><a style="color: #e8384f; padding: 5px 1px 0px 1px" href="@Url.Action("Delete","Projects",new{@Id=Model.Id})"><i style="color: inherit" class="fa fa-remove"></i> &nbsp;Delete</a></li>
+                        @if (Model.IsFavorite)
+                        {
+
+                            <li><a style="color: #e8384f; padding: 5px 1px 0px 1px" href="javascript:void(0)" onclick="unfavorite(@Model.Id)"><i style="color: inherit" class="fa fa-remove"></i> &nbsp;UnFavorite</a></li>
+                        }
+                        else
+                        {
+                            <li><a style="color: #2b78dc; padding: 5px 1px 0px 1px" href="javascript:void(0)" onclick="favorite(@Model.Id)"><i style="color: inherit" class="fa fa-star"></i> &nbsp;Favorite</a></li>
+                        }
+
                     </ul>
                 </li>
             </ul>
@@ -49,5 +59,4 @@
             </div>
         </a>
     </div>
-        
-    </div>
+</div>

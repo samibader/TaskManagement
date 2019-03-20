@@ -62,7 +62,7 @@ namespace SBC.TimeCards.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateAssigneeId(int id, int data)
+        public ActionResult UpdateAssigneeId(int id, int? data)
         {
             _ticketService.UpdateAssignee(id, data);
             return Json(new { success = true });
@@ -116,6 +116,12 @@ namespace SBC.TimeCards.Controllers
         {
             _ticketService.Delete(id);
             return Json(new { success = true });
+        }
+        public ActionResult MyTickets()
+        {
+            var model = _ticketService.GetUserTickets(GetCurrentUserId());
+
+            return View(model);
         }
     }
 }

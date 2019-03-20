@@ -10,6 +10,7 @@ namespace SBC.TimeCards.Models
     {
         public List<ProjectViewModel> ActiveProjects { get; set; }
         public List<ProjectViewModel> ArchivedProjects { get; set; }
+        public List<ProjectViewModel> FavotirteProjects { get; set; }
 
     }
 }

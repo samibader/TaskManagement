@@ -231,6 +231,12 @@ namespace SBC.TimeCards.Controllers
             var projects = _projectService.GetUserFavoriteProjects(GetCurrentUserId());
             return Json(new { data = projects },JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public ActionResult SidebarFavorites()
+        {
+            var model = _projectService.GetUserFavoriteProjects(GetCurrentUserId());
+            return PartialView("_SidebarFavorites",model);
+        }
         #endregion
         [Authorize(Roles = AppRoles.Administrator)]
         #region Validation API

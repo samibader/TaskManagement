@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<SBC.TimeCards.Models.SidebarItem>
-@{ 
+@{
     var currentAction = ViewContext.ParentActionViewContext.RouteData.Values["Action"].ToString();
     var currentController = ViewContext.ParentActionViewContext.RouteData.Values["Controller"].ToString();
 }
@@ -12,7 +12,7 @@
                 {
                     if (!item.IsParent && item.ParentId == 0)
                     {
-      <li class="@(currentAction.Equals(item.Action, StringComparison.InvariantCultureIgnoreCase) && currentController.Equals(item.Controller, StringComparison.InvariantCultureIgnoreCase) ? "active" : "")">
+                        <li class="@(currentAction.Equals(item.Action, StringComparison.InvariantCultureIgnoreCase) && currentController.Equals(item.Controller, StringComparison.InvariantCultureIgnoreCase) ? "active" : "")">
                             <a href="@Url.Action(item.Action,item.Controller)">
                                 <i class="@item.IconClass"></i>
                                 <span>@item.Name</span>
@@ -33,7 +33,7 @@
                                     @foreach (var child in Model.Where(p => p.ParentId == item.Id))
                                     {
                                         <li class="@(currentAction.Equals(child.Action, StringComparison.InvariantCultureIgnoreCase) && currentController.Equals(child.Controller, StringComparison.InvariantCultureIgnoreCase) ? "active" : "")">
-                                            <a  href="@Url.Action(child.Action,child.Controller)">@child.Name</a>
+                                            <a href="@Url.Action(child.Action,child.Controller)">@child.Name</a>
                                         </li>
                                     }
                                 </ul>
@@ -41,9 +41,58 @@
                         }
                     }
                 }
+                <li >
+                    <a class="has-arrow" href="#">
+                        <i class="fa fa-star"></i>
+                        <span>Favorites</span>
+                    </a>
+                    <ul class="collapse" id="fav">
+                        @{ Html.RenderAction("SidebarFavorites", "Projects");}
+                    </ul>
+                </li>
             </ul>
-
         </nav>
 
     </div>
 </div>
+<script>
+    function unfavorite(id) {
+        $.ajax({
+            type: 'post',
+            data: { id: id },
+            url: "@Url.Action("RemoveFromFavorite", "Projects")",
+            success: function () {
+                updateDashBoard();
+            }
+        });
+    }
+
+    function favorite(id) {
+        $.ajax({
+            type: 'post',
+            data: { id: id },
+            url: "@Url.Action("AddToFavorite", "Projects")",
+            success: function () {
+                updateDashBoard();
+            }
+        });
+    }
+    function updateDashBoard() {
+        $.ajax({
+            type: 'get',
+            url: "@Url.Action("Index", "Home")",
+            success: function (data) {
+                $("#main-content div").empty();
+                $("#main-content div").append(data);
+            }
+        });
+        $.ajax({
+            type: 'get',
+            url: "@Url.Action("SidebarFavorites", "Projects")",
+            success: function (data) {
+                $("#fav").empty();
+                $("#fav").append(data);
+            }
+        });
+    }
+</script>

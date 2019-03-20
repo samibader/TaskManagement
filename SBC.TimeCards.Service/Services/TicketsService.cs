@@ -60,7 +60,7 @@ namespace SBC.TimeCards.Service.Services
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
         }
-        public void UpdateAssignee(int id, int assigneeId)
+        public void UpdateAssignee(int id, int? assigneeId)
         {
             var ticket = _unitOfWork.Tickets.GetById(id);
             ticket.AssigneeId = assigneeId;
@@ -145,5 +145,10 @@ namespace SBC.TimeCards.Service.Services
             _unitOfWork.Tickets.Remove(ticket);
             _unitOfWork.SaveChanges();
         }
+        public List<TicketViewModel> GetUserTickets(int userId)
+        {
+            return Mapper.Map<List<Ticket>, List<TicketViewModel>>(_unitOfWork.Tickets.GetBy(x => x.AssigneeId == userId).ToList());
+        }
+
     }
 }

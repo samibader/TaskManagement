@@ -9,6 +9,6 @@ namespace SBC.TimeCards.Service.Interfaces
 {
     public interface ISearchService
     {
-        SearchResultsViewModel Search(string searchString);
+        SearchResultsViewModel Search(string searchString,bool full=false);
     }
 }

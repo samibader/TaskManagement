@@ -89,12 +89,23 @@ namespace SBC.TimeCards.Service.Services
         public List<SelectListItem> GetAllAsSelectList(int selectedId = 0)
         {
             var users = _unitOfWork.Users.GetAll();
-            return users.Select(x => new SelectListItem()
+            var list = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Selected = selectedId!=0,
+                    Text = "",
+                    Value = ""
+                }
+            };
+
+            list.AddRange(users.Select(x => new SelectListItem()
             {
                 Selected = x.Id == selectedId,
-                Text = x.UserName,
+                Text = x.UserName+" ("+x.UserRoles.FirstOrDefault().Role.Name+")",
                 Value = x.Id.ToString()
-            }).ToList();
+            }).ToList());
+            return list;
         }
 
 

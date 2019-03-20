@@ -27,6 +27,7 @@ namespace SBC.TimeCards.Controllers
             DashBoardProjectsViewModel vm = new DashBoardProjectsViewModel();
             vm.ArchivedProjects = _projectService.GetArchivedProjects(GetCurrentUserId());
             vm.ActiveProjects = _projectService.GetAllActiveProjects(GetCurrentUserId());
+            vm.FavotirteProjects = _projectService.GetUserFavoriteProjects(GetCurrentUserId());
             return View(vm);
         }
 

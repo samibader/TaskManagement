@@ -20,7 +20,7 @@ namespace SBC.TimeCards.Service.Interfaces
         EditTicketViewModel GetTicketForEdit(int id);
         void UpdateTitle(int id, string title);
         void UpdateDescription(int id, string desc);
-        void UpdateAssignee(int id, int assigneeId);
+        void UpdateAssignee(int id, int? assigneeId);
         void UpdateDueDate(int id, DateTime dueDate);
         void MarkDone(int id);
         void MarkUnDone(int id);
@@ -29,5 +29,6 @@ namespace SBC.TimeCards.Service.Interfaces
         void AddComment(CreateCommentViewModel model);
         List<CommentViewModel> GetComments(int id);
         void Delete(int id);
+        List<TicketViewModel> GetUserTickets(int userId);
     }
 }

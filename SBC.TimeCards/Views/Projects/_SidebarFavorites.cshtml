@@ -1,0 +1,21 @@
+﻿@model List<SBC.TimeCards.Service.Models.Projects.ProjectViewModel>
+@{
+    Layout = null;
+}
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <li>
+            <a href="@Url.Action("Manage", "Projects", new { id = item.Id })">@item.Name</a>
+        </li>
+    }
+
+}
+else
+{
+    <li>
+        <a href="javascript.void(0)">No Favorites..</a>
+    </li>
+}
+

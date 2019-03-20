@@ -30,7 +30,8 @@ namespace SBC.TimeCards.Service.AutoMapping
                 //  opt => opt.MapFrom(s => Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectViewModel>>(s.Projects))); ;
 
                 cfg.CreateMap<Project, ProjectViewModel>()
-                 .ForMember(d => d.Owner, opt => opt.MapFrom(s => Mapper.Map<User, UserViewModel>(s.User)));
+                 .ForMember(d => d.Owner, opt => opt.MapFrom(s => Mapper.Map<User, UserViewModel>(s.User)))
+                 .ForMember(d=>d.IsFavorite,opt=>opt.MapFrom(x=>x.User.FavoriteProjects.Contains(x)));
                 cfg.CreateMap<Project, DetailedProjectViewModel>();
                 cfg.CreateMap<Project, EditProjectViewModel>();
                 // .ForMember(d => d.Users,

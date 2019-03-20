@@ -1,0 +1,40 @@
+﻿@model List<SBC.TimeCards.Service.Models.Tickets.TicketViewModel>
+@using SBC.TimeCards.Common;
+@{
+}
+<div class="body">
+    <div class="dd" data-plugin="nestable">
+        <ol class="dd-list">
+            @foreach (var item in Model)
+            {
+                <li class="dd-item" data-id="@item.Id">
+                    <a href="@Url.Action("Manage","Projects",new { id=item.ProjectInfo.Id,tid=item.Id})" style="color:black">
+                        <div class="dd-handle">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6><i class="@(item.StateId==(int)TicketStates.Delayed?"icon-question":"icon-check")"></i>@item.Title </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <p style="margin: 9px 2px;font-size: 14px;">
+                                        @if (item.Assignee != null)
+                                        {
+                                            <span class="badge badge-success">@item.Assignee.Name</span>
+                                        }
+                                        <small class="text-muted"><i class="icon-clock"></i> @item.DueDateAsString</small>
+                                    </p>
+
+                                </div>
+                                <div class="col-md-2 text-right">
+
+                                    <p style="margin: 9px 2px;font-size: 14px;">@item.CommentsCount <i class="icon-bubble"></i></p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ol>
+    </div>
+</div>
