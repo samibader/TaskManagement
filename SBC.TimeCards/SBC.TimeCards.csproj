@@ -323,7 +323,10 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Theme\img\logo.png" />
     <Content Include="Lucid\assets\images\page-loader.gif" />
+    <Content Include="Theme\img\logo-gray.png" />
+    <Content Include="Theme\img\vLogo.jpg" />
     <Content Include="Lucid\assets\vendor\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="Lucid\assets\vendor\bootstrap-colorpicker\img\bootstrap-colorpicker\alpha-horizontal.png" />
     <Content Include="Lucid\assets\vendor\bootstrap-colorpicker\img\bootstrap-colorpicker\alpha.png" />
@@ -623,6 +626,8 @@
     <Content Include="Lucid\assets\vendor\summernote\dist\font\summernotef534.eot" />
     <Content Include="Lucid\assets\vendor\summernote\dist\font\summernotef534.ttf" />
     <Content Include="Lucid\assets\vendor\summernote\dist\font\summernotef534.woff" />
+    <Content Include="Theme\img\logo-gray.ai" />
+    <None Include="Properties\PublishProfiles\Custom.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fullcalendar.helper.js" />
