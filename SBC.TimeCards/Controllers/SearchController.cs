@@ -20,6 +20,7 @@ namespace SBC.TimeCards.Controllers
         public ActionResult Index(string query)
         {
             var res = _searchService.Search(query);
+            ViewBag.Query = query;
             return View(res);
         }
         public ActionResult FullResults(string query)

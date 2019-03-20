@@ -1,54 +1,123 @@
 ﻿@model SBC.TimeCards.Service.Models.Search.SearchResultsViewModel
-
+@using SBC.TimeCards.Common;
 @{
     Layout = null;
 }
+
 @if (Model.Users.Any())
 {
-    <div>
-        <h6>
-            People
-        </h6>
+    <h6 style="text-align:left; font-size:12px">Users</h6>
+    <ul class="right_chat list-unstyled mb-0">
         @foreach (var item in Model.Users)
         {
-            <a>@item.Name</a>
+            <li class="offline">
+                <a href="@Url.Action("Details","Users",new {id=item.Id })">
+                    <div class="media" style="margin-bottom:1px">
+                        <span class="media-object"><i class="fa fa-user"></i></span>
+                        <div class="media-body" style="padding:2px;">
+                            <span class="name" style="font-size:12px; text-align:left">@item.Name (@item.Email) <small class="float-right"><span class="badge badge-info">@item.RoleName</span> </small></span>
+                            @*<span class="message">There are many variations of passages of Lorem Ipsum available, but the majority</span>*@
+                        </div>
+                    </div>
+                </a>
+            </li>
         }
-    </div>
+    </ul>
+    <hr />
 }
-@if (Model.Attachments.Any())
-{
-    <div>
-        <h6>
-            Files
-        </h6>
-        @foreach (var item in Model.Attachments)
-        {
-            <a>@item.Title</a>
-        }
-    </div>
-}
+
 @if (Model.Ticktes.Any())
 {
-    <div>
-        <h6>
-            Tickets
-        </h6>
+    <h6 style="text-align:left; font-size:12px">Tickets</h6>
+    <ul class="right_chat list-unstyled mb-0">
         @foreach (var item in Model.Ticktes)
         {
-            <a href="@Url.Action("Manage","Projects",new { id=item.ProjectInfo.Id,tid=item.Id})">@item.Title</a>
+            <li class="offline">
+                <a href="@Url.Action("Manage","Projects",new { id=item.ProjectInfo.Id,tid=item.Id})">
+                    <div class="media" style="margin-bottom:1px">
+                        <span class="media-object"><i class="@(item.StateId==(int)TicketStates.Delayed?"fa fa-question-circle text-danger":item.StateId==(int)TicketStates.Done?"fa fa-check-circle text-succes":"fa fa-check-circle-o text-primary")"></i></span>
+                        <div class="media-body" style="padding:2px;">
+                            <span class="name" style="font-size:12px; text-align:left">
+                                @if (item.ProjectInfo != null)
+                                {
+                                    <small><span class="badge" style="color:white;background-color:@item.ProjectInfo.Color">@item.ProjectInfo.Name</span></small>
+                                }
+                                @item.Title
+                                @if (item.Assignee != null)
+                                {
+
+                                }
+                                <small class="float-right"><i class="icon-clock"></i> @item.DueDateAsString </small>
+                            </span>
+                            @*<span class="message">There are many variations of passages of Lorem Ipsum available, but the majority</span>*@
+                        </div>
+                    </div>
+                </a>
+            </li>
         }
-    </div>
+    </ul>
+    <hr />
 }
 @if (Model.Projects.Any())
 {
-    <div>
-        <h6>Projects</h6>
+    <h6 style="text-align:left; font-size:12px">Projects</h6>
+    <ul class="right_chat list-unstyled mb-0">
         @foreach (var item in Model.Projects)
         {
-            <a href="@Url.Action("Manage","Projects",new { id=item.Id})">@item.Name</a>
+            <li class="offline">
+                <a href="@Url.Action("Manage","Projects",new { id=item.Id})">
+                    <div class="media" style="margin-bottom:1px">
+                        <span class="media-object">
+                            @if (item.IsArchived)
+                            {
+                                <i class="icon-notebook"></i>
+                            }
+                            else
+                            {
+                                <i class="icon-book-open"></i>
+                            }
+                        </span>
+                        <div class="media-body" style="padding:2px;">
+                            <span class="name @(item.IsArchived ? "text-muted" : "")" style="font-size:12px; text-align:left;color:@item.Color">@item.Name <small class="float-right"><span class="badge badge-info">@item.Owner.Name</span> </small></span>
+                            @*<span class="message">There are many variations of passages of Lorem Ipsum available, but the majority</span>*@
+                        </div>
+                    </div>
+                </a>
+            </li>
         }
-    </div>
+    </ul>
+    <hr />
+    @*<div>
+            <h6>Projects</h6>
+            @foreach (var item in Model.Projects)
+            {
+                <a href="">@item.Name</a>
+            }
+        </div>*@
 }
+
+@if (Model.Attachments.Any())
+{
+    <h6 style="text-align:left; font-size:12px">Users</h6>
+    <ul class="right_chat list-unstyled mb-0">
+        @foreach (var item in Model.Attachments)
+        {
+            <li class="offline">
+                <a href="@item.Url">
+                    <div class="media" style="margin-bottom:1px">
+                        <span class="media-object"><i class="fa fa-paperclip"></i></span>
+                        <div class="media-body" style="padding:2px;">
+                            <span class="name" style="font-size:12px; text-align:left">@item.Title (@item.SizeAsString)<small class="float-right"><span class="badge">@item.Type</span> </small></span>
+                            @*<span class="message">There are many variations of passages of Lorem Ipsum available, but the majority</span>*@
+                        </div>
+                    </div>
+                </a>
+            </li>
+        }
+    </ul>
+    <hr />
+}
+
 @if (!(Model.Users.Any() || Model.Ticktes.Any() || Model.Projects.Any() || Model.Attachments.Any()))
 {
     <div>
@@ -56,5 +125,7 @@
             No Results found
         </h6>
     </div>
+    <hr />
 }
+<a href="@Url.Action("FullResults","Search",new {query=ViewBag.Query })">See all results for <strong>@ViewBag.Query</strong> </a>
 
