@@ -289,7 +289,10 @@
                 data:{TicketId: $('#edit-ticket').data('tid'),Text:comment},
                 success:function(data){
                     if(data.success){
-                        $("#comments").prepend("<div class='col-md-12'>"+comment+"</div>");
+                        //$("#comments").prepend("<div class='col-md-12'>"+comment+"</div>");
+                        $.get("@Url.Action("GetComments","Tickets")"+"/"+$('#edit-ticket').data('tid'),function(data){
+                            $("#comments").replaceWith(data);
+                        });
                     }
                 }
             });
