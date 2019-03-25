@@ -214,7 +214,7 @@ namespace SBC.TimeCards.Controllers
         }
 
         #region Favorites
-        [HttpPost]
+        
         public ActionResult AddToFavorite(int id)
         {
             _projectService.AddProjectToFavorite(GetCurrentUserId(), id);
@@ -225,13 +225,13 @@ namespace SBC.TimeCards.Controllers
             _projectService.RemoveProjectFromFavorite(GetCurrentUserId(), id);
             return Json(new { success = true });
         }
-        [HttpGet]
+        
         public ActionResult GetFavoriteProjects()
         {
             var projects = _projectService.GetUserFavoriteProjects(GetCurrentUserId());
             return Json(new { data = projects },JsonRequestBehavior.AllowGet);
         }
-        [HttpGet]
+        
         public ActionResult SidebarFavorites()
         {
             var model = _projectService.GetUserFavoriteProjects(GetCurrentUserId());
