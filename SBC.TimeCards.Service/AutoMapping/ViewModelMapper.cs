@@ -47,6 +47,7 @@ namespace SBC.TimeCards.Service.AutoMapping
                 cfg.CreateMap<Ticket, EditTicketViewModel>()
                     .ForMember(x => x.ProjectInfo, opt => opt.MapFrom(x => Mapper.Map<Project, ProjectViewModel>(x.ParentTicketId.HasValue ? x.Parent.Project : x.Project)))
                     .ForMember(x => x.IsSubTask, opt => opt.MapFrom(x => x.ParentTicketId.HasValue))
+                    .ForMember(x=>x.DueDate,opt=>opt.MapFrom(x=>x.DueDate.HasValue?x.DueDate.Value.ToShortDateString():""))
                     .ForMember(x => x.ParentTicketInfo, opt => opt.MapFrom(x => (x.ParentTicketId.HasValue ? Mapper.Map<Ticket, TicketViewModel>(x.Parent) : new TicketViewModel())));
 
                 cfg.CreateMap<Ticket, TicketViewModel>()

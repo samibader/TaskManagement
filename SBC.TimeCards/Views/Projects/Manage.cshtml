@@ -1,6 +1,11 @@
 ﻿@model SBC.TimeCards.Service.Models.Projects.ProjectViewModel
+@using Microsoft.AspNet.Identity;
+@using SBC.TimeCards.Common;
 @{
     ViewBag.Title = Model.Name;
+
+    var CurrentUserId = Int32.Parse(User.Identity.GetUserId());
+
 }
 @section styles
 {
@@ -23,10 +28,20 @@
             </ul>
         </div>
         <div class="col-lg-6 col-md-4 col-sm-4 text-right">
-            <a href="#" class="btn btn-primary" onclick="addTicket(@Model.Id)"><i class="icon-plus"></i> New Ticket</a>
             @if (!Model.IsArchived)
             {
-                <button type="button" class="btn btn-outline-info" onclick="archive(@Model.Id)"><i class="icon-check"></i> <span>Archive Project</span></button>
+                <a href="#" class="btn btn-primary" onclick="addTicket(@Model.Id)"><i class="icon-plus"></i> New Ticket</a>
+            }
+            @if (Model.Owner.Id == CurrentUserId || User.IsInRole(AppRoles.Administrator))
+            {
+                if (!Model.IsArchived)
+                {
+                    <button type="button" class="btn btn-outline-info" onclick="archive(@Model.Id)"><i class="icon-check"></i> <span>Archive Project</span></button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-outline-info" onclick="unArchive(@Model.Id)"><i class="icon-check"></i> <span>Un Archive Project</span></button>
+                }
             }
 
         </div>
@@ -130,6 +145,21 @@
                 }
             })
         }
+
+        function unArchive(id) {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("UnArchive","Projects")',
+                data: { id: id },
+                success: function (data) {
+                    if (data.success) {
+                        alert('project Un Archived');
+                        location.href = data.url;
+                    }
+                }
+            })
+        }
     </script>
     <script>
         function addTicket(id) {
@@ -172,20 +202,21 @@
                 $("#edit-ticket-modal").modal('show');
             }
             else {
-               // alert(data.message);
+                // alert(data.message);
             }
         }
         $(document).on('change', '#edit-ticket .fields :input,#edit-ticket .fields select', function () {
 
             var url = "@Url.Action("UpdateField","Tickets")";
-            var inputId = $(this).attr('id');
+            var $this = $(this);
+            var inputId =$this.attr('id');
             url = url.replace('Field', inputId);
             $.ajax({
                 type: 'post',
                 url: url,
-                data: { id: $('#edit-ticket').data('tid'), data: $(this).val() },
+                data: { id: $('#edit-ticket').data('tid'), data: $this.val() },
                 success: function (res) {
-                   // alert(res);
+                    // alert(res);
                 }
             })
         });
@@ -230,7 +261,8 @@
                 url:"@Url.Action("MarkDone", "Tickets")",
                 data:{id:id},
                 success:function(data){
-                    alert(data);
+                    $("#mk-done").hide();
+                    $("#mk-active").show();
                 }
             });
         }
@@ -240,7 +272,8 @@
                 url:"@Url.Action("MarkUnDone", "Tickets")",
                 data:{id:id},
                 success:function(data){
-                    alert(data);
+                    $("#mk-active").hide();
+                    $("#mk-done").show();
                 }
             });
         }
@@ -282,7 +315,7 @@
         if (tid) {
             editTicket(tid);
         }
-                   //})
+        //})
     </script>
 
 

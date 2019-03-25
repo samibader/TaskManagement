@@ -23,6 +23,7 @@ namespace SBC.TimeCards.Service.Interfaces
         Task<EditProjectViewModel> GetProjectForEditAsync(int id);
         Task ChangeColor(int id, string color);
         Task Archive(int id);
+        Task UnArchive(int id);
         List<ProjectViewModel> GetAllActiveProjects(int userId);
         List<ProjectViewModel> GetArchivedProjects(int userId,bool getAll = false);
         List<SelectListItem> GetProjectUsersAsSelectList(int id);

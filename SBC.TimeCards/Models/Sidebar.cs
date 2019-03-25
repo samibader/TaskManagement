@@ -7,7 +7,7 @@ namespace SBC.TimeCards.Models
 {
     public class SidebarItem
     {
-        public int Id  { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Controller { get; set; }
         public string Action { get; set; }
@@ -18,9 +18,11 @@ namespace SBC.TimeCards.Models
 
     public static class Sidebar
     {
+
         public static List<SidebarItem> AdminItems = new List<SidebarItem>  {
             // Dashboard
             new SidebarItem() { Id = 1, Name = "Dashboard", Controller = "Home", Action = "Index", IsParent=false, ParentId=0 , IconClass="icon-home"},
+            new SidebarItem() { Id = 8, Name = "My Tasks", Controller = "Tickets", Action = "MyTickets", IsParent=false, ParentId=0 , IconClass="icon-check"},
             // Projects
             new SidebarItem() { Id = 2, Name = "Projects", Controller = "Projects", IsParent=true, ParentId=0, IconClass="icon-list" },
             new SidebarItem() { Id = 3, Name = "Archived Projects", Controller = "Projects", Action = "Index",IsParent=false, ParentId=2 },
@@ -32,7 +34,11 @@ namespace SBC.TimeCards.Models
         };
         public static List<SidebarItem> UserItems = new List<SidebarItem>  {
             // Dashboard
-            new SidebarItem() { Id = 1, Name = "Dashboard", Controller = "Home", Action = "Index", IsParent=false, ParentId=0 , IconClass="icon-home"}
+            new SidebarItem() { Id = 1, Name = "Dashboard", Controller = "Home", Action = "Index", IsParent=false, ParentId=0 , IconClass="icon-home"},
+            new SidebarItem() { Id = 4, Name = "My Tasks", Controller = "Tickets", Action = "MyTickets", IsParent=false, ParentId=0 , IconClass="icon-check"},
+            new SidebarItem() { Id = 2, Name = "Projects", Controller = "Projects", IsParent=true, ParentId=0, IconClass="icon-list" },
+            new SidebarItem() { Id = 3, Name = "Archived Projects", Controller = "Projects", Action = "Index",IsParent=false, ParentId=2 }
+
         };
     }
 }
