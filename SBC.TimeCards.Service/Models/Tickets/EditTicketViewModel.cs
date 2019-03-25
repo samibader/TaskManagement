@@ -11,7 +11,7 @@ namespace SBC.TimeCards.Service.Models.Tickets
     {
         public int Id { get; set; }
         public int? AssigneeId { get; set; }
-        public DateTime DueDate { get; set; }
+        public string DueDate { get; set; }
         public string Description { get; set; }
         public string Title { get; set; }
         public bool IsSubTask { get; set; }

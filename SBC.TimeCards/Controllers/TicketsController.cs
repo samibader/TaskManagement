@@ -69,9 +69,10 @@ namespace SBC.TimeCards.Controllers
             return Json(new { success = true });
         }
         [HttpPost]
-        public ActionResult UpdateDueDate(int id, DateTime data)
+        public ActionResult UpdateDueDate(int id, string data)
         {
-            _ticketService.UpdateDueDate(id, data);
+            var date = DateTime.Parse(data);
+            _ticketService.UpdateDueDate(id, date);
             return Json(new { success = true });
         }
         public ActionResult MarkDone(int id)

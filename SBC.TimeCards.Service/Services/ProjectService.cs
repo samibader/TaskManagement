@@ -20,15 +20,17 @@ namespace SBC.TimeCards.Service.Services
     public class ProjectService : IProjectService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _userService;
 
-        public ProjectService(IUnitOfWork unitOfWork)
+        public ProjectService(IUnitOfWork unitOfWork,UserService userService)
         {
             _unitOfWork = unitOfWork;
+            _userService = userService;
         }
 
         public async Task Create(CreateProjectViewModel viewModel)
         {
-            var project = new Project { Name = viewModel.Name, Timestamp = GlobalSettings.CURRENT_DATETIME,UserId = viewModel.UserId, Description=viewModel.Description,IsArchived=false,Color= "#90969b" };
+            var project = new Project { Name = viewModel.Name, Timestamp = GlobalSettings.CURRENT_DATETIME, UserId = viewModel.UserId, Description = viewModel.Description, IsArchived = false, Color = "#90969b" };
             _unitOfWork.Projects.Add(project);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -53,14 +55,21 @@ namespace SBC.TimeCards.Service.Services
         }
         public List<ProjectViewModel> GetAllActiveProjects(int userId)
         {
-            return Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetBy(x => !x.IsArchived && x.UserId == userId).ToList());
+            var isAdmin = _userService.IsAdmin(userId);
+            return Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetBy(
+                x => !x.IsArchived && (isAdmin || x.UserId == userId
+                    || x.Tickets.Any(y => y.AssigneeId == userId && y.StateId != (int)TicketStates.Done)))
+                .ToList());
         }
-        public List<ProjectViewModel> GetArchivedProjects(int userId,bool getAll = false)
+        public List<ProjectViewModel> GetArchivedProjects(int userId, bool getAll = false)
         {
-            var projects = _unitOfWork.Projects.GetBy(x => x.IsArchived &&x.UserId ==userId);
+            var isAdmin = _userService.IsAdmin(userId);
+            var projects = _unitOfWork.Projects.GetBy(x =>
+            (x.IsArchived && (isAdmin ||x.UserId == userId || x.Tickets.Any(y => y.AssigneeId == userId)))
+            || (x.Tickets.Any(y => y.AssigneeId == userId) && !x.Tickets.Any(y => y.AssigneeId == userId && !(y.StateId == (int)TicketStates.Done))));
             if (!getAll)
             {
-                projects = projects.OrderByDescending(x=>x.ArchiveDate).Take(GlobalSettings.ArchivedProjectSize);
+                projects = projects.OrderByDescending(x => x.ArchiveDate).Take(GlobalSettings.ArchivedProjectSize);
             }
             return Mapper.Map<List<Project>, List<ProjectViewModel>>(projects.ToList());
         }
@@ -87,7 +96,7 @@ namespace SBC.TimeCards.Service.Services
             var users = _unitOfWork.Users.GetAll();
             return users.Select(x => new SelectListItem()
             {
-               // Selected = projectusers.Contains(x.Id),
+                // Selected = projectusers.Contains(x.Id),
                 Text = x.UserName,
                 Value = x.UserName
             }).ToList();
@@ -101,7 +110,16 @@ namespace SBC.TimeCards.Service.Services
             _unitOfWork.Projects.Update(project);
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task ChangeColor(int id,string color)
+
+        public async Task UnArchive(int id)
+        {
+            var project = await _unitOfWork.Projects.GetByIdAsync(id);
+            project.IsArchived = false;
+            project.ArchiveDate = null;
+            _unitOfWork.Projects.Update(project);
+            await _unitOfWork.SaveChangesAsync();
+        }
+        public async Task ChangeColor(int id, string color)
         {
             var project = await _unitOfWork.Projects.GetByIdAsync(id);
             project.Color = color;
@@ -118,7 +136,7 @@ namespace SBC.TimeCards.Service.Services
             {
                 itemList = _unitOfWork.Users.GetById(userId).Projects.Where(p => string.IsNullOrEmpty(searchTerm) || p.Name.Contains(searchTerm)).ToList();
             }
-                
+
             var results = itemList.Skip((pageNum * pageSize) - 100).Take(pageSize);
             total = itemList.Count;
             return Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectViewModel>>(results);
@@ -143,7 +161,7 @@ namespace SBC.TimeCards.Service.Services
             _unitOfWork.Projects.Remove(project);
             await _unitOfWork.SaveChangesAsync();
         }
-        
+
         #region Favorite Management
         public void AddProjectToFavorite(int userId, int projectId)
         {

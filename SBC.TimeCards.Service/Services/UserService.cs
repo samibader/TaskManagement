@@ -108,8 +108,10 @@ namespace SBC.TimeCards.Service.Services
             return list;
         }
 
-
-
+        public bool IsAdmin (int userId)
+        {
+            return _unitOfWork.UserRoles.GetBy(x => x.UserId == userId).Any(x => x.Role.Name == AppRoles.Administrator);
+        }
         public async Task<UserViewModel> GetByIdAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);

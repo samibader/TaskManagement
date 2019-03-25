@@ -5,8 +5,6 @@ using SBC.TimeCards.Common;
 using SBC.TimeCards.Data.Infrastructure;
 using SBC.TimeCards.Service.Identity;
 using System.Security;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +12,7 @@ using System.Threading.Tasks;
 using SBC.TimeCards.Models;
 using System.IO;
 using Microsoft.AspNet.Identity;
+using SBC.TimeCards.Service.Models;
 
 namespace SBC.TimeCards.Controllers
 {
@@ -44,9 +43,14 @@ namespace SBC.TimeCards.Controllers
              LanguageManager.SetLanguage(lang);
             return base.BeginExecuteCore(callback, state);
         }
+
         public ActionResult ChangeLanguage(string lang, string returnUrl)
         {
             LanguageManager.SetLanguage(lang);
+            if (String.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return Redirect(returnUrl);
         }
         protected readonly ApplicationUserManager _userManager;

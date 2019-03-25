@@ -27,5 +27,6 @@ namespace SBC.TimeCards.Service.Interfaces
         /// <param name="roleId"> the selected role id the default value is 0 which mean no selected roles</param>
         /// <returns></returns>
         Task<List<SelectListItem>> GetAllAvailableRolesAsSelectList(int roleId = 0 );
+        bool IsAdmin(int userId);
     }
 }

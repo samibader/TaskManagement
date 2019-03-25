@@ -31,13 +31,13 @@ namespace SBC.TimeCards.Controllers
             _userService = userService;
         }
 
-        [Authorize(Roles = AppRoles.Administrator)]
+       // [Authorize(Roles = AppRoles.Administrator)]
         // GET: Projects
         public ActionResult Index()
         {
             return View();
         }
-        [Authorize(Roles = AppRoles.Administrator)]
+        //[Authorize(Roles = AppRoles.Administrator)]
 
         public ActionResult PageData(IDataTablesRequest request)
         {
@@ -63,7 +63,7 @@ namespace SBC.TimeCards.Controllers
             return new DataTablesJsonResult(response, JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles = AppRoles.Administrator)]
+       // [Authorize(Roles = AppRoles.Administrator)]
         // GET: Users/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -79,14 +79,14 @@ namespace SBC.TimeCards.Controllers
             return View(project);
         }
 
-        [Authorize(Roles = AppRoles.Administrator)]
+      //  [Authorize(Roles = AppRoles.Administrator)]
         // GET: Projects/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        [Authorize(Roles = AppRoles.Administrator)]
+        //[Authorize(Roles = AppRoles.Administrator)]
         // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -101,7 +101,7 @@ namespace SBC.TimeCards.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = AppRoles.Administrator)]
+       // [Authorize(Roles = AppRoles.Administrator)]
         // GET: Projects/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -117,7 +117,7 @@ namespace SBC.TimeCards.Controllers
             return View(project);
         }
 
-        [Authorize(Roles = AppRoles.Administrator)]
+        //[Authorize(Roles = AppRoles.Administrator)]
         // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -136,7 +136,7 @@ namespace SBC.TimeCards.Controllers
             return View(project);
         }
 
-        [Authorize(Roles = AppRoles.Administrator)]
+        //[Authorize(Roles = AppRoles.Administrator)]
         // GET: Projects/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
@@ -158,6 +158,11 @@ namespace SBC.TimeCards.Controllers
             await _projectService.Archive(id);
             return Json(new { success = true ,url=Url.Action("Index","Home")});
         }
+        public async Task<ActionResult> UnArchive(int id)
+        {
+            await _projectService.UnArchive(id);
+            return Json(new { success = true, url = Url.Action("Index", "Home") });
+        }
 
         [HttpPost]
         public async Task<ActionResult> ChangeColor(int id,string color)
@@ -167,7 +172,7 @@ namespace SBC.TimeCards.Controllers
             await _projectService.ChangeColor(id, color);
             return Json(new { success = true, message="Project color changed" });
         }
-        [Authorize(Roles = AppRoles.Administrator)]
+      //  [Authorize(Roles = AppRoles.Administrator)]
         // POST: TimeRecords/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -238,7 +243,7 @@ namespace SBC.TimeCards.Controllers
             return PartialView("_SidebarFavorites",model);
         }
         #endregion
-        [Authorize(Roles = AppRoles.Administrator)]
+      //  [Authorize(Roles = AppRoles.Administrator)]
         #region Validation API
         [HttpPost]
         public async Task<JsonResult> CheckUniqueProjectName(string Name, int? Id)
