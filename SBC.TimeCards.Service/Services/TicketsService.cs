@@ -67,14 +67,17 @@ namespace SBC.TimeCards.Service.Services
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
         }
-        public void UpdateDueDate(int id, DateTime dueDate)
+        public void UpdateDueDate(int id, DateTime? dueDate)
         {
             var ticket = _unitOfWork.Tickets.GetById(id);
             ticket.DueDate = dueDate;
-            if (ticket.DueDate.Value.Date <= GlobalSettings.CURRENT_DATETIME.Date)
-                ticket.StateId = (int)TicketStates.Delayed;
-            else
-                ticket.StateId = (int)TicketStates.Active;
+            if (ticket.DueDate.HasValue)
+            {
+                if (ticket.DueDate.Value.Date <= GlobalSettings.CURRENT_DATETIME.Date)
+                    ticket.StateId = (int)TicketStates.Delayed;
+                else
+                    ticket.StateId = (int)TicketStates.Active;
+            }
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
         }

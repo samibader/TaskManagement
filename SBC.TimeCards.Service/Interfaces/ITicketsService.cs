@@ -21,7 +21,7 @@ namespace SBC.TimeCards.Service.Interfaces
         void UpdateTitle(int id, string title);
         void UpdateDescription(int id, string desc);
         void UpdateAssignee(int id, int? assigneeId);
-        void UpdateDueDate(int id, DateTime dueDate);
+        void UpdateDueDate(int id, DateTime? dueDate);
         void MarkDone(int id);
         void MarkUnDone(int id);
         TicketKanabanViewModel GetKanabanByProjectId(int projectId);
