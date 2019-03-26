@@ -320,7 +320,31 @@
         }
         //})
     </script>
-
+    <script>
+        function initTemplate(type){
+            $.ajax({
+                type:'post',
+                url:'@Url.Action("Init","Templates")',
+                data:{TicketId:$('#edit-ticket').data('tid'),TemplateTypeId:type},
+                success:function(data){
+                    $("#templates").append(data);
+                }
+            })
+        }
+        $(document).on("submit",".up-t",function(e){
+            var $this = $(this);
+            debugger;
+            e.preventDefault();
+            $.ajax({
+                type:'post',
+                url:$this.attr('action'),
+                data:$this.serialize(),
+                success:function(data){
+                    alert('success');
+                }
+            });
+        })
+    </script>
 
 }
 

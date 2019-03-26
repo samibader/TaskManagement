@@ -1,0 +1,11 @@
+﻿@model List<SBC.TimeCards.Service.Models.Templates.TemplateViewModel>
+@{
+    Layout = null;
+}
+<div id="templates">
+
+    @foreach (var item in Model)
+    {
+        Html.RenderAction("RenderTemplate", "Templates", item);
+    }
+</div>

@@ -244,6 +244,7 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SidebarController.cs" />
+    <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -2590,6 +2591,10 @@
     <Content Include="Views\Projects\_SidebarFavorites.cshtml" />
     <Content Include="Views\Tickets\MyTickets.cshtml" />
     <Content Include="Views\Search\FullResults.cshtml" />
+    <Content Include="Views\Templates\_NetworkTemplate.cshtml" />
+    <Content Include="Views\Templates\_ServerTemplate.cshtml" />
+    <Content Include="Views\Templates\_TemplateLayout.cshtml" />
+    <Content Include="Views\Templates\_Templates.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

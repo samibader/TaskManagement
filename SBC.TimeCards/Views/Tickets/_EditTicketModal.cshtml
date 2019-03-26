@@ -21,6 +21,8 @@
 
 
             <button type="button" class="btn btn-outline-danger" onclick="delTicket(@Model.Id)">Delete </button>
+            <button type="button" class="btn btn-outline-danger" onclick="initTemplate(1)">server </button>
+            <button type="button" class="btn btn-outline-danger" onclick="initTemplate(4)">network </button>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -84,6 +86,18 @@
                     </div>
                 </div>
             </div>
+
+            <hr />
+            <div class="row clearfix fields">
+                <div class="col-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <a href="#" class="btn btn-primary" onclick="addSubTicket(@Model.Id)"><i class="fa fa-plus"></i>Add Template</a>
+                        </div>
+                    </div>
+                </div>
+                @{ Html.RenderAction("GetTemplates", "Templates", new { ticketId = Model.Id });}
+            </div>
             @if (!Model.IsSubTask)
             {
                 <hr />
@@ -126,7 +140,7 @@
 <script>
     $(document).ready(function () {
         $("#DueDate").datepicker({
-            format:"dd/mm/yyyy"
+            format: "dd/mm/yyyy"
         });
     })
 

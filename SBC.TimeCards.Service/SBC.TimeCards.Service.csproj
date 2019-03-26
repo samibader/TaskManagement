@@ -112,6 +112,7 @@
     <Compile Include="Models\Projects\CreateProjectViewModel.cs" />
     <Compile Include="Models\Projects\DetailedProjectViewModel.cs" />
     <Compile Include="Models\Search\SearchResultsViewModel.cs" />
+    <Compile Include="Models\Templates\TemplateViewModel.cs" />
     <Compile Include="Models\Tickets\CreateTicketViewModel.cs" />
     <Compile Include="Models\Tickets\EditTicketViewModel.cs" />
     <Compile Include="Models\Tickets\TicketKanabanViewModel.cs" />
