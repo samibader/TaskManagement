@@ -3,17 +3,26 @@
 @{
     Layout = null;
 }
-@using (Html.BeginForm("UpdateTemplate", "Templates", FormMethod.Post, new { @class = "up-t" }))
-{
 
-    <div class="col-md-12">
-        <div>
-            @Html.HiddenFor(x => x.Id)
-            @Html.HiddenFor(x => x.TemplateTypeId)
-            @Html.HiddenFor(x => x.TicketId)
-            @RenderBody()
+<div class="template-container">
+    @using (Html.BeginForm("UpdateTemplate", "Templates", FormMethod.Post, new { @class = "up-t" }))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.TemplateTypeId)
+        @Html.HiddenFor(x => x.TicketId)
+        <div class="row clearfix">
+            <div class="col-12">
+                @RenderBody()
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="submit" value="Save" class="btn btn-sm btn-success" />
+                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteTemplate(@Model.Id)">Delete</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
         </div>
-        <input type="submit" value="Save" />
-        <button type="button" onclick="deleteTemplate(@Model.Id)" >Delete</button>
-    </div>
-}
+    }
+</div>

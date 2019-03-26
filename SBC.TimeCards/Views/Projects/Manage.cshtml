@@ -14,6 +14,20 @@
         .modal-dialog {
             max-width: 1000px;
         }
+        .template-container {
+            border: 3px double #e9ecef;
+            margin: 10px;
+        }
+        #networks {
+            background-color: #f6f6f6;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        #disks {
+            background-color: #f6f6f6;
+            margin: 10px 0;
+            padding: 10px;
+        }
     </style>
 }
 
@@ -361,7 +375,7 @@
                 url:'@Url.Action("InitDisk","Templates")',
                 data:{id:id},
                 success:function(data){
-                    $this.closest("div").append(data);
+                    $this.closest("#disks").append(data);
                 }
             })
         }
@@ -372,7 +386,7 @@
                 url:'@Url.Action("InitServerNetwork", "Templates")',
                 data:{id:id},
                 success:function(data){
-                    $this.closest("div").append(data);
+                    $this.closest("#networks").append(data);
                 }
             })
         }

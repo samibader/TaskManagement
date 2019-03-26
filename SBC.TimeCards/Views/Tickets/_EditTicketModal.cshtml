@@ -21,8 +21,8 @@
 
 
             <button type="button" class="btn btn-outline-danger" onclick="delTicket(@Model.Id)">Delete </button>
-            <button type="button" class="btn btn-outline-danger" onclick="initTemplate(1)">server </button>
-            <button type="button" class="btn btn-outline-danger" onclick="initTemplate(4)">network </button>
+            @*<button type="button" class="btn btn-outline-danger" onclick="initTemplate(1)">server </button>
+            <button type="button" class="btn btn-outline-danger" onclick="initTemplate(4)">network </button>*@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -92,7 +92,10 @@
                 <div class="col-12">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <a href="#" class="btn btn-primary" onclick="addSubTicket(@Model.Id)"><i class="fa fa-plus"></i>Add Template</a>
+                            <a href="#" class="btn btn-primary" onclick="initTemplate(1)"><i class="fa fa-plus"></i> Add Server Template</a>
+                            <a href="#" class="btn btn-primary" onclick="initTemplate(4)"><i class="fa fa-plus"></i> Add Network Template</a>
+                            <a href="#" class="btn btn-primary" onclick="initTemplate(3)"><i class="fa fa-plus"></i> Add Device Template</a>
+                            <a href="#" class="btn btn-primary" onclick="initTemplate(2)"><i class="fa fa-plus"></i> Add User Template</a>
                         </div>
                     </div>
                 </div>

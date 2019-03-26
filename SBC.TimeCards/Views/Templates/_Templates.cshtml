@@ -2,10 +2,13 @@
 @{
     Layout = null;
 }
-<div id="templates">
+<hr />
+<div id="templates" class="col-12">
 
     @foreach (var item in Model)
-    {
-        Html.RenderAction("RenderTemplate", "Templates", item);
-    }
+        {
+            Html.RenderAction("RenderTemplate", "Templates", item);
+        }
+    
 </div>
+<hr>

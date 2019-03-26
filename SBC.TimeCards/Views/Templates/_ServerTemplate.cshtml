@@ -2,17 +2,56 @@
 @{
     Layout = "~/Views/Templates/_TemplateLayout.cshtml";
 }
-<h3>Server</h3>
-@Html.EditorFor(x => x.ServerName)
-<div id="networks">
-    <a href="javascript:void(0)" onclick="addNetwork(@Model.Id,this)"> add network</a>
-    @*@foreach (var item in Model.Networks)
-    {
-        Html.RenderPartial("_ServerNetworkTemplate", item, new ViewDataDictionary
-        {
-            TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "Networks[]" }
-        });
-    }*@
+
+<h4 style="background-color: #e9ecef;padding: 0px 0px 0px 16px;">Server</h4>
+
+<div class="row">
+    <div class="col-4">
+        @*<label class="control-label col-md-4 " for="AssigneeId">Server Name</label>*@
+        @Html.LabelFor(x => x.ServerName, new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                </div>
+                @Html.TextBoxFor(x => x.ServerName, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        @*<label class="control-label col-md-4 " for="AssigneeId">Server Name</label>*@
+        @Html.LabelFor(x => x.Ram, new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                </div>
+                @Html.TextBoxFor(x => x.Ram, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        @*<label class="control-label col-md-4 " for="AssigneeId">Server Name</label>*@
+        @Html.LabelFor(x => x.Cpu, new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                </div>
+                @Html.TextBoxFor(x => x.Cpu, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="networks" class="row">
+    <div class="col-4">
+        <label class="control-label col-md-12 ">Network Cards</label>
+        <div class="col-md-12">
+            <a href="javascript:void(0)" class="btn btn-primary btn-circle" onclick="addNetwork(@Model.Id,this)"><i class="fa fa-plus"></i></a>
+        </div>
+    </div>
+    
     @for (int i = 0; i < Model.Networks.Count; i++)
     {
         Html.RenderPartial("_ServerNetworkTemplate", Model.Networks[i], new ViewDataDictionary
@@ -21,18 +60,23 @@
         });
     }
 </div>
-<div id="disks">
-    <a href="javascript:void(0)" onclick="addDisk(@Model.Id,this)"> add Disk</a>
+<div id="disks" class="row">
+    <div class="col-4">
+        <label class="control-label col-md-12 ">Hard Disks</label>
+        <div class="col-md-12">
+            <a href="javascript:void(0)" class="btn btn-primary btn-circle" onclick="addDisk(@Model.Id,this)"><i class="fa fa-plus"></i></a>
+        </div>
+    </div>
 
 
     @*@foreach (var item in Model.Disks)
-    {
-        Html.RenderPartial("_ServerDiskTemplate", item, new ViewDataDictionary
         {
-            TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "Disks" }
-        });
-    }*@
-    @for(int i = 0; i < Model.Disks.Count; i++)
+            Html.RenderPartial("_ServerDiskTemplate", item, new ViewDataDictionary
+            {
+                TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "Disks" }
+            });
+        }*@
+    @for (int i = 0; i < Model.Disks.Count; i++)
     {
         Html.RenderPartial("_ServerDiskTemplate", Model.Disks[i], new ViewDataDictionary
         {

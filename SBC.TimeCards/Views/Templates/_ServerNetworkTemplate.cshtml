@@ -2,7 +2,26 @@
 @{
     Layout = null;
 }
-====
-<h6>Server Network</h6>
+
+<div class="col-2">
+    @*@Html.LabelFor(x => x.Ip, new { @class = "control-label col-md-12" })*@
+    <label class="control-label col-md-12 ">Card</label>
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.ServerTemplateId)
+    <div class="col-md-12">
+        @Html.TextBoxFor(x => x.Ip, new { @class = "form-control", @style = "font-size: 10px;", @placeholder = "IP" })
+    </div>
+    <div class="col-md-12">
+        @Html.TextBoxFor(x => x.Subnet, new { @class = "form-control", @style = "font-size: 10px;", @placeholder = "Subnet" })
+    </div>
+    <div class="col-md-12">
+        @Html.TextBoxFor(x => x.DefaultGateway, new { @class = "form-control", @style = "font-size: 10px;", @placeholder = "Default gateway" })
+    </div>
+    <div class="col-md-12">
+        @Html.TextBoxFor(x => x.Zone, new { @class = "form-control", @style = "font-size: 10px;", @placeholder = "Zone" })
+    </div>
+</div>
+
+@*<h6>Server Network</h6>
 @Html.HiddenFor(x=>x.Id)
-@Html.EditorFor(x => x.Ip)
+@Html.EditorFor(x => x.Ip)*@
