@@ -12,7 +12,7 @@
         <div class="col-md-8">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="icon-user"></i></span>
+                    <span class="input-group-text"><i class="fa fa-server"></i></span>
                 </div>
                 @Html.TextBoxFor(x => x.ServerName, new { @class = "form-control" })
             </div>
@@ -24,7 +24,7 @@
         <div class="col-md-8">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="icon-user"></i></span>
+                    <span class="input-group-text"><i class="icon-layers"></i></span>
                 </div>
                 @Html.TextBoxFor(x => x.Ram, new { @class = "form-control" })
             </div>
@@ -36,7 +36,7 @@
         <div class="col-md-8">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="icon-user"></i></span>
+                    <span class="input-group-text"><i class="fa fa-microchip"></i></span>
                 </div>
                 @Html.TextBoxFor(x => x.Cpu, new { @class = "form-control" })
             </div>
@@ -46,7 +46,7 @@
 
 <div id="networks" class="row">
     <div class="col-4">
-        <label class="control-label col-md-12 ">Network Cards</label>
+        <label class="control-label col-md-12 "><i class="fa fa-sitemap"></i> Network Cards</label>
         <div class="col-md-12">
             <a href="javascript:void(0)" class="btn btn-primary btn-circle" onclick="addNetwork(@Model.Id,this)"><i class="fa fa-plus"></i></a>
         </div>
@@ -62,7 +62,7 @@
 </div>
 <div id="disks" class="row">
     <div class="col-4">
-        <label class="control-label col-md-12 ">Hard Disks</label>
+        <label class="control-label col-md-12 "><i class="fa fa-hdd-o"></i> Hard Disks</label>
         <div class="col-md-12">
             <a href="javascript:void(0)" class="btn btn-primary btn-circle" onclick="addDisk(@Model.Id,this)"><i class="fa fa-plus"></i></a>
         </div>
