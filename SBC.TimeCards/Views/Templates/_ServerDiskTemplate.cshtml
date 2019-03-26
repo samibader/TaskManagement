@@ -1,0 +1,9 @@
+﻿@model SBC.TimeCards.Service.Models.Templates.ServerDiskTemplateViewModel
+@{
+    Layout = null;
+}
+====
+<h6>ServerDisk</h6>
+@Html.HiddenFor(x=>x.Id)
+@Html.HiddenFor(x=>x.ServerTemplateId)
+@Html.EditorFor(x => x.Value)

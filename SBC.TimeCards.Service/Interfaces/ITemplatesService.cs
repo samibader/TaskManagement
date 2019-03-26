@@ -12,5 +12,10 @@ namespace SBC.TimeCards.Service.Interfaces
         void UpdateTemplate(TemplateViewModel template);
         TemplateViewModel Init(TemplateViewModel template);
         List<TemplateViewModel> GetTemplates(int ticketId);
+        void Delete(int ticketTmplateId);
+        ServerDiskTemplateViewModel InitDisk(int id);
+        ServerNetworkTemplateViewModel InitNetwork(int id);
+        int GetDisksCount(int id);
+        int GetNetworkCount(int id);
     }
 }

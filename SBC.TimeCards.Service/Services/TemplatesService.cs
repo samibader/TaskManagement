@@ -32,7 +32,19 @@ namespace SBC.TimeCards.Service.Services
             else if (template.TemplateTypeId == (int)TemplateTypes.ServerTemplate)
             {
                 Mapper.Map<TemplateViewModel, ServerTemplate>(template, ticketTemplate.ServerTemplate);
-
+                foreach (var item in template.Disks)
+                {
+                    var disk = ticketTemplate.ServerTemplate.ServerDiskTemplates.FirstOrDefault(x => x.Id == item.Id);
+                    disk.Value = item.Value;
+                }
+                foreach (var item in template.Networks)
+                {
+                    var network = ticketTemplate.ServerTemplate.ServerNetworkTemplates.FirstOrDefault(x => x.Id == item.Id);
+                    network.Ip = item.Ip;
+                    network.Subnet = item.Subnet;
+                    network.DefaultGateway = item.DefaultGateway;
+                    network.Zone = item.Zone;
+                }
             }
             else if (template.TemplateTypeId == (int)TemplateTypes.DeviceTemplate)
             {
@@ -80,6 +92,11 @@ namespace SBC.TimeCards.Service.Services
             _unitOfWork.TicketTemplates.Add(tt);
             _unitOfWork.SaveChanges();
             template.Id = tt.Id;
+            //Fix missing data for servertemplate
+            if (tt.TemplateTypeId == (int)TemplateTypes.ServerTemplate)
+            {
+                Mapper.Map<ServerTemplate, TemplateViewModel>(tt.ServerTemplate, template);
+            }
             return template;
         }
 
@@ -117,6 +134,45 @@ namespace SBC.TimeCards.Service.Services
                 res.Add(t);
             }
             return res;
+        }
+
+        public void Delete(int ticketTmplateId)
+        {
+            var ticketTemplate = _unitOfWork.TicketTemplates.GetById(ticketTmplateId);
+            ticketTemplate.NetworkTemplate = null;
+            _unitOfWork.TicketTemplates.Remove(ticketTemplate);
+            _unitOfWork.SaveChanges();
+        }
+
+        public ServerDiskTemplateViewModel InitDisk(int id)
+        {
+            var ticketTemplate = _unitOfWork.TicketTemplates.GetById(id);
+            var res = new ServerDiskTemplate();
+            ticketTemplate.ServerTemplate.ServerDiskTemplates.Add(res);
+            _unitOfWork.TicketTemplates.Update(ticketTemplate);
+            _unitOfWork.SaveChanges();
+            return Mapper.Map<ServerDiskTemplate, ServerDiskTemplateViewModel>(res);
+        }
+
+        public ServerNetworkTemplateViewModel InitNetwork(int id)
+        {
+            var ticketTemplate = _unitOfWork.TicketTemplates.GetById(id);
+            var res = new ServerNetworkTemplate();
+            ticketTemplate.ServerTemplate.ServerNetworkTemplates.Add(res);
+            _unitOfWork.TicketTemplates.Update(ticketTemplate);
+            _unitOfWork.SaveChanges();
+            return Mapper.Map<ServerNetworkTemplate, ServerNetworkTemplateViewModel>(res);
+        }
+
+        public int GetDisksCount(int id)
+        {
+            return _unitOfWork.ServerDiskTemplates.GetBy(x => x.ServerTemplateId == id).Count();
+        }
+
+        public int GetNetworkCount(int id)
+        {
+            return _unitOfWork.ServerNetworkTemplates.GetBy(x => x.ServerTemplateId == id).Count();
+
         }
     }
 }
