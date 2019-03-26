@@ -14,15 +14,18 @@
         .modal-dialog {
             max-width: 1000px;
         }
+
         .template-container {
             border: 3px double #e9ecef;
             margin: 10px;
         }
+
         #networks {
             background-color: #f6f6f6;
             margin: 10px 0;
             padding: 10px;
         }
+
         #disks {
             background-color: #f6f6f6;
             margin: 10px 0;
@@ -358,13 +361,15 @@
                 }
             });
         })
-        function deleteTemplate(id){
+        function deleteTemplate(id,el){
             $.ajax({
                 type:'post',
                 url:"@Url.Action("Delete","Templates")",
                 data:{id:id},
                 success:function(data){
-                    alert('success');
+                    if(data.success){
+                        $(el).closest('.template-container').remove();
+                    }
                 }
             })
         }
@@ -388,6 +393,47 @@
                 success:function(data){
                     $this.closest("#networks").append(data);
                 }
+            })
+        }
+        function deleteDisk(id,el){
+            $.ajax({
+                type:'post',
+                url:'@Url.Action("DeleteDisk", "Templates")',
+                data:{id:id},
+                success:function(data){
+                    if(data.success){
+                        $(el).closest(".col-2").remove();
+                    }
+                }
+            })
+        }
+        function deleteNetwork(id,el){
+            $.ajax({
+                type:'post',
+                url:'@Url.Action("DeleteNetwork", "Templates")',
+                data:{id:id},
+                success:function(data){
+                    if(data.success){
+                        $(el).closest(".col-2").remove();
+                        reOrderNetwork();
+                    }
+                }
+            })
+        }
+        function reOrderNetwork(){
+            $("div[id*=nt-]").each(function(idxx,ell){
+                $(ell).find(("input[name*=Network]")).each(function(idx,el){
+                    console.log(el);
+                    $(el).attr('name','Networks['+idxx+']'+$(el).attr('name').split(']')[1]);
+                })
+            })
+        }
+        function reOrderDisk(){
+            $("div[id*=dsk-]").each(function(idxx,ell){
+                $(ell).find(("input[name*=Disk]")).each(function(idx,el){
+                    console.log(el);
+                    $(el).attr('name','Disks['+idxx+']'+$(el).attr('name').split(']')[1]);
+                })
             })
         }
     </script>

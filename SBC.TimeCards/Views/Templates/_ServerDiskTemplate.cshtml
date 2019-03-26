@@ -7,9 +7,9 @@
 @Html.HiddenFor(x=>x.Id)
 @Html.HiddenFor(x=>x.ServerTemplateId)
 @Html.EditorFor(x => x.Value)*@
-<div class="col-2">
+<div class="col-2" id="dsk-@Model.Id">
     @*@Html.LabelFor(x => x.Value, new { @class = "control-label col-md-12" })*@
-    <label class="control-label col-md-12 ">Capacity</label>
+    <label class="control-label col-md-12 ">Capacity <a href="#" onclick="deleteDisk(@Model.Id,this)" style="color:red;float:right;margin-top:5px;"><i class="fa fa-minus"></i></a></label>
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.ServerTemplateId)
     <div class="col-md-12">

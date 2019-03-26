@@ -63,5 +63,15 @@ namespace SBC.TimeCards.Controllers
             ViewData.TemplateInfo.HtmlFieldPrefix = string.Format("Networks[{0}]", _templatesService.GetNetworkCount(id)-1);
             return PartialView("_ServerNetworkTemplate",res);
         }
+        public ActionResult DeleteDisk(int id)
+        {
+            _templatesService.DeleteDisk(id);
+            return Json(new { success = true });
+        }
+        public ActionResult DeleteNetwork(int id)
+        {
+            _templatesService.DeleteNetwork(id);
+            return Json(new { success = true });
+        }
     }
 }

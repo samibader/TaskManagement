@@ -17,5 +17,7 @@ namespace SBC.TimeCards.Service.Interfaces
         ServerNetworkTemplateViewModel InitNetwork(int id);
         int GetDisksCount(int id);
         int GetNetworkCount(int id);
+        void DeleteDisk(int id);
+        void DeleteNetwork(int id);
     }
 }

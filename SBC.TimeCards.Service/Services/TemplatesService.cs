@@ -174,5 +174,19 @@ namespace SBC.TimeCards.Service.Services
             return _unitOfWork.ServerNetworkTemplates.GetBy(x => x.ServerTemplateId == id).Count();
 
         }
+
+        public void DeleteDisk(int id)
+        {
+            var disk = _unitOfWork.ServerDiskTemplates.GetById(id);
+            _unitOfWork.ServerDiskTemplates.Remove(disk);
+            _unitOfWork.SaveChanges();
+        }
+
+        public void DeleteNetwork(int id)
+        {
+            var net = _unitOfWork.ServerNetworkTemplates.GetById(id);
+            _unitOfWork.ServerNetworkTemplates.Remove(net);
+            _unitOfWork.SaveChanges();
+        }
     }
 }
