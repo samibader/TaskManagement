@@ -53,4 +53,8 @@ namespace SBC.TimeCards.Common
     {
         Active = 1, Done = 2, Delayed = 3
     }
+    public enum TemplateTypes
+    {
+        ServerTemplate = 1, DeviceTemplate = 3, NetworkTemplate = 4, UserTemplate = 2
+    }
 }

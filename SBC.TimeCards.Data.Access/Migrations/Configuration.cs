@@ -46,6 +46,25 @@ namespace SBC.TimeCards.Data.Access.Migrations
             {
                 SeedTicketStates(context);
             }
+            if (!context.TemplateTypes.Any())
+            {
+                context.TemplateTypes.Add(new TemplateType
+                {
+                    Name = "Server"
+                });
+                context.TemplateTypes.Add(new TemplateType
+                {
+                    Name = "User"
+                }); context.TemplateTypes.Add(new TemplateType
+                {
+                    Name = "Device"
+                }); context.TemplateTypes.Add(new TemplateType
+                {
+                    Name = "Network"
+                });
+                context.SaveChanges();
+            }
+            
         }
 
         /// <summary>

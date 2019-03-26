@@ -100,6 +100,7 @@
     <Compile Include="Interfaces\IEmailService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Interfaces\ISearchService.cs" />
+    <Compile Include="Interfaces\ITemplatesService.cs" />
     <Compile Include="Interfaces\ITicketsService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="AutoMapping\ViewModelMapper.cs" />
@@ -112,6 +113,9 @@
     <Compile Include="Models\Projects\CreateProjectViewModel.cs" />
     <Compile Include="Models\Projects\DetailedProjectViewModel.cs" />
     <Compile Include="Models\Search\SearchResultsViewModel.cs" />
+    <Compile Include="Models\Templates\ServerDiskTemplateViewModel.cs" />
+    <Compile Include="Models\Templates\ServerNetworkTemplateViewModel.cs" />
+    <Compile Include="Models\Templates\TemplateViewModel.cs" />
     <Compile Include="Models\Tickets\CreateTicketViewModel.cs" />
     <Compile Include="Models\Tickets\EditTicketViewModel.cs" />
     <Compile Include="Models\Tickets\TicketKanabanViewModel.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\ProjectService.cs" />
     <Compile Include="Services\SearchService.cs" />
+    <Compile Include="Services\TemplatesService.cs" />
     <Compile Include="Services\TicketsService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>

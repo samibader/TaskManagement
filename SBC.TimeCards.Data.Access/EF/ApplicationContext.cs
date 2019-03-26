@@ -25,6 +25,14 @@ namespace SBC.TimeCards.Data.EF
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<TicketState> TicketStates { get; set; }
+        public virtual DbSet<TicketTemplate> TicketTemplates { get; set; }
+        public virtual DbSet<TemplateType> TemplateTypes { get; set; }
+        public virtual DbSet<ServerTemplate> ServerTemplates { get; set; }
+        public virtual DbSet<DeviceTemplate> DeviceTemplates { get; set; }
+        public virtual DbSet<UserTemplate> UserTemplates { get; set; }
+        public virtual DbSet<NetworkTemplate> NetworkTemplates { get; set; }
+        public virtual DbSet<ServerDiskTemplate> ServerDiskTemplates { get; set; }
+        public virtual DbSet<ServerNetworkTemplate> ServerNetworkTemplates { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -37,7 +45,14 @@ namespace SBC.TimeCards.Data.EF
             modelBuilder.Configurations.Add(new AttachmentConfiguration());
             modelBuilder.Configurations.Add(new TicketConfiguration());
             modelBuilder.Configurations.Add(new TicketStateConfiguration());
-            modelBuilder.Configurations.Add(new CommentConfiguration());
+            modelBuilder.Configurations.Add(new TemplateTypeConfiguration());
+            modelBuilder.Configurations.Add(new TicketTemplateConfiguration());
+            modelBuilder.Configurations.Add(new ServerTemplateConfiguration());
+            modelBuilder.Configurations.Add(new UserTemplateConfiguration());
+            modelBuilder.Configurations.Add(new DeviceTemplateConfiguration());
+            modelBuilder.Configurations.Add(new NetworkTemplateConfiguration());
+            modelBuilder.Configurations.Add(new ServerNetworkTemplateConfiguration());
+            modelBuilder.Configurations.Add(new ServerDiskTemplateConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }
