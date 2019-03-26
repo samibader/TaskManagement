@@ -46,15 +46,23 @@
   <ItemGroup>
     <Compile Include="Attachment.cs" />
     <Compile Include="Comment.cs" />
+    <Compile Include="DeviceTemplate.cs" />
+    <Compile Include="NetworkTemplate.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="ServerDiskTemplate.cs" />
+    <Compile Include="ServerNetworkTemplate.cs" />
+    <Compile Include="ServerTemplate.cs" />
+    <Compile Include="TemplateType.cs" />
     <Compile Include="Ticket.cs" />
     <Compile Include="TicketState.cs" />
+    <Compile Include="TicketTemplate.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserClaim.cs" />
     <Compile Include="UserLogin.cs" />
     <Compile Include="UserRole.cs" />
+    <Compile Include="UserTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

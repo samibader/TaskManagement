@@ -9,6 +9,7 @@ namespace SBC.TimeCards.Data.Models
         public Ticket()
         {
             SubTickets = new List<Ticket>();
+            TicketTemplates = new List<TicketTemplate>();
         }
         public int Id { get; set; }
         public string Title { get; set; }
@@ -27,6 +28,6 @@ namespace SBC.TimeCards.Data.Models
         public virtual Project Project { get; set; }
         public virtual IList<Ticket> SubTickets { get; set; }
         public virtual IList<Comment> Comments { get; set; }
-
+        public virtual IList<TicketTemplate> TicketTemplates { get; set; }
     }
 }

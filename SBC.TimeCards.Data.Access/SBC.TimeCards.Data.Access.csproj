@@ -55,6 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autofac\DataLayer.cs" />
+    <Compile Include="Configuration\ServerDiskTemplateConfiguration.cs" />
+    <Compile Include="Configuration\ServerNetworkTemplateConfiguration.cs" />
+    <Compile Include="Configuration\UserTemplateConfiguration.cs" />
+    <Compile Include="Configuration\DeviceTemplateConfiguration.cs" />
+    <Compile Include="Configuration\NetworkTemplateConfiguration.cs" />
+    <Compile Include="Configuration\ServerTemplateConfiguration.cs" />
+    <Compile Include="Configuration\TemplateTypeConfiguration.cs" />
+    <Compile Include="Configuration\TicketTemplateConfiguration.cs" />
     <Compile Include="Configuration\CommentConfiguration.cs" />
     <Compile Include="Configuration\TicketStateConfiguration.cs" />
     <Compile Include="Configuration\TicketConfiguration.cs" />
@@ -99,8 +107,20 @@
     <Compile Include="Migrations\201903121709506_add-comments.Designer.cs">
       <DependentUpon>201903121709506_add-comments.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903260031407_templates.cs" />
+    <Compile Include="Migrations\201903260031407_templates.Designer.cs">
+      <DependentUpon>201903260031407_templates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\NetworkTemplateRepository.cs" />
+    <Compile Include="Repositories\DeviceTemplateRepository.cs" />
+    <Compile Include="Repositories\ServerDiskTemplateRepository.cs" />
+    <Compile Include="Repositories\ServerNetworkTemplateRepository.cs" />
+    <Compile Include="Repositories\UserTemplateRepository.cs" />
+    <Compile Include="Repositories\ServerTemplateRepository.cs" />
+    <Compile Include="Repositories\TicketTemplateRepository.cs" />
+    <Compile Include="Repositories\TemplateTypeRepository.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
     <Compile Include="Repositories\TicketStateRepository.cs" />
     <Compile Include="Repositories\TicketRepository.cs" />
@@ -150,6 +170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903121709506_add-comments.resx">
       <DependentUpon>201903121709506_add-comments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903260031407_templates.resx">
+      <DependentUpon>201903260031407_templates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
