@@ -344,6 +344,38 @@
                 }
             });
         })
+        function deleteTemplate(id){
+            $.ajax({
+                type:'post',
+                url:"@Url.Action("Delete","Templates")",
+                data:{id:id},
+                success:function(data){
+                    alert('success');
+                }
+            })
+        }
+        function addDisk(id,el){
+            $this = $(el);
+            $.ajax({
+                type:'post',
+                url:'@Url.Action("InitDisk","Templates")',
+                data:{id:id},
+                success:function(data){
+                    $this.closest("div").append(data);
+                }
+            })
+        }
+        function addNetwork(id,el){
+            $this = $(el);
+            $.ajax({
+                type:'post',
+                url:'@Url.Action("InitServerNetwork", "Templates")',
+                data:{id:id},
+                success:function(data){
+                    $this.closest("div").append(data);
+                }
+            })
+        }
     </script>
 
 }

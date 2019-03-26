@@ -111,6 +111,10 @@
     <Compile Include="Migrations\201903260031407_templates.Designer.cs">
       <DependentUpon>201903260031407_templates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903260838220_fix-casecading-tempaltes.cs" />
+    <Compile Include="Migrations\201903260838220_fix-casecading-tempaltes.Designer.cs">
+      <DependentUpon>201903260838220_fix-casecading-tempaltes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\NetworkTemplateRepository.cs" />
@@ -173,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903260031407_templates.resx">
       <DependentUpon>201903260031407_templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903260838220_fix-casecading-tempaltes.resx">
+      <DependentUpon>201903260838220_fix-casecading-tempaltes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

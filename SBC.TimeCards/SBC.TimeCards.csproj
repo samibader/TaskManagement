@@ -2615,6 +2615,8 @@
     <Content Include="Views\Emails\NewProject.cshtml" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Views\Emails\Web.config" />
+    <Content Include="Views\Templates\_ServerNetworkTemplate.cshtml" />
+    <Content Include="Views\Templates\_ServerDiskTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

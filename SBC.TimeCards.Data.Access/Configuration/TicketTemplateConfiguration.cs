@@ -13,17 +13,17 @@ namespace SBC.TimeCards.Data.Configuration
             Property(c => c.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             HasRequired(x => x.Ticket)
-                 .WithMany(y => y.TicketTemplates);
+                 .WithMany(y => y.TicketTemplates).WillCascadeOnDelete(true);
             HasRequired(x => x.TemplateType)
                 .WithMany(y => y.TicketTemplates);
             HasOptional(x => x.DeviceTemplate)
-                 .WithRequired(x => x.TicketTemplate);
+                 .WithRequired(x => x.TicketTemplate).WillCascadeOnDelete(true);
             HasOptional(x => x.NetworkTemplate)
-                 .WithRequired(x => x.TicketTemplate);
+                 .WithRequired(x => x.TicketTemplate).WillCascadeOnDelete(true);
             HasOptional(x => x.ServerTemplate)
-                  .WithRequired(x => x.TicketTemplate);
+                  .WithRequired(x => x.TicketTemplate).WillCascadeOnDelete(true);
             HasOptional(x => x.UserTemplate)
-                  .WithRequired(x => x.TicketTemplate);
+                  .WithRequired(x => x.TicketTemplate).WillCascadeOnDelete(true);
         }
     }
 }

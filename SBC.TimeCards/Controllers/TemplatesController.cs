@@ -46,5 +46,22 @@ namespace SBC.TimeCards.Controllers
             }
             return View();
         }
+        public ActionResult Delete(int id)
+        {
+            _templatesService.Delete(id);
+            return Json(new { success=true});
+        }
+        public ActionResult InitDisk(int id)
+        {
+            var res = _templatesService.InitDisk(id);
+            ViewData.TemplateInfo.HtmlFieldPrefix = string.Format("Disks[{0}]", _templatesService.GetDisksCount(id)-1);
+            return PartialView("_ServerDiskTemplate",res);
+        }
+        public ActionResult InitServerNetwork(int id)
+        {
+            var res = _templatesService.InitNetwork(id);
+            ViewData.TemplateInfo.HtmlFieldPrefix = string.Format("Networks[{0}]", _templatesService.GetNetworkCount(id)-1);
+            return PartialView("_ServerNetworkTemplate",res);
+        }
     }
 }
