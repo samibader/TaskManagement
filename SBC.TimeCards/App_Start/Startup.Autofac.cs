@@ -8,6 +8,7 @@ using SBC.TimeCards.Data.Access.Autofac;
 using SBC.TimeCards.Service.Autofac;
 using Owin;
 using SBC.TimeCards.Common;
+using Hangfire;
 
 namespace SBC.TimeCards
 {
@@ -30,6 +31,8 @@ namespace SBC.TimeCards
 
             app.UseAutofacMiddleware(container);
             app.UseAutofacMvc();
+
+            GlobalConfiguration.Configuration.UseAutofacActivator(container);
         }
     }
 }

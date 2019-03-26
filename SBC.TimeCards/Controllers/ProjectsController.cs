@@ -1,9 +1,11 @@
 ﻿using DataTables.AspNet.Core;
 using DataTables.AspNet.Mvc5;
+using Hangfire;
 using Microsoft.AspNet.Identity;
 using SBC.TimeCards.Common;
 using SBC.TimeCards.Data.Infrastructure;
 using SBC.TimeCards.Data.Models;
+using SBC.TimeCards.Models.Emails;
 using SBC.TimeCards.Service.Identity;
 using SBC.TimeCards.Service.Interfaces;
 using SBC.TimeCards.Service.Models.Projects;
@@ -96,8 +98,12 @@ namespace SBC.TimeCards.Controllers
             {
                 model.UserId = Int32.Parse(User.Identity.GetUserId());
                 await _projectService.Create(model);
+
+                BackgroundJob.Enqueue(() => EmailNotificatioService.NotifyNewProject(1));
                 return RedirectToAction("Index","Home");
             }
+
+            //BackgroundJob.Enqueue<IMyService>(ms => ms.DoSomething());
             return View(model);
         }
 

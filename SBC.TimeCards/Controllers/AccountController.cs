@@ -289,7 +289,7 @@ namespace SBC.TimeCards.Controllers
             {
                 return View();
             }
-
+            
             // Generate the token and send it
             if (!await _signInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
