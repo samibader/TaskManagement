@@ -27,11 +27,21 @@ namespace SBC.TimeCards.Service.Services
 
             if (template.TemplateTypeId == (int)TemplateTypes.NetworkTemplate)
             {
-                ticketTemplate.NetworkTemplate.Ip = template.Ip;
+                Mapper.Map<TemplateViewModel, NetworkTemplate>(template, ticketTemplate.NetworkTemplate);
             }
             else if (template.TemplateTypeId == (int)TemplateTypes.ServerTemplate)
             {
-                ticketTemplate.ServerTemplate.Name = template.ServerName;
+                Mapper.Map<TemplateViewModel, ServerTemplate>(template, ticketTemplate.ServerTemplate);
+
+            }
+            else if (template.TemplateTypeId == (int)TemplateTypes.DeviceTemplate)
+            {
+                Mapper.Map<TemplateViewModel, DeviceTemplate>(template, ticketTemplate.DeviceTemplate);
+
+            }
+            else if (template.TemplateTypeId == (int)TemplateTypes.UserTemplate)
+            {
+                Mapper.Map<TemplateViewModel, UserTemplate>(template, ticketTemplate.UserTemplate);
 
             }
             _unitOfWork.TicketTemplates.Update(ticketTemplate);
@@ -52,32 +62,25 @@ namespace SBC.TimeCards.Service.Services
             else if (tt.TemplateTypeId == (int)TemplateTypes.ServerTemplate)
             {
                 tt.ServerTemplate = new ServerTemplate();
+                tt.ServerTemplate.ServerDiskTemplates.Add(new ServerDiskTemplate());
+                tt.ServerTemplate.ServerNetworkTemplates.Add(new ServerNetworkTemplate());
+            }
+            else if (tt.TemplateTypeId == (int)TemplateTypes.DeviceTemplate)
+            {
+                tt.DeviceTemplate = new DeviceTemplate();
+            }
+            else if (tt.TemplateTypeId == (int)TemplateTypes.UserTemplate)
+            {
+                tt.UserTemplate = new UserTemplate();
+            }
+            else
+            {
+                throw new InvalidOperationException("Type Error");
             }
             _unitOfWork.TicketTemplates.Add(tt);
             _unitOfWork.SaveChanges();
             template.Id = tt.Id;
             return template;
-            //if (template.TemplateTypeId == (int)TemplateTypes.NetworkTemplate)
-            //{
-            //    NetworkTemplateViewModel x = new NetworkTemplateViewModel
-            //    {
-            //        TicketId = template.TicketId,
-            //        Id = tt.Id,
-            //        TemplateTypeId = template.TemplateTypeId
-            //    };
-            //    return x;
-            //}
-            //if (template.TemplateTypeId == (int)TemplateTypes.ServerTemplate)
-            //{
-            //    ServerTemplateViewModel x = new ServerTemplateViewModel
-            //    {
-            //        TicketId = template.TicketId,
-            //        Id = tt.Id,
-            //        TemplateTypeId = template.TemplateTypeId
-            //    };
-            //    return x;
-            //}
-            //  return template;
         }
 
         public List<TemplateViewModel> GetTemplates(int ticketId)
@@ -96,11 +99,19 @@ namespace SBC.TimeCards.Service.Services
                 };
                 if (item.TemplateTypeId == (int)TemplateTypes.NetworkTemplate)
                 {
-                    t.Ip = item.NetworkTemplate.Ip;
+                    Mapper.Map<NetworkTemplate, TemplateViewModel>(item.NetworkTemplate, t);
                 }
                 else if (item.TemplateTypeId == (int)TemplateTypes.ServerTemplate)
                 {
-                    t.ServerName = item.ServerTemplate.Name;
+                    Mapper.Map<ServerTemplate, TemplateViewModel>(item.ServerTemplate, t);
+                }
+                else if (item.TemplateTypeId == (int)TemplateTypes.DeviceTemplate)
+                {
+                    Mapper.Map<DeviceTemplate, TemplateViewModel>(item.DeviceTemplate, t);
+                }
+                else if (item.TemplateTypeId == (int)TemplateTypes.UserTemplate)
+                {
+                    Mapper.Map<UserTemplate, TemplateViewModel>(item.UserTemplate, t);
                 }
 
                 res.Add(t);

@@ -11,6 +11,7 @@ using SBC.TimeCards.Service.Models.Attachments;
 using SBC.TimeCards.Common;
 using SBC.TimeCards.Service.Models.Tickets;
 using SBC.TimeCards.Service.Models.Comments;
+using SBC.TimeCards.Service.Models.Templates;
 
 namespace SBC.TimeCards.Service.AutoMapping
 {
@@ -31,7 +32,7 @@ namespace SBC.TimeCards.Service.AutoMapping
 
                 cfg.CreateMap<Project, ProjectViewModel>()
                  .ForMember(d => d.Owner, opt => opt.MapFrom(s => Mapper.Map<User, UserViewModel>(s.User)))
-                 .ForMember(d=>d.IsFavorite,opt=>opt.MapFrom(x=>x.User.FavoriteProjects.Contains(x)));
+                 .ForMember(d => d.IsFavorite, opt => opt.MapFrom(x => x.User.FavoriteProjects.Contains(x)));
                 cfg.CreateMap<Project, DetailedProjectViewModel>();
                 cfg.CreateMap<Project, EditProjectViewModel>();
                 // .ForMember(d => d.Users,
@@ -47,7 +48,7 @@ namespace SBC.TimeCards.Service.AutoMapping
                 cfg.CreateMap<Ticket, EditTicketViewModel>()
                     .ForMember(x => x.ProjectInfo, opt => opt.MapFrom(x => Mapper.Map<Project, ProjectViewModel>(x.ParentTicketId.HasValue ? x.Parent.Project : x.Project)))
                     .ForMember(x => x.IsSubTask, opt => opt.MapFrom(x => x.ParentTicketId.HasValue))
-                    .ForMember(x=>x.DueDate,opt=>opt.MapFrom(x=>x.DueDate.HasValue?x.DueDate.Value.ToShortDateString():""))
+                    .ForMember(x => x.DueDate, opt => opt.MapFrom(x => x.DueDate.HasValue ? x.DueDate.Value.ToShortDateString() : ""))
                     .ForMember(x => x.ParentTicketInfo, opt => opt.MapFrom(x => (x.ParentTicketId.HasValue ? Mapper.Map<Ticket, TicketViewModel>(x.Parent) : new TicketViewModel())));
 
                 cfg.CreateMap<Ticket, TicketViewModel>()
@@ -57,6 +58,18 @@ namespace SBC.TimeCards.Service.AutoMapping
                 .ForMember(x => x.ProjectInfo, opt => opt.MapFrom(x => Mapper.Map<Project, ProjectViewModel>(x.ParentTicketId.HasValue ? x.Parent.Project : x.Project)))
                 ;
 
+                cfg.CreateMap<NetworkTemplate, TemplateViewModel>()
+                    .ForMember(x => x.NetworkIp, opt => opt.MapFrom(x => x.Ip)).ReverseMap();
+                cfg.CreateMap<DeviceTemplate, TemplateViewModel>()
+                    .ForMember(x => x.DeviceIp, opt => opt.MapFrom(x => x.Ip)).ReverseMap();
+                cfg.CreateMap<UserTemplate, TemplateViewModel>().ReverseMap();
+                cfg.CreateMap<ServerTemplate, TemplateViewModel>()
+                .ForMember(x=>x.ServerName,opt=>opt.MapFrom(x=>x.Name))
+                .ForMember(x => x.Disks, opt => opt.MapFrom(x => Mapper.Map<List<ServerDiskTemplate>, List<ServerDiskTemplateViewModel>>(x.ServerDiskTemplates.ToList())))
+                .ForMember(x => x.Networks, opt => opt.MapFrom(x => Mapper.Map<List<ServerNetworkTemplate>, List<ServerNetworkTemplateViewModel>>(x.ServerNetworkTemplates.ToList())))
+                .ReverseMap();
+                cfg.CreateMap<ServerDiskTemplate, ServerDiskTemplateViewModel>().ReverseMap();
+                cfg.CreateMap<ServerNetworkTemplate, ServerNetworkTemplateViewModel>().ReverseMap();
                 //cfg.CreateMap<Ticket, TicketKanabanViewModel>()
                 //.ForMember(x=>x.ActiveTickets,opt=>opt.MapFrom(x=>x.SubTickets.Where(t=>t.StateId == (int)TicketStates.Active).ToList()))
                 //.ForMember(x => x.DoneTickets, opt => opt.MapFrom(x => x.SubTickets.Where(t => t.StateId == (int)TicketStates.Done).ToList()))
