@@ -5,7 +5,7 @@
 
 <div class="col-2" id="nt-@Model.Id">
     @*@Html.LabelFor(x => x.Ip, new { @class = "control-label col-md-12" })*@
-    <label class="control-label col-md-12 ">Card<a href="#" onclick="deleteNetwork(@Model.Id,this)" style="color:red;float:right;margin-top:5px;"><i class="fa fa-minus"></i></a></label>
+    <label class="control-label col-md-12 ">Card<a href="#" onclick="deleteNetwork(@Model.Id,this)" style="color:red;float:right;margin-top:5px;"><i class="fa fa-trash-o"></i></a></label>
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.ServerTemplateId)
     <div class="col-md-12">

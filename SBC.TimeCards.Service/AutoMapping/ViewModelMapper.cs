@@ -62,7 +62,8 @@ namespace SBC.TimeCards.Service.AutoMapping
                     .ForMember(x => x.NetworkIp, opt => opt.MapFrom(x => x.Ip)).ReverseMap();
                 cfg.CreateMap<DeviceTemplate, TemplateViewModel>()
                     .ForMember(x => x.DeviceIp, opt => opt.MapFrom(x => x.Ip)).ReverseMap();
-                cfg.CreateMap<UserTemplate, TemplateViewModel>().ReverseMap();
+                cfg.CreateMap<UserTemplate, TemplateViewModel>()
+                .ForMember(x => x.UserName, opt => opt.MapFrom(x => x.Name)).ReverseMap();
                 cfg.CreateMap<ServerTemplate, TemplateViewModel>()
                 .ForMember(x=>x.ServerName,opt=>opt.MapFrom(x=>x.Name))
                 .ForMember(x => x.Disks, opt => opt.MapFrom(x => Mapper.Map<List<ServerDiskTemplate>, List<ServerDiskTemplateViewModel>>(x.ServerDiskTemplates.ToList())))

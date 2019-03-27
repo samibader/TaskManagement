@@ -44,6 +44,14 @@ namespace SBC.TimeCards.Controllers
             {
                 return PartialView("_ServerTemplate", model);
             }
+            else if (model.TemplateTypeId == (int)TemplateTypes.UserTemplate)
+            {
+                return PartialView("_UserTemplate", model);
+            }
+            else if (model.TemplateTypeId == (int)TemplateTypes.DeviceTemplate)
+            {
+                return PartialView("_DeviceTemplate", model);
+            }
             return View();
         }
         public ActionResult Delete(int id)

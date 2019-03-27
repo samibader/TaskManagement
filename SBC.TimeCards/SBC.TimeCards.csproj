@@ -2617,6 +2617,8 @@
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Templates\_ServerNetworkTemplate.cshtml" />
     <Content Include="Views\Templates\_ServerDiskTemplate.cshtml" />
+    <Content Include="Views\Templates\_UserTemplate.cshtml" />
+    <Content Include="Views\Templates\_DeviceTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
