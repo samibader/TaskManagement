@@ -26,16 +26,51 @@
     <hr />
 }
 
-@if (Model.Ticktes.Any())
+@if (Model.Ticktes.Any() || Model.Templates.Any())
 {
     <h6 style="text-align:left; font-size:12px">Tickets</h6>
     <ul class="right_chat list-unstyled mb-0">
+        @foreach (var item in Model.Templates)
+        {
+            @*<li class="offline">
+                <a href="@Url.Action("Manage","Projects",new { id=item.Ticket.ProjectInfo.Id,tid=item.Ticket.Id })">
+                    <div class="media" style="margin-bottom:1px">
+                        <span class="media-object"><i class="fa fa-paperclip"></i></span>
+                        <div class="media-body" style="padding:2px;">
+                            <span class="name" style="font-size:12px; text-align:left">@((TemplateTypes)item.Template.TemplateTypeId) (@item.Ticket.Title)</span>
+                        </div>
+                    </div>
+                </a>
+            </li>*@
+            <li class="offline">
+                <a href="@Url.Action("Manage","Projects",new { id=item.Ticket.ProjectInfo.Id,tid=item.Ticket.Id})">
+                    <div class="media" style="margin-bottom:1px">
+                        <span class="media-object"><i class="@(item.Ticket.StateId==(int)TicketStates.Delayed?"fa fa-question-circle text-danger":item.Ticket.StateId==(int)TicketStates.Done?"fa fa-check-circle text-success":"fa fa-check-circle-o text-primary")"></i></span>
+                        <div class="media-body" style="padding:2px;">
+                            <span class="name" style="font-size:12px; text-align:left">
+                                @if (item.Ticket.ProjectInfo != null)
+                                {
+                                    <small><span class="badge" style="color:white;background-color:@item.Ticket.ProjectInfo.Color">@item.Ticket.ProjectInfo.Name</span></small>
+                                }
+                                @item.Ticket.Title <i class="icon-control-forward"></i> <mark style="font-weight: bold;font-style: italic;">@((TemplateTypes)item.Template.TemplateTypeId)</mark>
+                                @if (item.Ticket.Assignee != null)
+                                {
+
+                                }
+                                <small class="float-right"><i class="icon-clock"></i> @item.Ticket.DueDateAsString </small>
+                            </span>
+                            @*<span class="message">There are many variations of passages of Lorem Ipsum available, but the majority</span>*@
+                        </div>
+                    </div>
+                </a>
+            </li>
+        }
         @foreach (var item in Model.Ticktes)
         {
             <li class="offline">
                 <a href="@Url.Action("Manage","Projects",new { id=item.ProjectInfo.Id,tid=item.Id})">
                     <div class="media" style="margin-bottom:1px">
-                        <span class="media-object"><i class="@(item.StateId==(int)TicketStates.Delayed?"fa fa-question-circle text-danger":item.StateId==(int)TicketStates.Done?"fa fa-check-circle text-succes":"fa fa-check-circle-o text-primary")"></i></span>
+                        <span class="media-object"><i class="@(item.StateId==(int)TicketStates.Delayed?"fa fa-question-circle text-danger":item.StateId==(int)TicketStates.Done?"fa fa-check-circle text-success":"fa fa-check-circle-o text-primary")"></i></span>
                         <div class="media-body" style="padding:2px;">
                             <span class="name" style="font-size:12px; text-align:left">
                                 @if (item.ProjectInfo != null)
@@ -117,7 +152,7 @@
     </ul>
     <hr />
 }
-@if (Model.Templates.Any())
+@*@if (Model.Templates.Any())
 {
     <h6 style="text-align:left; font-size:12px">Templates</h6>
     <ul class="right_chat list-unstyled mb-0">
@@ -129,7 +164,6 @@
                         <span class="media-object"><i class="fa fa-paperclip"></i></span>
                         <div class="media-body" style="padding:2px;">
                             <span class="name" style="font-size:12px; text-align:left">@((TemplateTypes)item.Template.TemplateTypeId) (@item.Ticket.Title)</span>
-                            @*<span class="message">There are many variations of passages of Lorem Ipsum available, but the majority</span>*@
                         </div>
                     </div>
                 </a>
@@ -137,7 +171,7 @@
         }
     </ul>
     <hr />
-}
+}*@
 @if (!(Model.Users.Any() || Model.Ticktes.Any() || Model.Projects.Any() || Model.Attachments.Any() ||Model.Templates.Any()))
 {
     <div>

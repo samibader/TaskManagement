@@ -85,6 +85,7 @@ namespace SBC.TimeCards.Controllers
         // GET: Projects/Create
         public ActionResult Create()
         {
+            //BackgroundJob.Enqueue(() => EmailNotificatioService.SendNotificationEmail("Hello","badder.sammy@gmail.com","this is the message body , please go to <a href='http://www.google.com'>Google</a> to findout more information"));
             return View();
         }
 
@@ -99,7 +100,6 @@ namespace SBC.TimeCards.Controllers
                 model.UserId = Int32.Parse(User.Identity.GetUserId());
                 await _projectService.Create(model);
 
-                BackgroundJob.Enqueue(() => EmailNotificatioService.NotifyNewProject(1));
                 return RedirectToAction("Index","Home");
             }
 

@@ -31,10 +31,10 @@ namespace SBC.TimeCards.Service.Services
         {
             var res = new SearchResultsViewModel
             {
-                Attachments = Mapper.Map<List<Attachment>, List<AttachmentViewModel>>(_unitOfWork.Attachments.GetBy(x => x.Title.Contains(searchString)).Take(full ? Int32.MaxValue : 3).ToList()),
-                Users = Mapper.Map<List<User>, List<UserViewModel>>(_unitOfWork.Users.GetBy(x => x.Name.Contains(searchString)).ToList()),
-                Projects = Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetBy(x => x.Name.Contains(searchString) || x.Description.Contains(searchString)).Take(full ? Int32.MaxValue : 3).ToList()),
-                Ticktes = Mapper.Map<List<Ticket>, List<TicketViewModel>>(_unitOfWork.Tickets.GetBy(x => x.Title.Contains(searchString) || x.Description.Contains(searchString)).Take(full ? Int32.MaxValue : 3).ToList()),
+                Attachments = Mapper.Map<List<Attachment>, List<AttachmentViewModel>>(_unitOfWork.Attachments.GetBy(x => x.Title.ToLower().Contains(searchString.ToLower())).Take(full ? Int32.MaxValue : 3).ToList()),
+                Users = Mapper.Map<List<User>, List<UserViewModel>>(_unitOfWork.Users.GetBy(x => x.Name.ToLower().Contains(searchString.ToLower())).ToList()),
+                Projects = Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetBy(x => x.Name.ToLower().Contains(searchString.ToLower()) || x.Description.ToLower().Contains(searchString.ToLower())).Take(full ? Int32.MaxValue : 3).ToList()),
+                Ticktes = Mapper.Map<List<Ticket>, List<TicketViewModel>>(_unitOfWork.Tickets.GetBy(x => x.Title.ToLower().Contains(searchString.ToLower()) || x.Description.ToLower().Contains(searchString.ToLower())).Take(full ? Int32.MaxValue : 3).ToList()),
 
             };
             var jsonSer = new JavaScriptSerializer();
@@ -47,7 +47,7 @@ namespace SBC.TimeCards.Service.Services
                 {
                     var json = JToken.Parse(jsonSer.Serialize(item));
                     var fieldsCollector = new JsonFieldsCollector(json);
-                    if (fieldsCollector.GetAllFields().Any(x => x.Value.ToString().Contains(searchString)))
+                    if (fieldsCollector.GetAllFields().Any(x => x.Value.ToString().ToLower().Contains(searchString.ToLower())))
                     {
                         res.Templates.Add(new TemplateSearchViewModel
                         {
