@@ -10,24 +10,40 @@ using SBC.TimeCards.Data.Models;
 using SBC.TimeCards.Common;
 using AutoMapper;
 using SBC.TimeCards.Service.Models.Comments;
+using SBC.TimeCards.Service.Models.Notificatoion;
 
 namespace SBC.TimeCards.Service.Services
 {
-    public class Noti :EventArgs
-    {
-       public string Message;
-    }
     public class TicketsService : ITicketsService
     {
-       
+
         private readonly IUnitOfWork _unitOfWork;
 
-        public event EventHandler AssigneeChanged;
-        protected virtual void OnAssigneeChanged(Noti e)
+        public event EventHandler TicketUpdated;
+        protected virtual void AssineeChanged(NotificationArgs e)
         {
-            AssigneeChanged?.Invoke(this, e);
+            var t = Mapper.Map<Ticket, TicketViewModel>(_unitOfWork.Tickets.GetById(e.TicketId.Value));
+            e.Body = "You Have been Assigned Ticket " + t.Title;
+            e.Subject = "Progress on Project " + t.ProjectInfo.Name;
+            e.ProjcetId = t.ProjectInfo.Id;
+            TicketUpdated?.Invoke(this, e);
         }
-
+        protected virtual void TicketDone(NotificationArgs e)
+        {
+            var t = Mapper.Map<Ticket, TicketViewModel>(_unitOfWork.Tickets.GetById(e.TicketId.Value));
+            e.Body = "Ticket" + t.Title +"of User "+t.Assignee.Name+" Marked As done ";
+            e.Subject = "Progress on Project " + t.ProjectInfo.Name;
+            e.ProjcetId = t.ProjectInfo.Id;
+            TicketUpdated?.Invoke(this, e);
+        }
+        protected virtual void TicketUnDone(NotificationArgs e)
+        {
+            var t = Mapper.Map<Ticket, TicketViewModel>(_unitOfWork.Tickets.GetById(e.TicketId.Value));
+            e.Body = "Ticket" + t.Title + "of User " + t.Assignee.Name + " Marked As In Progress ";
+            e.Subject = "Progress on Project " + t.ProjectInfo.Name;
+            e.ProjcetId = t.ProjectInfo.Id;
+            TicketUpdated?.Invoke(this, e);
+        }
         public TicketsService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -77,7 +93,7 @@ namespace SBC.TimeCards.Service.Services
             ticket.AssigneeId = assigneeId;
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
-            OnAssigneeChanged(new Noti { Message = "asd" });
+            AssineeChanged(new NotificationArgs { To = _unitOfWork.Users.GetById(assigneeId.Value).Email, TicketId = ticket.Id });
         }
         public void UpdateDueDate(int id, DateTime? dueDate)
         {
@@ -99,6 +115,7 @@ namespace SBC.TimeCards.Service.Services
             ticket.StateId = (int)TicketStates.Done;
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
+            TicketDone(new NotificationArgs { TicketId = id, To = _unitOfWork.Users.GetById(ticket.Owner.Id).Email });
         }
         public void MarkUnDone(int id)
         {
@@ -106,6 +123,8 @@ namespace SBC.TimeCards.Service.Services
             ticket.StateId = (int)TicketStates.Active;
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
+            TicketUnDone(new NotificationArgs { TicketId = id, To = _unitOfWork.Users.GetById(ticket.Owner.Id).Email });
+
         }
         public TicketKanabanViewModel GetKanabanByProjectId(int projectId)
         {
@@ -169,12 +188,12 @@ namespace SBC.TimeCards.Service.Services
         {
             var ticket = _unitOfWork.Tickets.GetById(ticketId);
             var valid = false;
-            valid |= ticket.TicketTemplates.Any(x =>x.DeviceTemplate!=null &&( String.IsNullOrEmpty(x.DeviceTemplate.Ip) || String.IsNullOrEmpty(x.DeviceTemplate.Location) || String.IsNullOrEmpty(x.DeviceTemplate.Name) || String.IsNullOrEmpty(x.DeviceTemplate.Type)));
-            valid |= ticket.TicketTemplates.Any(x => x.NetworkTemplate !=null &&( String.IsNullOrEmpty(x.NetworkTemplate.Ip) || String.IsNullOrEmpty(x.NetworkTemplate.Subnet) || String.IsNullOrEmpty(x.NetworkTemplate.Zone) || String.IsNullOrEmpty(x.NetworkTemplate.DefaultGateway)));
-            valid |= ticket.TicketTemplates.Any(x => x.UserTemplate !=null &&(String.IsNullOrEmpty(x.UserTemplate.Name) || String.IsNullOrEmpty(x.UserTemplate.ExpirationDate) || String.IsNullOrEmpty(x.UserTemplate.OU) || String.IsNullOrEmpty(x.UserTemplate.Password) || String.IsNullOrEmpty(x.UserTemplate.Role)));
+            valid |= ticket.TicketTemplates.Any(x => x.DeviceTemplate != null && (String.IsNullOrEmpty(x.DeviceTemplate.Ip) || String.IsNullOrEmpty(x.DeviceTemplate.Location) || String.IsNullOrEmpty(x.DeviceTemplate.Name) || String.IsNullOrEmpty(x.DeviceTemplate.Type)));
+            valid |= ticket.TicketTemplates.Any(x => x.NetworkTemplate != null && (String.IsNullOrEmpty(x.NetworkTemplate.Ip) || String.IsNullOrEmpty(x.NetworkTemplate.Subnet) || String.IsNullOrEmpty(x.NetworkTemplate.Zone) || String.IsNullOrEmpty(x.NetworkTemplate.DefaultGateway)));
+            valid |= ticket.TicketTemplates.Any(x => x.UserTemplate != null && (String.IsNullOrEmpty(x.UserTemplate.Name) || String.IsNullOrEmpty(x.UserTemplate.ExpirationDate) || String.IsNullOrEmpty(x.UserTemplate.OU) || String.IsNullOrEmpty(x.UserTemplate.Password) || String.IsNullOrEmpty(x.UserTemplate.Role)));
             valid |= ticket.TicketTemplates.
-                Any(x => x.ServerTemplate!=null &&(  String.IsNullOrEmpty(x.ServerTemplate.Name) || String.IsNullOrEmpty(x.ServerTemplate.Ram) || String.IsNullOrEmpty(x.ServerTemplate.Cpu)
-                || x.ServerTemplate.ServerDiskTemplates.Any(y => String.IsNullOrEmpty(y.Value)) 
+                Any(x => x.ServerTemplate != null && (String.IsNullOrEmpty(x.ServerTemplate.Name) || String.IsNullOrEmpty(x.ServerTemplate.Ram) || String.IsNullOrEmpty(x.ServerTemplate.Cpu)
+                || x.ServerTemplate.ServerDiskTemplates.Any(y => String.IsNullOrEmpty(y.Value))
                 || x.ServerTemplate.ServerNetworkTemplates
                 .Any(y => String.IsNullOrEmpty(y.Ip) || String.IsNullOrEmpty(y.Subnet) || String.IsNullOrEmpty(y.Zone) || String.IsNullOrEmpty(y.DefaultGateway))));
             return !valid;

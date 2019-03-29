@@ -20,7 +20,7 @@ namespace SBC.TimeCards.Controllers
         public TicketsController(ApplicationUserManager userManager, TicketsService ticketService,UserService userService) : base(userManager)
         {
             _ticketService = ticketService;
-            _ticketService.AssigneeChanged += sendNoti;
+            _ticketService.TicketUpdated += sendNoti;
             _userService = userService;
         }
         // GET: Tickets

@@ -110,6 +110,7 @@
     <Compile Include="Models\Attachments\EditAttachmentViewModel.cs" />
     <Compile Include="Models\Comments\CommentViewModel.cs" />
     <Compile Include="Models\Comments\CreateCommentViewModel.cs" />
+    <Compile Include="Models\Notificatoion\NotificationArgs.cs" />
     <Compile Include="Models\Projects\EditProjectViewModel.cs" />
     <Compile Include="Models\Projects\CreateProjectViewModel.cs" />
     <Compile Include="Models\Projects\DetailedProjectViewModel.cs" />

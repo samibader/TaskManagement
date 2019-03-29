@@ -11,7 +11,7 @@ namespace SBC.TimeCards.Service.Interfaces
 {
     public interface ITicketsService
     {
-        event EventHandler AssigneeChanged;
+        event EventHandler TicketUpdated;
         
         /// <summary>
         /// initalize an empty ticket to be filled later

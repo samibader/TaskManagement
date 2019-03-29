@@ -15,6 +15,8 @@ using Microsoft.AspNet.Identity;
 using SBC.TimeCards.Service.Models;
 using SBC.TimeCards.Service.Services;
 using Hangfire;
+using SBC.TimeCards.Models.Emails;
+using SBC.TimeCards.Service.Models.Notificatoion;
 
 namespace SBC.TimeCards.Controllers
 {
@@ -42,7 +44,7 @@ namespace SBC.TimeCards.Controllers
                     lang = LanguageManager.GetDefaultLanguage();
                 }
             }
-             LanguageManager.SetLanguage(lang);
+            LanguageManager.SetLanguage(lang);
             return base.BeginExecuteCore(callback, state);
         }
 
@@ -86,10 +88,20 @@ namespace SBC.TimeCards.Controllers
         {
             base.OnException(filterContext);
         }
-        protected void sendNoti(object sender,EventArgs e)
+        protected void sendNoti(object sender, EventArgs e)
         {
-            var x = e as Noti;
-            BackgroundJob.Enqueue(() => Console.Write(x.Message));
+            var model = e as NotificationArgs;
+            var url = "";
+            if (!model.TicketId.HasValue)
+            {
+                url = Url.Action("Manage", "Projects", new { id = model.ProjcetId });
+            }
+            else
+            {
+                url = Url.Action("Manage", "Projects", new { id = model.ProjcetId,tid=model.TicketId });
+            }
+            model.Body = String.Format("{0}<br>{1}</br>", model.Body, url);
+            BackgroundJob.Enqueue(() => EmailNotificatioService.SendNotificationEmail(model.Subject, model.To, model.Body));
 
         }
     }
