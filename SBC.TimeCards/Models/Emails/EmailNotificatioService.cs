@@ -12,6 +12,7 @@ namespace SBC.TimeCards.Models.Emails
 {
     public static class EmailNotificatioService
     {
+
         public static void NotifyNewProject(int projectId)
         {
             // Prepare Postal classes to work outside of ASP.NET request
@@ -38,10 +39,19 @@ namespace SBC.TimeCards.Models.Emails
             //emailService.Send(email);
             //}
 
-            var message = emailService.CreateMailMessage(email);
+            //var message = emailService.CreateMailMessage(email);
 
-            SmtpClient client = new SmtpClient();
-            client.SendMailAsync(message);
+            //SmtpClient client = new SmtpClient();
+            //client.SendMailAsync(message);
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("someone@somewhere.com");
+            mailMessage.To.Add("someone.else@somewhere-else.com");
+            mailMessage.Subject = "Hello There";
+            mailMessage.Body = "Hello my friend!";
+            mailMessage.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.SendMailAsync(mailMessage);
+            //Console.WriteLine("HELOOOOOOOOOO : "+DateTime.Now.ToString());
         }
     }
 }
