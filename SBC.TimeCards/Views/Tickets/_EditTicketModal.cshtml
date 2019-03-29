@@ -1,7 +1,11 @@
 ﻿@model SBC.TimeCards.Service.Models.Tickets.EditTicketViewModel
 @using SBC.TimeCards.Common;
+@using Microsoft.AspNet.Identity;
+
+
 @{
     Layout = null;
+    var CurrentUserId = Int32.Parse(User.Identity.GetUserId());
 }
 <!-- The Modal -->
 
@@ -14,15 +18,17 @@
         <div class="modal-header">
             <h4 class="modal-title">Ticket #@Model.Id</h4>
             &nbsp; &nbsp; &nbsp; &nbsp;
-
-            <button type="button" id="mk-done" class="btn btn-outline-info" style="display:@(Model.StateId ==(int)TicketStates.Done?"none":"inline-block")" onclick="markDone(@Model.Id)">Mark As Complete</button>
-
-            <button type="button" id="mk-active" class="btn btn-outline-info" style="display:@(Model.StateId !=(int)TicketStates.Done?"none":"inline-block")" onclick="markUnDone(@Model.Id)">Mark As In progress</button>
-
-
-            <button type="button" class="btn btn-outline-danger" onclick="delTicket(@Model.Id)">Delete </button>
+            @if (CurrentUserId == Model.AssigneeId || User.IsInRole(AppRoles.Administrator))
+            {
+                <button type="button" id="mk-done" class="btn btn-outline-info" style="display:@(Model.StateId == (int)TicketStates.Done ? "none" : "inline-block")" onclick="markDone(@Model.Id)">Mark As Complete</button>
+                <button type="button" id="mk-active" class="btn btn-outline-info" style="display:@(Model.StateId != (int)TicketStates.Done ? "none" : "inline-block")" onclick="markUnDone(@Model.Id)">Mark As In progress</button>
+            }
+            @if (CurrentUserId == Model.OwnerId || User.IsInRole(AppRoles.Administrator))
+            {
+                <button type="button" class="btn btn-outline-danger" onclick="delTicket(@Model.Id)">Delete</button>
+            }
             @*<button type="button" class="btn btn-outline-danger" onclick="initTemplate(1)">server </button>
-            <button type="button" class="btn btn-outline-danger" onclick="initTemplate(4)">network </button>*@
+                <button type="button" class="btn btn-outline-danger" onclick="initTemplate(4)">network </button>*@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -46,7 +52,14 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2 " })
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @style = "font-size:20px" } })
+                            @if (Model.OwnerId == CurrentUserId || User.IsInRole(AppRoles.Administrator))
+                            {
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @style = "font-size:20px" } })
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @style = "font-size:20px", @disabled = "disabled" } })
+                            }
                             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -58,7 +71,14 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="icon-user"></i></span>
                                     </div>
-                                    @Html.DropDownListFor(model => model.AssigneeId, null, new { @class = "form-control" })
+                                    @if (Model.OwnerId == CurrentUserId || User.IsInRole(AppRoles.Administrator))
+                                    {
+                                        @Html.DropDownListFor(model => model.AssigneeId, null, new { @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(model => model.AssigneeId, null, new { @class = "form-control", @disabled = "disabled" })
+                                    }
                                     @Html.ValidationMessageFor(model => model.AssigneeId, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -71,7 +91,14 @@
                                         <span class="input-group-text"><i class="icon-clock"></i></span>
                                     </div>
                                     @*<input type="text" class="form-control time24" placeholder="Ex: 23:59">*@
-                                    @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    @if (Model.OwnerId == CurrentUserId || User.IsInRole(AppRoles.Administrator))
+                                    {
+                                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    }
+                                    else
+                                    {
+                                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                    }
                                     @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -80,7 +107,14 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 " })
                         <div class="col-md-12">
-                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control summernote", @rows = "5" })
+                            @if (Model.OwnerId == CurrentUserId || User.IsInRole(AppRoles.Administrator))
+                            {
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control summernote", @rows = "5" })
+                            }
+                            else
+                            {
+                                @Html.Raw(Model.Description)
+                            }
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -89,16 +123,19 @@
 
             <hr />
             <div class="row clearfix">
-                <div class="col-12">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <a href="#" class="btn btn-primary" onclick="initTemplate(1)"><i class="fa fa-plus"></i> Add Server Template</a>
-                            <a href="#" class="btn btn-primary" onclick="initTemplate(4)"><i class="fa fa-plus"></i> Add Network Template</a>
-                            <a href="#" class="btn btn-primary" onclick="initTemplate(3)"><i class="fa fa-plus"></i> Add Device Template</a>
-                            <a href="#" class="btn btn-primary" onclick="initTemplate(2)"><i class="fa fa-plus"></i> Add User Template</a>
+                @if (Model.AssigneeId == CurrentUserId || User.IsInRole(AppRoles.Administrator) || Model.OwnerId == CurrentUserId)
+                {
+                    <div class="col-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <a href="#" class="btn btn-primary" onclick="initTemplate(1)"><i class="fa fa-plus"></i> Add Server Template</a>
+                                <a href="#" class="btn btn-primary" onclick="initTemplate(4)"><i class="fa fa-plus"></i> Add Network Template</a>
+                                <a href="#" class="btn btn-primary" onclick="initTemplate(3)"><i class="fa fa-plus"></i> Add Device Template</a>
+                                <a href="#" class="btn btn-primary" onclick="initTemplate(2)"><i class="fa fa-plus"></i> Add User Template</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
                 @{ Html.RenderAction("GetTemplates", "Templates", new { ticketId = Model.Id });}
             </div>
             @if (!Model.IsSubTask)
@@ -107,9 +144,12 @@
                 <div class="row clearfix fields">
                     <div class="col-12">
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <a href="#" class="btn btn-primary" onclick="addSubTicket(@Model.Id)"><i class="fa fa-plus"></i> New Sub-Task</a>
-                            </div>
+                            @if (Model.AssigneeId == CurrentUserId || User.IsInRole(AppRoles.Administrator) || Model.OwnerId == CurrentUserId)
+                            {
+                                <div class="col-md-12">
+                                    <a href="#" class="btn btn-primary" onclick="addSubTicket(@Model.Id)"><i class="fa fa-plus"></i> New Sub-Task</a>
+                                </div>
+                            }
                         </div>
                     </div>
                     @{ Html.RenderAction("TicketsListByTicket", "Tickets", new { id = Model.Id });}
@@ -142,9 +182,14 @@
 </div>
 <script>
     $(document).ready(function () {
+        var nowDate = new Date();
+        var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() - 1);
+        console.log(today);
         $("#DueDate").datepicker({
-            format: "dd/mm/yyyy"
+            format: "dd/mm/yyyy",
+            startDate: '-0d',
+            todayHighlight: 'TRUE'
         });
     })
-
+   
 </script>
