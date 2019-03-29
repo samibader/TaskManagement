@@ -13,6 +13,8 @@ using SBC.TimeCards.Models;
 using System.IO;
 using Microsoft.AspNet.Identity;
 using SBC.TimeCards.Service.Models;
+using SBC.TimeCards.Service.Services;
+using Hangfire;
 
 namespace SBC.TimeCards.Controllers
 {
@@ -83,6 +85,12 @@ namespace SBC.TimeCards.Controllers
         protected override void OnException(ExceptionContext filterContext)
         {
             base.OnException(filterContext);
+        }
+        protected void sendNoti(object sender,EventArgs e)
+        {
+            var x = e as Noti;
+            BackgroundJob.Enqueue(() => Console.Write(x.Message));
+
         }
     }
 }

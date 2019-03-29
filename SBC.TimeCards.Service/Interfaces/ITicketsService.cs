@@ -1,5 +1,6 @@
 ﻿using SBC.TimeCards.Service.Models.Comments;
 using SBC.TimeCards.Service.Models.Tickets;
+using SBC.TimeCards.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace SBC.TimeCards.Service.Interfaces
 {
     public interface ITicketsService
     {
+        event EventHandler AssigneeChanged;
+        
         /// <summary>
         /// initalize an empty ticket to be filled later
         /// </summary>

@@ -13,9 +13,20 @@ using SBC.TimeCards.Service.Models.Comments;
 
 namespace SBC.TimeCards.Service.Services
 {
+    public class Noti :EventArgs
+    {
+       public string Message;
+    }
     public class TicketsService : ITicketsService
     {
+       
         private readonly IUnitOfWork _unitOfWork;
+
+        public event EventHandler AssigneeChanged;
+        protected virtual void OnAssigneeChanged(Noti e)
+        {
+            AssigneeChanged?.Invoke(this, e);
+        }
 
         public TicketsService(IUnitOfWork unitOfWork)
         {
@@ -66,6 +77,7 @@ namespace SBC.TimeCards.Service.Services
             ticket.AssigneeId = assigneeId;
             _unitOfWork.Tickets.Update(ticket);
             _unitOfWork.SaveChanges();
+            OnAssigneeChanged(new Noti { Message = "asd" });
         }
         public void UpdateDueDate(int id, DateTime? dueDate)
         {

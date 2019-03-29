@@ -156,5 +156,10 @@ namespace SBC.TimeCards.Service.Services
             return await Task.FromResult(roles);
 
         }
+
+        public string GetUserEmailAddress(int id)
+        {
+            return _unitOfWork.Users.GetById(id).Email;
+        }
     }
 }

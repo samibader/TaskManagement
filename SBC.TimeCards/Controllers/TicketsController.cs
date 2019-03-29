@@ -1,4 +1,6 @@
-﻿using SBC.TimeCards.Service.Identity;
+﻿using Hangfire;
+using SBC.TimeCards.Models.Emails;
+using SBC.TimeCards.Service.Identity;
 using SBC.TimeCards.Service.Interfaces;
 using SBC.TimeCards.Service.Models.Comments;
 using SBC.TimeCards.Service.Models.Tickets;
@@ -18,6 +20,7 @@ namespace SBC.TimeCards.Controllers
         public TicketsController(ApplicationUserManager userManager, TicketsService ticketService,UserService userService) : base(userManager)
         {
             _ticketService = ticketService;
+            _ticketService.AssigneeChanged += sendNoti;
             _userService = userService;
         }
         // GET: Tickets

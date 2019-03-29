@@ -28,5 +28,6 @@ namespace SBC.TimeCards.Service.Interfaces
         /// <returns></returns>
         Task<List<SelectListItem>> GetAllAvailableRolesAsSelectList(int roleId = 0 );
         bool IsAdmin(int userId);
+        string GetUserEmailAddress(int id);
     }
 }
