@@ -18,5 +18,6 @@ namespace SBC.TimeCards.Service.Models.Tickets
         public TicketViewModel ParentTicketInfo { get; set; }
         public ProjectViewModel ProjectInfo { get; set; }
         public int StateId { get; set; }
+        public int OwnerId { get; set; }
     }
 }

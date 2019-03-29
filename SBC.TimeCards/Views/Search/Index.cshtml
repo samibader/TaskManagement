@@ -117,8 +117,28 @@
     </ul>
     <hr />
 }
-
-@if (!(Model.Users.Any() || Model.Ticktes.Any() || Model.Projects.Any() || Model.Attachments.Any()))
+@if (Model.Templates.Any())
+{
+    <h6 style="text-align:left; font-size:12px">Templates</h6>
+    <ul class="right_chat list-unstyled mb-0">
+        @foreach (var item in Model.Templates)
+        {
+            <li class="offline">
+                <a href="@Url.Action("Manage","Projects",new { id=item.Ticket.ProjectInfo.Id,tid=item.Ticket.Id })">
+                    <div class="media" style="margin-bottom:1px">
+                        <span class="media-object"><i class="fa fa-paperclip"></i></span>
+                        <div class="media-body" style="padding:2px;">
+                            <span class="name" style="font-size:12px; text-align:left">@((TemplateTypes)item.Template.TemplateTypeId) (@item.Ticket.Title)</span>
+                            @*<span class="message">There are many variations of passages of Lorem Ipsum available, but the majority</span>*@
+                        </div>
+                    </div>
+                </a>
+            </li>
+        }
+    </ul>
+    <hr />
+}
+@if (!(Model.Users.Any() || Model.Ticktes.Any() || Model.Projects.Any() || Model.Attachments.Any() ||Model.Templates.Any()))
 {
     <div>
         <h6>

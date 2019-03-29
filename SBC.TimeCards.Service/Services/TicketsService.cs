@@ -153,5 +153,19 @@ namespace SBC.TimeCards.Service.Services
             return Mapper.Map<List<Ticket>, List<TicketViewModel>>(_unitOfWork.Tickets.GetBy(x => x.AssigneeId == userId).ToList());
         }
 
+        public bool ValidateTemplates(int ticketId)
+        {
+            var ticket = _unitOfWork.Tickets.GetById(ticketId);
+            var valid = false;
+            valid |= ticket.TicketTemplates.Any(x =>x.DeviceTemplate!=null &&( String.IsNullOrEmpty(x.DeviceTemplate.Ip) || String.IsNullOrEmpty(x.DeviceTemplate.Location) || String.IsNullOrEmpty(x.DeviceTemplate.Name) || String.IsNullOrEmpty(x.DeviceTemplate.Type)));
+            valid |= ticket.TicketTemplates.Any(x => x.NetworkTemplate !=null &&( String.IsNullOrEmpty(x.NetworkTemplate.Ip) || String.IsNullOrEmpty(x.NetworkTemplate.Subnet) || String.IsNullOrEmpty(x.NetworkTemplate.Zone) || String.IsNullOrEmpty(x.NetworkTemplate.DefaultGateway)));
+            valid |= ticket.TicketTemplates.Any(x => x.UserTemplate !=null &&(String.IsNullOrEmpty(x.UserTemplate.Name) || String.IsNullOrEmpty(x.UserTemplate.ExpirationDate) || String.IsNullOrEmpty(x.UserTemplate.OU) || String.IsNullOrEmpty(x.UserTemplate.Password) || String.IsNullOrEmpty(x.UserTemplate.Role)));
+            valid |= ticket.TicketTemplates.
+                Any(x => x.ServerTemplate!=null &&(  String.IsNullOrEmpty(x.ServerTemplate.Name) || String.IsNullOrEmpty(x.ServerTemplate.Ram) || String.IsNullOrEmpty(x.ServerTemplate.Cpu)
+                || x.ServerTemplate.ServerDiskTemplates.Any(y => String.IsNullOrEmpty(y.Value)) 
+                || x.ServerTemplate.ServerNetworkTemplates
+                .Any(y => String.IsNullOrEmpty(y.Ip) || String.IsNullOrEmpty(y.Subnet) || String.IsNullOrEmpty(y.Zone) || String.IsNullOrEmpty(y.DefaultGateway))));
+            return !valid;
+        }
     }
 }

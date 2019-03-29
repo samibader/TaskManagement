@@ -81,6 +81,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -113,6 +114,7 @@
     <Compile Include="Models\Projects\CreateProjectViewModel.cs" />
     <Compile Include="Models\Projects\DetailedProjectViewModel.cs" />
     <Compile Include="Models\Search\SearchResultsViewModel.cs" />
+    <Compile Include="Models\Search\TemplateSearchViewModel.cs" />
     <Compile Include="Models\Templates\ServerDiskTemplateViewModel.cs" />
     <Compile Include="Models\Templates\ServerNetworkTemplateViewModel.cs" />
     <Compile Include="Models\Templates\TemplateViewModel.cs" />

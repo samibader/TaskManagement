@@ -45,19 +45,16 @@
             </ul>
         </div>
         <div class="col-lg-6 col-md-4 col-sm-4 text-right">
-            @if (!Model.IsArchived)
-            {
-                <a href="#" class="btn btn-primary" onclick="addTicket(@Model.Id)"><i class="icon-plus"></i> New Ticket</a>
-            }
             @if (Model.Owner.Id == CurrentUserId || User.IsInRole(AppRoles.Administrator))
             {
                 if (!Model.IsArchived)
                 {
+                    <a href="#" class="btn btn-primary" onclick="addTicket(@Model.Id)"><i class="icon-plus"></i> New Ticket</a>
                     <button type="button" class="btn btn-outline-info" onclick="archive(@Model.Id)"><i class="icon-check"></i> <span>Archive Project</span></button>
                 }
                 else
                 {
-                    <button type="button" class="btn btn-outline-info" onclick="unArchive(@Model.Id)"><i class="icon-check"></i> <span>Un Archive Project</span></button>
+                    <button type="button" class="btn btn-outline-info" onclick="unArchive(@Model.Id)"><i class="icon-check"></i> <span>Activate Project</span></button>
                 }
             }
 
@@ -135,6 +132,7 @@
     </div>
 </div>
 @section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Lucid/assets/vendor/summernote/dist/summernote.js"></script>
     @* Please Add This Script To layout..*@
     <script>
@@ -273,6 +271,12 @@
             });
         }
         function markDone(id){
+            var valid = validateTemplate(id);
+            if(!valid)
+            {
+                alert('Templates are invalid');
+                return;
+            }
             $.ajax({
                 type: 'post',
                 url:"@Url.Action("MarkDone", "Tickets")",
@@ -435,6 +439,22 @@
                     $(el).attr('name','Disks['+idxx+']'+$(el).attr('name').split(']')[1]);
                 })
             })
+        }
+    </script>
+    <script>
+        function validateTemplate(id){
+            var valid = false;
+            $.ajax({
+                type:'post',
+                async:false,
+                url:"@Url.Action("ValidateTemplates", "Tickets")",
+                data:{id:id},
+                success:function(data){
+                    valid =  data.success;
+                    console.log(data);
+                }
+            })
+            return valid;
         }
     </script>
 

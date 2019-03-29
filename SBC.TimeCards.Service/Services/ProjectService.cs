@@ -33,6 +33,7 @@ namespace SBC.TimeCards.Service.Services
             var project = new Project { Name = viewModel.Name, Timestamp = GlobalSettings.CURRENT_DATETIME, UserId = viewModel.UserId, Description = viewModel.Description, IsArchived = false, Color = "#90969b" };
             _unitOfWork.Projects.Add(project);
             await _unitOfWork.SaveChangesAsync();
+
         }
 
         public async Task Edit(EditProjectViewModel viewModel)
@@ -58,7 +59,7 @@ namespace SBC.TimeCards.Service.Services
             var isAdmin = _userService.IsAdmin(userId);
             return Mapper.Map<List<Project>, List<ProjectViewModel>>(_unitOfWork.Projects.GetBy(
                 x => !x.IsArchived && (isAdmin || x.UserId == userId
-                    || x.Tickets.Any(y => y.AssigneeId == userId && y.StateId != (int)TicketStates.Done)))
+                    || x.Tickets.Any(y => y.AssigneeId == userId && y.StateId != (int)TicketStates.Done) || x.Tickets.SelectMany(y=>y.SubTickets).Any(y => y.AssigneeId == userId && y.StateId != (int)TicketStates.Done)))
                 .ToList());
         }
         public List<ProjectViewModel> GetArchivedProjects(int userId, bool getAll = false)
@@ -66,7 +67,7 @@ namespace SBC.TimeCards.Service.Services
             var isAdmin = _userService.IsAdmin(userId);
             var projects = _unitOfWork.Projects.GetBy(x =>
             (x.IsArchived && (isAdmin ||x.UserId == userId || x.Tickets.Any(y => y.AssigneeId == userId)))
-            || (x.Tickets.Any(y => y.AssigneeId == userId) && !x.Tickets.Any(y => y.AssigneeId == userId && !(y.StateId == (int)TicketStates.Done))));
+            || (x.Tickets.Any(y => y.AssigneeId == userId) && !x.Tickets.Any(y => y.AssigneeId == userId && !(y.StateId == (int)TicketStates.Done)) && !x.Tickets.SelectMany(y=>y.SubTickets).Any(y => y.AssigneeId == userId && !(y.StateId == (int)TicketStates.Done))));
             if (!getAll)
             {
                 projects = projects.OrderByDescending(x => x.ArchiveDate).Take(GlobalSettings.ArchivedProjectSize);

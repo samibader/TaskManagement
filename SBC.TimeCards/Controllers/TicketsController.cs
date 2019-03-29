@@ -134,5 +134,10 @@ namespace SBC.TimeCards.Controllers
 
             return View(model);
         }
+        public ActionResult ValidateTemplates(int id)
+        {
+            var valid =_ticketService.ValidateTemplates(id);
+            return Json(new { success = valid });
+        }
     }
 }

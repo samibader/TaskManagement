@@ -30,6 +30,7 @@ namespace SBC.TimeCards.Service.Interfaces
         List<CommentViewModel> GetComments(int id);
         void Delete(int id);
         List<TicketViewModel> GetUserTickets(int userId);
+        bool ValidateTemplates(int ticketId);
       
     }
 }
